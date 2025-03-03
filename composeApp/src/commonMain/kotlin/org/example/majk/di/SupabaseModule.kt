@@ -14,8 +14,8 @@ expect fun AuthConfig.platformGoTrueConfig()
 val supabaseModule = module {
     single {
         createSupabaseClient(
-            supabaseUrl = "",
-            supabaseKey = ""
+            supabaseUrl = "https://gaisritsqqjxsfusjkio.supabase.co",
+            supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdhaXNyaXRzcXFqeHNmdXNqa2lvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAxNjUzNDAsImV4cCI6MjA1NTc0MTM0MH0.C68laxL4Nrh8B05GU8gGy3iITSI7aRrjp4Uw8pbWByY"
         ) {
             defaultLogLevel = LogLevel.DEBUG
             install(Postgrest)

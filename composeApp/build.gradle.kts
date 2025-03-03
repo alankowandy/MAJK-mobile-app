@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
 }
 
 kotlin {
@@ -50,6 +51,7 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(compose.material3)
 
             // koin
             api(libs.koin.core)
@@ -58,11 +60,13 @@ kotlin {
             implementation(libs.lifecycle.viewmodel)
             implementation(libs.navigation.compose)
 
+            // Supabase
             implementation(libs.supabase.auth)
             implementation(libs.supabase.postgrest)
             implementation(libs.supabase.realtime)
 
-            implementation(libs.kotlinx.serialization)
+            // Serialization
+            implementation(libs.kotlinx.serialization.json)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -98,6 +102,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.material3.android)
     debugImplementation(compose.uiTooling)
 }
 
