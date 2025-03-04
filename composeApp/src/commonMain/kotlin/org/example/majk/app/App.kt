@@ -1,21 +1,13 @@
 package org.example.majk.app
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import org.jetbrains.compose.resources.painterResource
-import org.example.majk.majk.presentation.majk_start.MajkStart
+import org.example.majk.majk.presentation.majk_login.majk_signin.MajkSignInScreenRoot
+import org.example.majk.majk.presentation.majk_login.majk_start.MajkStartScreenRoot
 
 @Composable
 fun App() {
@@ -29,9 +21,12 @@ fun App() {
                 startDestination = Route.MajkStart
             ) {
                 composable<Route.MajkStart> {
-                    MajkStart(
+                    MajkStartScreenRoot(
                         navController = navController
                     )
+                }
+                composable<Route.MajkSignIn> {
+                    MajkSignInScreenRoot()
                 }
             }
         }

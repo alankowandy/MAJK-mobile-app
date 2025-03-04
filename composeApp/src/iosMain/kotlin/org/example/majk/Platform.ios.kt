@@ -1,5 +1,6 @@
 package org.example.majk
 
+import org.example.majk.majk.data.Platform
 import platform.UIKit.UIDevice
 
 class IOSPlatform: Platform {

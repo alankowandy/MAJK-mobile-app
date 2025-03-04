@@ -52,6 +52,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(compose.material3)
+            implementation(libs.kotlinx.coroutines.swing)
 
             // koin
             api(libs.koin.core)

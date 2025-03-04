@@ -1,42 +1,48 @@
-package org.example.majk.majk.presentation.majk_start
+package org.example.majk.majk.presentation.majk_login.majk_start
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
-import androidx.compose.material.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import majk.composeapp.generated.resources.Res
-import majk.composeapp.generated.resources.compose_multiplatform
-import majk.composeapp.generated.resources.majk_icon_white
+import org.example.majk.app.Route
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
-import org.example.majk.majk.presentation.Greeting
-import org.jetbrains.compose.resources.painterResource
+import org.example.majk.majk.presentation.majk_login.components.MajkLogo
 
 @Composable
-fun MajkStart(
+fun MajkStartScreenRoot(
     navController: NavController
+) {
+    MajkStartScreen(
+        onSignInClick = {
+            navController.navigate(Route.MajkSignIn)
+        },
+        onSignUpClick = TODO(),
+        onRegisterDeviceClick = TODO()
+    )
+}
+
+@Composable
+fun MajkStartScreen(
+    onSignInClick: () -> Unit,
+    onSignUpClick: () -> Unit,
+    onRegisterDeviceClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -48,21 +54,11 @@ fun MajkStart(
         verticalArrangement = Arrangement.Center
     ) {
 
-        Surface(
+        MajkLogo(
             modifier = Modifier
                 .size(250.dp)
-                .padding(16.dp),
-            shape = RoundedCornerShape(16.dp),
-            elevation = 6.dp
-        ) {
-            Image(
-                painterResource(Res.drawable.majk_icon_white),
-                contentDescription = "Majk logo",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxSize()
-            )
-        }
+                .padding(16.dp)
+        )
 
         Spacer(
             modifier = Modifier
@@ -80,7 +76,7 @@ fun MajkStart(
         )
 
         Button(
-            onClick = { navController.navigateUp() },
+            onClick = { onSignInClick() },
             modifier = Modifier
                 .fillMaxWidth(0.8f)
         ) {
