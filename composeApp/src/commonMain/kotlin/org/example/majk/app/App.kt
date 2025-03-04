@@ -22,7 +22,15 @@ fun App() {
             ) {
                 composable<Route.MajkStart> {
                     MajkStartScreenRoot(
-                        navController = navController
+                        onSignInClick = {
+                            navController.navigate(Route.MajkSignIn)
+                        },
+                        onSignUpClick = {
+
+                        },
+                        onRegisterDeviceClick = {
+
+                        }
                     )
                 }
                 composable<Route.MajkSignIn> {

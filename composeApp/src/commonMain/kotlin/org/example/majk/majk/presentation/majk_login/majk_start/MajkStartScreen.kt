@@ -27,22 +27,24 @@ import org.example.majk.majk.presentation.majk_login.components.MajkLogo
 
 @Composable
 fun MajkStartScreenRoot(
-    navController: NavController
+    onSignInClick: () -> Unit,
+    onSignUpClick: () -> Unit,
+    onRegisterDeviceClick: () -> Unit
 ) {
     MajkStartScreen(
-        onSignInClick = {
-            navController.navigate(Route.MajkSignIn)
-        },
-        onSignUpClick = TODO(),
-        onRegisterDeviceClick = TODO()
+        onAction = { action ->
+            when(action) {
+                is MajkStartAction.OnSignInClick -> onSignInClick()
+                is MajkStartAction.OnSignUpClick -> onSignUpClick()
+                is MajkStartAction.OnRegisterDeviceClick -> onRegisterDeviceClick()
+            }
+        }
     )
 }
 
 @Composable
 fun MajkStartScreen(
-    onSignInClick: () -> Unit,
-    onSignUpClick: () -> Unit,
-    onRegisterDeviceClick: () -> Unit
+    onAction: (MajkStartAction) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -76,7 +78,7 @@ fun MajkStartScreen(
         )
 
         Button(
-            onClick = { onSignInClick() },
+            onClick = { onAction(MajkStartAction.OnSignInClick) },
             modifier = Modifier
                 .fillMaxWidth(0.8f)
         ) {

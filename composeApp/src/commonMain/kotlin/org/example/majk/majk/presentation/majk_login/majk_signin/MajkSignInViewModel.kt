@@ -25,6 +25,7 @@ class MajkSignInViewModel(
                     it.copy(passwordEntry = action.password)
                 }
             }
+            else -> Unit
         }
     }
 
