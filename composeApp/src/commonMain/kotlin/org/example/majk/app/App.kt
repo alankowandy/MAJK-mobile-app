@@ -1,13 +1,15 @@
 package org.example.majk.app
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import org.example.majk.majk.presentation.majk_login.majk_signin.MajkSignInScreenRoot
+import org.example.majk.majk.presentation.majk_login.majk_signin.MajkSignInViewModel
 import org.example.majk.majk.presentation.majk_login.majk_start.MajkStartScreenRoot
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun App() {
@@ -34,7 +36,16 @@ fun App() {
                     )
                 }
                 composable<Route.MajkSignIn> {
-                    MajkSignInScreenRoot()
+                    val viewModel = koinViewModel<MajkSignInViewModel>()
+                    MajkSignInScreenRoot(
+                        viewModel = viewModel,
+                        onUserLogged = {
+
+                        },
+                        onBackClick = {
+                            navController.navigate(Route.MajkStart)
+                        }
+                    )
                 }
             }
         }

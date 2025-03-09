@@ -1,31 +1,86 @@
 package org.example.majk.majk.presentation.majk_login.majk_signin
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.modifier.modifierLocalMapOf
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import majk.composeapp.generated.resources.Res
+import majk.composeapp.generated.resources.back
+import majk.composeapp.generated.resources.sign_in
+import org.example.majk.core.presentation.DarkTeal
+import org.example.majk.core.presentation.OffWhite
+import org.example.majk.majk.presentation.majk_login.components.MajkButton
 import org.example.majk.majk.presentation.majk_login.components.MajkLogo
+import org.example.majk.majk.presentation.majk_login.components.MajkTextField
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun MajkSignInScreenRoot(
     viewModel: MajkSignInViewModel = koinViewModel(),
-
+    onUserLogged: () -> Unit,
+    onBackClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(state.isLogged) {
+        if (state.isLogged) {
+            onUserLogged()
+        }
+    }
+
+    MajkSignInScreen(
+        state = state,
+        onAction = { action ->
+            when(action) {
+                is MajkSignInAction.OnSignInClick -> viewModel.onAction(action)
+                is MajkSignInAction.OnBackClick -> onBackClick()
+                else -> Unit
+            }
+            viewModel.onAction(action)
+        }
+    )
 }
 
 @Composable
-fun MajkSignInScreen() {
+private fun MajkSignInScreen(
+    state: MajkSignInState,
+    onAction: (MajkSignInAction) -> Unit
+) {
 
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(OffWhite),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text(
-            text = "Zaloguj się"
+            text = stringResource(Res.string.sign_in),
+            style = TextStyle(
+                fontSize = 18.sp,
+                color = DarkTeal,
+                fontWeight = FontWeight.Bold
+            ),
+            textAlign = TextAlign.Center,
+            lineHeight = 24.sp,
+            modifier = Modifier
+                .padding(top = 5.dp, bottom = 16.dp)
         )
 
         MajkLogo(
@@ -35,9 +90,30 @@ fun MajkSignInScreen() {
         )
 
         Text(
-            text = "Podaj login i hasło, aby się zalogować"
+            text = "..."
         )
 
+        MajkTextField(
+            value = state.emailEntry,
+            onTextChange = {onAction(MajkSignInAction.OnEmailChange(it))},
+            placeholder = "Email",
+            isPassword = false
+        )
 
+        MajkButton(
+            text = stringResource(Res.string.sign_in),
+            onAction = {},
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+        )
+
+        MajkButton(
+            text = stringResource(Res.string.back),
+            onAction = { onAction(MajkSignInAction.OnBackClick) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+        )
     }
 }

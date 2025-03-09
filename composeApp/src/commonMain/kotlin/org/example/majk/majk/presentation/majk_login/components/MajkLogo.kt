@@ -3,7 +3,7 @@ package org.example.majk.majk.presentation.majk_login.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Surface
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -19,7 +19,7 @@ fun MajkLogo(
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(16.dp),
-        elevation = 6.dp
+        shadowElevation = 6.dp
     ) {
         Image(
             painterResource(Res.drawable.majk_icon_white),

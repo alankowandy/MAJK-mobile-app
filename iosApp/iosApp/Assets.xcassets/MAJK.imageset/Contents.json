@@ -1,16 +1,18 @@
 {
   "images" : [
     {
-      "filename" : "majk_icon_white.png",
-      "idiom" : "iphone",
+      "filename" : "MAJK.png",
+      "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "idiom" : "iphone",
+      "filename" : "MAJK 1.png",
+      "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "idiom" : "iphone",
+      "filename" : "MAJK 2.png",
+      "idiom" : "universal",
       "scale" : "3x"
     }
   ],

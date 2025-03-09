@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <string name="sign_in">Zaloguj się</string>
+    <string name="sign_up">Zarejestruj się</string>
+    <string name="register_device">Zarejestruj urządzenie</string>
+    <string name="back">Wstecz</string>
+    <string name="email">Email</string>
+    <string name="password">Hasło</string>
+    <string name="user">Nazwa uzytkownika</string>
+</resources>

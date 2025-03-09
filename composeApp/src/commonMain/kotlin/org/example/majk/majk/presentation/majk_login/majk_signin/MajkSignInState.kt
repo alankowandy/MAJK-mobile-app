@@ -6,5 +6,6 @@ data class MajkSignInState(
     val emailEntry: String = "",
     val passwordEntry: String = "",
     val isProcessing: Boolean = false,
+    val isLogged: Boolean = false,
     val errorMessage: UiText? = null
 )

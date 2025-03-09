@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,12 +17,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import org.example.majk.app.Route
+import majk.composeapp.generated.resources.Res
+import majk.composeapp.generated.resources.register_device
+import majk.composeapp.generated.resources.sign_in
+import majk.composeapp.generated.resources.sign_up
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
+import org.example.majk.majk.presentation.majk_login.components.MajkButton
 import org.example.majk.majk.presentation.majk_login.components.MajkLogo
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun MajkStartScreenRoot(
@@ -43,7 +45,7 @@ fun MajkStartScreenRoot(
 }
 
 @Composable
-fun MajkStartScreen(
+private fun MajkStartScreen(
     onAction: (MajkStartAction) -> Unit
 ) {
     Column(
@@ -77,30 +79,28 @@ fun MajkStartScreen(
             lineHeight = 24.sp
         )
 
-        Button(
-            onClick = { onAction(MajkStartAction.OnSignInClick) },
+        MajkButton(
+            text = stringResource(Res.string.sign_in),
+            onAction = { onAction(MajkStartAction.OnSignInClick) },
             modifier = Modifier
-                .fillMaxWidth(0.8f)
-        ) {
-            androidx.compose.material.Text(
-                text = "Zaloguj"
-            )
-        }
-        Button(
-            onClick = { TODO() },
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+        )
 
-            ) {
-            androidx.compose.material.Text(
-                text = "Zarejestruj konto"
-            )
-        }
-        Button(
-            onClick = { TODO() },
+        MajkButton(
+            text = stringResource(Res.string.sign_up),
+            onAction = { onAction(MajkStartAction.OnSignUpClick) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+        )
 
-            ) {
-            androidx.compose.material.Text(
-                text = "Zarejestruj urzadzenie"
-            )
-        }
+        MajkButton(
+            text = stringResource(Res.string.register_device),
+            onAction = { onAction(MajkStartAction.OnRegisterDeviceClick) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+        )
     }
 }
