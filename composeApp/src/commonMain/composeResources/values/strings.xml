@@ -7,4 +7,6 @@
     <string name="email">E-Mail</string>
     <string name="password">Hasło</string>
     <string name="user">Nazwa uzytkownika</string>
+    <string name="family_code">Kod rodziny</string>
+    <string name="device_code">Kod urządzenia</string>
 </resources>

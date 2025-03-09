@@ -20,5 +20,8 @@ sealed interface Route {
     data object MajkSignUp: Route
 
     @Serializable
+    data object MajkRegisterDevice: Route
+
+    @Serializable
     data object MajkHome: Route
 }

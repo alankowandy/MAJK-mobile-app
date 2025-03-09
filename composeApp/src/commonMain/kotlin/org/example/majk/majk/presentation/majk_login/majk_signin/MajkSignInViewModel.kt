@@ -18,7 +18,7 @@ class MajkSignInViewModel(
     private val _state = MutableStateFlow(MajkSignInState())
     val state = _state.asStateFlow()
 
-    private val _toastMessage = mutableStateOf<String>("")
+    private val _toastMessage = mutableStateOf("")
     val toastMessage: State<String> = _toastMessage
 
     fun onAction(action: MajkSignInAction) {

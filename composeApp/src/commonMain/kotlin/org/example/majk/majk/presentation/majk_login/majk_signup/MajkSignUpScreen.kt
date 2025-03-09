@@ -1,4 +1,4 @@
-package org.example.majk.majk.presentation.majk_login.majk_signin
+package org.example.majk.majk.presentation.majk_login.majk_signup
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -9,11 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -24,48 +22,43 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import majk.composeapp.generated.resources.Res
 import majk.composeapp.generated.resources.back
 import majk.composeapp.generated.resources.email
+import majk.composeapp.generated.resources.family_code
 import majk.composeapp.generated.resources.password
 import majk.composeapp.generated.resources.sign_in
+import majk.composeapp.generated.resources.sign_up
+import majk.composeapp.generated.resources.user
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.presentation.majk_login.components.MajkButton
 import org.example.majk.majk.presentation.majk_login.components.MajkLogo
 import org.example.majk.majk.presentation.majk_login.components.MajkTextField
-import org.jetbrains.compose.resources.StringResource
+import org.example.majk.majk.presentation.majk_login.majk_signin.MajkSignInAction
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun MajkSignInScreenRoot(
-    viewModel: MajkSignInViewModel = koinViewModel(),
-    onUserLogged: () -> Unit,
+fun MajkSignUpScreenRoot(
+    viewModel: MajkSignUpViewModel = koinViewModel(),
     onBackClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(state.isLogged) {
-        if (state.isLogged) {
-            onUserLogged()
-        }
-    }
-
-    MajkSignInScreen(
+    MajkSignUpScreen(
         state = state,
         onAction = { action ->
             when(action) {
-                is MajkSignInAction.OnSignInClick -> viewModel.onAction(action)
-                is MajkSignInAction.OnBackClick -> onBackClick()
+                is MajkSignUpAction.OnSignUpClick -> viewModel.onAction(action)
+                is MajkSignUpAction.OnBackClick -> onBackClick()
                 else -> Unit
             }
-            viewModel.onAction(action)
         }
     )
 }
 
 @Composable
-private fun MajkSignInScreen(
-    state: MajkSignInState,
-    onAction: (MajkSignInAction) -> Unit
+private fun MajkSignUpScreen(
+    state: MajkSignUpState,
+    onAction: (MajkSignUpAction) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -73,11 +66,10 @@ private fun MajkSignInScreen(
             .background(OffWhite),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Spacer(modifier = Modifier.weight(1f))
 
         Text(
-            text = stringResource(Res.string.sign_in),
+            text = stringResource(Res.string.sign_up),
             style = TextStyle(
                 fontSize = 18.sp,
                 color = DarkTeal,
@@ -99,7 +91,7 @@ private fun MajkSignInScreen(
         Spacer(modifier = Modifier.weight(1f))
 
         Text(
-            text = "Podaj e-mail i hasło, aby się zalogować",
+            text = "Podaj nazwę użytkownika, e-mail, hasło i kod rodziny",
             style = TextStyle(
                 fontSize = 20.sp,
                 color = DarkTeal,
@@ -114,8 +106,16 @@ private fun MajkSignInScreen(
         Spacer(modifier = Modifier.weight(1f))
 
         MajkTextField(
+            value = state.usernameEntry,
+            onTextChange = { onAction(MajkSignUpAction.OnUsernameChange(it)) },
+            placeholder = stringResource(Res.string.user),
+            isPassword = false,
+            keyboardType = KeyboardType.Text
+        )
+
+        MajkTextField(
             value = state.emailEntry,
-            onTextChange = { onAction(MajkSignInAction.OnEmailChange(it)) },
+            onTextChange = { onAction(MajkSignUpAction.OnEmailChange(it)) },
             placeholder = stringResource(Res.string.email),
             isPassword = false,
             keyboardType = KeyboardType.Email
@@ -123,17 +123,25 @@ private fun MajkSignInScreen(
 
         MajkTextField(
             value = state.passwordEntry,
-            onTextChange = { onAction(MajkSignInAction.OnPasswordChange(it)) },
+            onTextChange = { onAction(MajkSignUpAction.OnPasswordChange(it)) },
             placeholder = stringResource(Res.string.password),
             isPassword = true,
-            keyboardType = KeyboardType.Text
+            keyboardType = KeyboardType.Password
+        )
+
+        MajkTextField(
+            value = state.familyCode,
+            onTextChange = { onAction(MajkSignUpAction.OnFamilyCodeChange(it)) },
+            placeholder = stringResource(Res.string.family_code),
+            isPassword = false,
+            keyboardType = KeyboardType.Number
         )
 
         Spacer(modifier = Modifier.weight(1f))
 
         MajkButton(
-            text = stringResource(Res.string.sign_in),
-            onAction = { onAction(MajkSignInAction.OnSignInClick) },
+            text = stringResource(Res.string.sign_up),
+            onAction = { onAction(MajkSignUpAction.OnSignUpClick) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 50.dp)
@@ -141,7 +149,7 @@ private fun MajkSignInScreen(
 
         MajkButton(
             text = stringResource(Res.string.back),
-            onAction = { onAction(MajkSignInAction.OnBackClick) },
+            onAction = { onAction(MajkSignUpAction.OnBackClick) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 50.dp, end = 50.dp, bottom = 20.dp)

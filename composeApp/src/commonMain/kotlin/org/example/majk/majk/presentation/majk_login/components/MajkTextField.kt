@@ -1,13 +1,17 @@
 package org.example.majk.majk.presentation.majk_login.components
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -29,34 +33,42 @@ fun MajkTextField(
     isPassword: Boolean,
     keyboardType: KeyboardType
 ) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onTextChange,
-        shape = RoundedCornerShape(100),
-        singleLine = true,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = keyboardType
-        ),
-        visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
-        placeholder = {
-            Text(
-                text = placeholder,
-                style = TextStyle(
-                    //fontWeight = FontWeight.Bold,
-                    color = DarkTeal
-                ),
-                modifier = Modifier
-                    .padding(start = 10.dp)
-            )
-        },
-        colors = OutlinedTextFieldDefaults.colors(
-            unfocusedContainerColor = LightGray,
-            focusedContainerColor = LightGray,
-            focusedTextColor = DarkTeal,
-            unfocusedTextColor = DarkTeal,
-            focusedBorderColor = DarkTeal
-        ),
-        modifier = Modifier
-            .padding(vertical = 5.dp)
-    )
+    CompositionLocalProvider(
+        LocalTextSelectionColors provides TextSelectionColors(
+            handleColor = DarkTeal,
+            backgroundColor = DarkTeal
+        )
+    ) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = onTextChange,
+            shape = RoundedCornerShape(100),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = keyboardType
+            ),
+            visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
+            placeholder = {
+                Text(
+                    text = placeholder,
+                    style = TextStyle(
+                        //fontWeight = FontWeight.Bold,
+                        color = DarkTeal
+                    ),
+                    modifier = Modifier
+                        .padding(start = 10.dp)
+                )
+            },
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedContainerColor = LightGray,
+                focusedContainerColor = LightGray,
+                focusedTextColor = DarkTeal,
+                unfocusedTextColor = DarkTeal,
+                focusedBorderColor = DarkTeal
+            ),
+            modifier = Modifier
+                .padding(vertical = 5.dp)
+                .size(width = 310.dp, height = 50.dp)
+        )
+    }
 }

@@ -6,8 +6,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import org.example.majk.majk.presentation.majk_login.majk_register_device.MajkRegisterDeviceScreenRoot
+import org.example.majk.majk.presentation.majk_login.majk_register_device.MajkRegisterDeviceViewModel
 import org.example.majk.majk.presentation.majk_login.majk_signin.MajkSignInScreenRoot
 import org.example.majk.majk.presentation.majk_login.majk_signin.MajkSignInViewModel
+import org.example.majk.majk.presentation.majk_login.majk_signup.MajkSignUpScreenRoot
+import org.example.majk.majk.presentation.majk_login.majk_signup.MajkSignUpViewModel
 import org.example.majk.majk.presentation.majk_login.majk_start.MajkStartScreenRoot
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -28,10 +32,10 @@ fun App() {
                             navController.navigate(Route.MajkSignIn)
                         },
                         onSignUpClick = {
-
+                            navController.navigate(Route.MajkSignUp)
                         },
                         onRegisterDeviceClick = {
-
+                            navController.navigate(Route.MajkRegisterDevice)
                         }
                     )
                 }
@@ -42,6 +46,24 @@ fun App() {
                         onUserLogged = {
 
                         },
+                        onBackClick = {
+                            navController.navigate(Route.MajkStart)
+                        }
+                    )
+                }
+                composable<Route.MajkSignUp> {
+                    val viewModel = koinViewModel<MajkSignUpViewModel>()
+                    MajkSignUpScreenRoot(
+                        viewModel = viewModel,
+                        onBackClick = {
+                            navController.navigate(Route.MajkStart)
+                        }
+                    )
+                }
+                composable<Route.MajkRegisterDevice> {
+                    val viewModel = koinViewModel<MajkRegisterDeviceViewModel>()
+                    MajkRegisterDeviceScreenRoot(
+                        viewModel = viewModel,
                         onBackClick = {
                             navController.navigate(Route.MajkStart)
                         }
