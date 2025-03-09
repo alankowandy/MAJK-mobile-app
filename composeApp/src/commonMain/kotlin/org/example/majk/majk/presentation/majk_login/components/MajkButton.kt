@@ -20,7 +20,7 @@ fun MajkButton(
 ) {
     Button(
         onClick = { onAction() },
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(100),
         colors = ButtonDefaults.buttonColors(
             contentColor = OffWhite,
             containerColor = DarkTeal

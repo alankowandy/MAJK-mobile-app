@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,33 +59,36 @@ private fun MajkStartScreen(
         verticalArrangement = Arrangement.Center
     ) {
 
+        Spacer(modifier = Modifier.weight(1f))
+
         MajkLogo(
             modifier = Modifier
                 .size(250.dp)
-                .padding(16.dp)
         )
 
-        Spacer(
-            modifier = Modifier
-                .height(16.dp)
-        )
+        Spacer(modifier = Modifier.weight(1f))
 
         Text(
-            text = "Dzień dobry! Oto MAJK,\nTwój inteligentny\nsystem dystrybucji\nleków",
+            text = "Dzień dobry!\nOto MAJK, Twój inteligentny system dystrybucji leków",
             style = TextStyle(
-                fontSize = 18.sp,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
                 color = DarkTeal
             ),
             textAlign = TextAlign.Center,
-            lineHeight = 24.sp
+            lineHeight = 24.sp,
+            modifier = Modifier
+                .padding(horizontal = 50.dp)
         )
+
+        Spacer(modifier = Modifier.weight(1f))
 
         MajkButton(
             text = stringResource(Res.string.sign_in),
             onAction = { onAction(MajkStartAction.OnSignInClick) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+                .padding(top = 20.dp, start = 50.dp, end = 50.dp, bottom = 5.dp)
         )
 
         MajkButton(
@@ -92,7 +96,7 @@ private fun MajkStartScreen(
             onAction = { onAction(MajkStartAction.OnSignUpClick) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+                .padding(start = 50.dp, end = 50.dp, bottom = 5.dp)
         )
 
         MajkButton(
@@ -100,7 +104,7 @@ private fun MajkStartScreen(
             onAction = { onAction(MajkStartAction.OnRegisterDeviceClick) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+                .padding(start = 50.dp, end = 50.dp, bottom = 20.dp)
         )
     }
 }

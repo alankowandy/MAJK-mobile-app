@@ -2,6 +2,7 @@ package org.example.majk.majk.presentation.majk_login.majk_signin
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,12 +16,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import majk.composeapp.generated.resources.Res
 import majk.composeapp.generated.resources.back
+import majk.composeapp.generated.resources.email
+import majk.composeapp.generated.resources.password
 import majk.composeapp.generated.resources.sign_in
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
@@ -70,6 +74,9 @@ private fun MajkSignInScreen(
             .background(OffWhite),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        Spacer(modifier = Modifier.weight(1f))
+
         Text(
             text = stringResource(Res.string.sign_in),
             style = TextStyle(
@@ -80,32 +87,57 @@ private fun MajkSignInScreen(
             textAlign = TextAlign.Center,
             lineHeight = 24.sp,
             modifier = Modifier
-                .padding(top = 5.dp, bottom = 16.dp)
+                .padding(horizontal = 50.dp)
         )
+
+        Spacer(modifier = Modifier.weight(1f))
 
         MajkLogo(
             modifier = Modifier
-                .size(150.dp)
-                .padding(16.dp)
+                .size(200.dp)
         )
 
+        Spacer(modifier = Modifier.weight(1f))
+
         Text(
-            text = "..."
+            text = "Podaj login i hasło, aby się zalogować",
+            style = TextStyle(
+                fontSize = 20.sp,
+                color = DarkTeal,
+                fontWeight = FontWeight.Bold
+            ),
+            textAlign = TextAlign.Center,
+            lineHeight = 24.sp,
+            modifier = Modifier
+                .padding(horizontal = 50.dp)
         )
+
+        Spacer(modifier = Modifier.weight(1f))
 
         MajkTextField(
             value = state.emailEntry,
-            onTextChange = {onAction(MajkSignInAction.OnEmailChange(it))},
-            placeholder = "Email",
-            isPassword = false
+            onTextChange = { onAction(MajkSignInAction.OnEmailChange(it)) },
+            placeholder = stringResource(Res.string.email),
+            isPassword = false,
+            keyboardType = KeyboardType.Email
         )
+
+        MajkTextField(
+            value = state.passwordEntry,
+            onTextChange = { onAction(MajkSignInAction.OnPasswordChange(it)) },
+            placeholder = stringResource(Res.string.password),
+            isPassword = true,
+            keyboardType = KeyboardType.Text
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
 
         MajkButton(
             text = stringResource(Res.string.sign_in),
-            onAction = {},
+            onAction = { onAction(MajkSignInAction.OnSignInClick) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 50.dp)
         )
 
         MajkButton(
@@ -113,7 +145,7 @@ private fun MajkSignInScreen(
             onAction = { onAction(MajkSignInAction.OnBackClick) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+                .padding(start = 50.dp, end = 50.dp, bottom = 20.dp)
         )
     }
 }
