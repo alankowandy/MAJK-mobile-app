@@ -1,9 +1,11 @@
 package org.example.majk.majk.presentation.majk_login.majk_signup
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.example.majk.majk.domain.AuthRepository
 
 class MajkSignUpViewModel(
@@ -41,6 +43,14 @@ class MajkSignUpViewModel(
     }
 
     private fun majkSignUp() {
+        val username = _state.value.usernameEntry
+        val familyCode = _state.value.familyCode.toLong()
 
+        viewModelScope.launch {
+            authRepository.insertNewUsername(
+                username = username,
+                familyCode = familyCode
+            )
+        }
     }
 }

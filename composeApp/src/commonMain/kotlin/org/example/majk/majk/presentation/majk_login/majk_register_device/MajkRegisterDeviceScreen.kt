@@ -52,9 +52,8 @@ fun MajkRegisterDeviceScreenRoot(
         state = state,
         onAction = { action ->
             when(action) {
-                is MajkRegisterDeviceAction.OnRegisterClick -> viewModel.onAction(action)
                 is MajkRegisterDeviceAction.OnBackClick -> onBackClick()
-                else -> Unit
+                else -> viewModel.onAction(action)
             }
         }
     )

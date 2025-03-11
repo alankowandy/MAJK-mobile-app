@@ -1,12 +1,20 @@
 package org.example.majk.majk.data.repository
 
 import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.annotations.SupabaseInternal
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.exception.AuthRestException
 import io.github.jan.supabase.auth.providers.builtin.Email
+import io.github.jan.supabase.postgrest.postgrest
+import io.github.jan.supabase.supabaseJson
+import kotlinx.serialization.SerializationStrategy
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.encodeToJsonElement
 import org.example.majk.core.data.SessionState
 import org.example.majk.core.domain.AuthError
 import org.example.majk.core.domain.Result
+import org.example.majk.majk.data.dto.NewUserDto
 import org.example.majk.majk.domain.AuthRepository
 
 class AuthRepositoryImpl(
@@ -57,6 +65,21 @@ class AuthRepositoryImpl(
         deviceCode: String
     ): Boolean {
         TODO("Not yet implemented")
+    }
+
+    @OptIn(SupabaseInternal::class)
+    override suspend fun insertNewUsername(username: String, familyCode: Long): Boolean {
+        return try {
+            val params = NewUserDto(
+                username = username,
+                familyCode = familyCode
+            )
+            val jsonParams = supabaseJson.encodeToJsonElement(params)
+            client.postgrest.rpc("insertNewUsername", jsonParams as JsonObject)
+            true
+        } catch (e: Error) {
+            false
+        }
     }
 
     override suspend fun checkFamilyCode(familyCode: Int): Boolean {

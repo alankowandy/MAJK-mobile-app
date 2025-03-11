@@ -53,11 +53,9 @@ fun MajkSignInScreenRoot(
         state = state,
         onAction = { action ->
             when(action) {
-                is MajkSignInAction.OnSignInClick -> viewModel.onAction(action)
                 is MajkSignInAction.OnBackClick -> onBackClick()
-                else -> Unit
+                else -> viewModel.onAction(action)
             }
-            viewModel.onAction(action)
         }
     )
 }

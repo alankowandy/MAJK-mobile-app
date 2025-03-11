@@ -47,9 +47,8 @@ fun MajkSignUpScreenRoot(
         state = state,
         onAction = { action ->
             when(action) {
-                is MajkSignUpAction.OnSignUpClick -> viewModel.onAction(action)
                 is MajkSignUpAction.OnBackClick -> onBackClick()
-                else -> Unit
+                else -> viewModel.onAction(action)
             }
         }
     )
