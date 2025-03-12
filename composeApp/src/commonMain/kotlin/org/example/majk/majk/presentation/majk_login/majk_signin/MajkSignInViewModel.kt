@@ -1,5 +1,6 @@
 package org.example.majk.majk.presentation.majk_login.majk_signin
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -18,6 +19,8 @@ class MajkSignInViewModel(
     private val _state = MutableStateFlow(MajkSignInState())
     val state = _state.asStateFlow()
 
+    val interactionSource = MutableInteractionSource()
+
     private val _toastMessage = mutableStateOf("")
     val toastMessage: State<String> = _toastMessage
 
@@ -31,6 +34,11 @@ class MajkSignInViewModel(
             is MajkSignInAction.OnPasswordChange -> {
                 _state.update {
                     it.copy(passwordEntry = action.password)
+                }
+            }
+            is MajkSignInAction.OnErrorClear -> {
+                _state.update {
+                    it.copy(errorMessage = null)
                 }
             }
             is MajkSignInAction.OnSignInClick -> majkSignIn()
@@ -47,16 +55,15 @@ class MajkSignInViewModel(
                 it.copy(isProcessing = true)
             }
 
-            when (authRepository.signIn(email, password)) {
-                is Result.Success -> {
-                    _state.value = _state.value.copy(isProcessing = false)
-                    println("udało się zalogować")
+            kotlin.runCatching {
+                authRepository.signIn(email, password)
+            }.onSuccess {
+                _state.update {
+                    it.copy(isProcessing = false, isLogged = true)
                 }
-                is Result.Error -> {
-                    _state.update {
-                        it.copy(isProcessing = false)
-                    }
-                    println("nie udało się zalogować")
+            }.onFailure { error ->
+                _state.update {
+                    it.copy(errorMessage = error.message)
                 }
             }
         }

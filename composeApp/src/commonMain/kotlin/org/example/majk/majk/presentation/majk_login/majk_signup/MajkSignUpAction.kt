@@ -7,4 +7,5 @@ interface MajkSignUpAction {
     data class OnFamilyCodeChange(val familyCode: String): MajkSignUpAction
     data object OnSignUpClick: MajkSignUpAction
     data object OnBackClick: MajkSignUpAction
+    data object OnErrorClear : MajkSignUpAction
 }

@@ -5,8 +5,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,6 +26,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import majk.composeapp.generated.resources.Res
 import majk.composeapp.generated.resources.back
@@ -28,6 +35,7 @@ import majk.composeapp.generated.resources.password
 import majk.composeapp.generated.resources.sign_in
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
+import org.example.majk.majk.presentation.majk_login.components.MajkAlertDialog
 import org.example.majk.majk.presentation.majk_login.components.MajkButton
 import org.example.majk.majk.presentation.majk_login.components.MajkLogo
 import org.example.majk.majk.presentation.majk_login.components.MajkTextField
@@ -65,12 +73,24 @@ private fun MajkSignInScreen(
     state: MajkSignInState,
     onAction: (MajkSignInAction) -> Unit
 ) {
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(OffWhite),
+            .background(OffWhite)
+            .verticalScroll(scrollState)
+            .imePadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        if (state.errorMessage != null) {
+            MajkAlertDialog(
+                error = state.errorMessage,
+                dismissAction = {
+                    onAction(MajkSignInAction.OnErrorClear)
+                }
+            )
+        }
 
         Spacer(modifier = Modifier.weight(1f))
 

@@ -1,14 +1,13 @@
 package org.example.majk.majk.domain
 
-import org.example.majk.core.data.SessionState
-import org.example.majk.core.domain.AuthError
-import org.example.majk.core.domain.Result
+import org.example.majk.majk.data.dto.DeviceCodeDto
+import org.example.majk.majk.data.dto.FamilyCodeDto
 
 interface AuthRepository {
-    suspend fun signIn(email: String, password: String): Result<SessionState?, AuthError>
-    suspend fun signUp(username: String, email: String, password: String, familyCode: String): Boolean
-    suspend fun registerDevice(username: String, email: String, password: String, deviceCode: String): Boolean
-    suspend fun insertNewUsername(username: String, familyCode: Long): Boolean
-    suspend fun checkFamilyCode(familyCode: Int): Boolean
-    suspend fun checkDeviceCode(deviceCode: Int): Boolean
+    suspend fun signIn(email: String, password: String)
+    suspend fun signUp(email: String, password: String)
+    suspend fun registerDevice(email: String, password: String)
+    suspend fun insertNewUsername(username: String, familyCode: Long)
+    suspend fun checkFamilyCode(familyCode: Long): FamilyCodeDto
+    suspend fun checkDeviceCode(deviceCode: Long): DeviceCodeDto
 }

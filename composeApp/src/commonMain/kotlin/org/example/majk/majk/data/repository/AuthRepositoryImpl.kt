@@ -1,19 +1,23 @@
 package org.example.majk.majk.data.repository
 
 import io.github.jan.supabase.SupabaseClient
-import io.github.jan.supabase.annotations.SupabaseInternal
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.exception.AuthRestException
 import io.github.jan.supabase.auth.providers.builtin.Email
+import io.github.jan.supabase.exceptions.HttpRequestException
+import io.github.jan.supabase.exceptions.RestException
 import io.github.jan.supabase.postgrest.postgrest
-import io.github.jan.supabase.supabaseJson
-import kotlinx.serialization.SerializationStrategy
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.encodeToJsonElement
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.withContext
+import kotlinx.io.IOException
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 import org.example.majk.core.data.SessionState
 import org.example.majk.core.domain.AuthError
 import org.example.majk.core.domain.Result
+import org.example.majk.majk.data.dto.DeviceCodeDto
+import org.example.majk.majk.data.dto.FamilyCodeDto
 import org.example.majk.majk.data.dto.NewUserDto
 import org.example.majk.majk.domain.AuthRepository
 
@@ -21,72 +25,74 @@ class AuthRepositoryImpl(
     private val client: SupabaseClient
 ): AuthRepository {
     private val auth = client.auth
+    private val postgrest = client.postgrest
 
-    override suspend fun signIn(email: String, password: String): Result<SessionState?, AuthError> {
-        return try {
+    override suspend fun signIn(email: String, password: String) {
+        return withContext(Dispatchers.IO) {
             auth.signInWith(Email) {
                 this.email = email
                 this.password = password
             }
-            val session = auth.currentSessionOrNull()
-            if (session != null) {
-                Result.Success(session.user?.let {
-                    SessionState(
-                        session = session,
-                        userId = it.id
-                    )
-                })
-            } else {
-                Result.Error(AuthError.UnknownError)
-            }
-        } catch (e: AuthRestException) {
-            val error = when (e.error) {
-                "invalid_grant" -> AuthError.InvalidCredentials
-                "network_error" -> AuthError.NetworkError
-                else -> AuthError.UnknownError
-            }
-            Result.Error(error)
         }
     }
 
     override suspend fun signUp(
-        username: String,
         email: String,
-        password: String,
-        familyCode: String
-    ): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun registerDevice(
-        username: String,
-        email: String,
-        password: String,
-        deviceCode: String
-    ): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    @OptIn(SupabaseInternal::class)
-    override suspend fun insertNewUsername(username: String, familyCode: Long): Boolean {
-        return try {
-            val params = NewUserDto(
-                username = username,
-                familyCode = familyCode
-            )
-            val jsonParams = supabaseJson.encodeToJsonElement(params)
-            client.postgrest.rpc("insertNewUsername", jsonParams as JsonObject)
-            true
-        } catch (e: Error) {
-            false
+        password: String
+    ) {
+        return withContext(Dispatchers.IO) {
+            auth.signUpWith(Email) {
+                this.email = email
+                this.password = password
+            }
         }
     }
 
-    override suspend fun checkFamilyCode(familyCode: Int): Boolean {
+    override suspend fun registerDevice(
+        email: String,
+        password: String
+    ) {
         TODO("Not yet implemented")
     }
 
-    override suspend fun checkDeviceCode(deviceCode: Int): Boolean {
-        TODO("Not yet implemented")
+    override suspend fun insertNewUsername(username: String, familyCode: Long) {
+        return withContext(Dispatchers.IO) {
+            try {
+                postgrest.rpc(
+                    function = "insertNewUsername",
+                    parameters = buildJsonObject {
+                        put("new_username", username)
+                        put("new_family_id", familyCode)
+                    }
+                )
+            } catch (e: RestException) {
+                Result.Error(AuthError.DatabaseError)
+            } catch (e: HttpRequestException) {
+                Result.Error(AuthError.NetworkError)
+            }
+        }
+    }
+
+    override suspend fun checkFamilyCode(familyCode: Long): FamilyCodeDto {
+        return withContext(Dispatchers.IO) {
+            val data = postgrest.rpc(
+                function = "checkDeviceCode",
+                parameters = buildJsonObject {
+                    put("id", familyCode)
+                }
+            ).decodeSingle<FamilyCodeDto>()
+            data
+        }
+    }
+
+    override suspend fun checkDeviceCode(deviceCode: Long): DeviceCodeDto {
+        return withContext(Dispatchers.IO) {
+            postgrest.rpc(
+                function = "checkDeviceCode",
+                parameters = buildJsonObject {
+                    put("id", deviceCode)
+                }
+            ).decodeSingle<DeviceCodeDto>()
+        }
     }
 }

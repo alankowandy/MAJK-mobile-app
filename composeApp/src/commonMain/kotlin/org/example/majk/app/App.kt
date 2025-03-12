@@ -1,5 +1,6 @@
 package org.example.majk.app
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.navigation.compose.NavHost
@@ -44,7 +45,7 @@ fun App() {
                     MajkSignInScreenRoot(
                         viewModel = viewModel,
                         onUserLogged = {
-
+                            navController.navigate(Route.MajkGraph)
                         },
                         onBackClick = {
                             navController.navigate(Route.MajkStart)
@@ -68,6 +69,15 @@ fun App() {
                             navController.navigate(Route.MajkStart)
                         }
                     )
+                }
+            }
+            navigation<Route.MajkGraph>(
+                startDestination = Route.MajkHome
+            ) {
+                composable<Route.MajkHome> {
+                    Column {
+
+                    }
                 }
             }
         }

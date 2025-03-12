@@ -29,6 +29,7 @@ import majk.composeapp.generated.resources.sign_up
 import majk.composeapp.generated.resources.user
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
+import org.example.majk.majk.presentation.majk_login.components.MajkAlertDialog
 import org.example.majk.majk.presentation.majk_login.components.MajkButton
 import org.example.majk.majk.presentation.majk_login.components.MajkLogo
 import org.example.majk.majk.presentation.majk_login.components.MajkTextField
@@ -59,6 +60,15 @@ private fun MajkSignUpScreen(
     state: MajkSignUpState,
     onAction: (MajkSignUpAction) -> Unit
 ) {
+    if (state.errorMessage != null) {
+        MajkAlertDialog(
+            error = state.errorMessage,
+            dismissAction = {
+                onAction(MajkSignUpAction.OnErrorClear)
+            }
+        )
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()

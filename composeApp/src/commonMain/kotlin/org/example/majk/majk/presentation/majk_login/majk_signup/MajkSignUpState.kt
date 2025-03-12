@@ -8,5 +8,5 @@ data class MajkSignUpState(
     val usernameEntry: String = "",
     val familyCode: String = "",
     val isProcessing: Boolean = false,
-    val errorMessage: UiText? = null
+    val errorMessage: String? = null
 )

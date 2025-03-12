@@ -68,7 +68,7 @@ fun MajkTextField(
             ),
             modifier = Modifier
                 .padding(vertical = 5.dp)
-                .size(width = 310.dp, height = 50.dp)
+                .size(width = 310.dp, height = 60.dp)
         )
     }
 }

@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.example.majk.majk.data.dto.FamilyCodeDto
 import org.example.majk.majk.domain.AuthRepository
 
 class MajkSignUpViewModel(
@@ -37,20 +38,52 @@ class MajkSignUpViewModel(
                     it.copy(familyCode = action.familyCode)
                 }
             }
+            is MajkSignUpAction.OnErrorClear -> {
+                _state.update {
+                    it.copy(errorMessage = null)
+                }
+            }
             is MajkSignUpAction.OnSignUpClick -> majkSignUp()
             else -> Unit
         }
     }
 
     private fun majkSignUp() {
+        val email = _state.value.emailEntry
+        val password = _state.value.passwordEntry
         val username = _state.value.usernameEntry
         val familyCode = _state.value.familyCode.toLong()
+        var signUpComplete: Boolean = false
+        var familyCodeExists: Boolean = false
 
         viewModelScope.launch {
-            authRepository.insertNewUsername(
-                username = username,
-                familyCode = familyCode
-            )
+            runCatching {
+                authRepository.checkFamilyCode(familyCode)
+            }.onSuccess {
+                familyCodeExists = true
+            }.onFailure { error ->
+                _state.update {
+                    it.copy(errorMessage = error.message)
+                }
+            }
+
+            if (familyCodeExists) {
+                runCatching {
+                    authRepository.signUp(email, password)
+                }.onSuccess {
+                    signUpComplete = true
+                }.onFailure { error ->
+                    _state.update {
+                        it.copy(errorMessage = error.message)
+                    }
+                }
+            }
+
+            if (signUpComplete) {
+                runCatching {
+                    authRepository.insertNewUsername(username, familyCode)
+                }
+            }
         }
     }
 }
