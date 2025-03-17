@@ -2,7 +2,6 @@ package org.example.majk.majk.data.repository
 
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
-import io.github.jan.supabase.auth.exception.AuthRestException
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.exceptions.HttpRequestException
 import io.github.jan.supabase.exceptions.RestException
@@ -10,19 +9,16 @@ import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
-import kotlinx.io.IOException
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
-import org.example.majk.core.data.SessionState
 import org.example.majk.core.domain.AuthError
 import org.example.majk.core.domain.Result
 import org.example.majk.majk.data.dto.DeviceCodeDto
 import org.example.majk.majk.data.dto.FamilyCodeDto
-import org.example.majk.majk.data.dto.NewUserDto
 import org.example.majk.majk.domain.AuthRepository
 
 class AuthRepositoryImpl(
-    private val client: SupabaseClient
+    client: SupabaseClient
 ): AuthRepository {
     private val auth = client.auth
     private val postgrest = client.postgrest
@@ -52,7 +48,12 @@ class AuthRepositoryImpl(
         email: String,
         password: String
     ) {
-        TODO("Not yet implemented")
+        return withContext(Dispatchers.IO) {
+            auth.signUpWith(Email) {
+                this.email = email
+                this.password = password
+            }
+        }
     }
 
     override suspend fun insertNewUsername(username: String, familyCode: Long) {
@@ -73,15 +74,14 @@ class AuthRepositoryImpl(
         }
     }
 
-    override suspend fun checkFamilyCode(familyCode: Long): FamilyCodeDto {
+    override suspend fun checkFamilyCode(familyCode: Long): Boolean {
         return withContext(Dispatchers.IO) {
-            val data = postgrest.rpc(
-                function = "checkDeviceCode",
+            postgrest.rpc(
+                function = "checkFamilyCode",
                 parameters = buildJsonObject {
-                    put("id", familyCode)
+                    put("family_code", familyCode)
                 }
-            ).decodeSingle<FamilyCodeDto>()
-            data
+            ).decodeSingle<Boolean>()
         }
     }
 

@@ -17,11 +17,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -74,13 +78,15 @@ private fun MajkSignInScreen(
     onAction: (MajkSignInAction) -> Unit
 ) {
     val scrollState = rememberScrollState()
+    val emailFocusRequester = remember { FocusRequester() }
+    val passwordFocusRequester = remember { FocusRequester() }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(OffWhite)
-            .verticalScroll(scrollState)
-            .imePadding(),
+            .background(OffWhite),
+            //.imePadding()
+            //.verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (state.errorMessage != null) {
@@ -94,20 +100,20 @@ private fun MajkSignInScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Text(
-            text = stringResource(Res.string.sign_in),
-            style = TextStyle(
-                fontSize = 18.sp,
-                color = DarkTeal,
-                fontWeight = FontWeight.Bold
-            ),
-            textAlign = TextAlign.Center,
-            lineHeight = 24.sp,
-            modifier = Modifier
-                .padding(horizontal = 50.dp)
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
+//        Text(
+//            text = stringResource(Res.string.sign_in),
+//            style = TextStyle(
+//                fontSize = 18.sp,
+//                color = DarkTeal,
+//                fontWeight = FontWeight.Bold
+//            ),
+//            textAlign = TextAlign.Center,
+//            lineHeight = 24.sp,
+//            modifier = Modifier
+//                .padding(horizontal = 50.dp)
+//        )
+//
+//        Spacer(modifier = Modifier.weight(1f))
 
         MajkLogo(
             modifier = Modifier
@@ -119,7 +125,7 @@ private fun MajkSignInScreen(
         Text(
             text = "Podaj e-mail i hasło, aby się zalogować",
             style = TextStyle(
-                fontSize = 20.sp,
+                fontSize = 16.sp,
                 color = DarkTeal,
                 fontWeight = FontWeight.Bold
             ),
@@ -136,7 +142,9 @@ private fun MajkSignInScreen(
             onTextChange = { onAction(MajkSignInAction.OnEmailChange(it)) },
             placeholder = stringResource(Res.string.email),
             isPassword = false,
-            keyboardType = KeyboardType.Email
+            keyboardType = KeyboardType.Email,
+            focusRequester = emailFocusRequester,
+            onNextFocus = { passwordFocusRequester.requestFocus() }
         )
 
         MajkTextField(
@@ -144,7 +152,10 @@ private fun MajkSignInScreen(
             onTextChange = { onAction(MajkSignInAction.OnPasswordChange(it)) },
             placeholder = stringResource(Res.string.password),
             isPassword = true,
-            keyboardType = KeyboardType.Text
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Done,
+            focusRequester = passwordFocusRequester,
+            onNextFocus = {}
         )
 
         Spacer(modifier = Modifier.weight(1f))

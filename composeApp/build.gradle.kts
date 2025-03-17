@@ -45,6 +45,7 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
+            implementation(compose.material)
             implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
@@ -67,6 +68,9 @@ kotlin {
 
             // Serialization
             implementation(libs.kotlinx.serialization.json)
+
+            // Icons
+            implementation(compose.materialIconsExtended)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

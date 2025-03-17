@@ -8,6 +8,6 @@ interface AuthRepository {
     suspend fun signUp(email: String, password: String)
     suspend fun registerDevice(email: String, password: String)
     suspend fun insertNewUsername(username: String, familyCode: Long)
-    suspend fun checkFamilyCode(familyCode: Long): FamilyCodeDto
+    suspend fun checkFamilyCode(familyCode: Long): Boolean
     suspend fun checkDeviceCode(deviceCode: Long): DeviceCodeDto
 }

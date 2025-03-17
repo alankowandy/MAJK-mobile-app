@@ -10,10 +10,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -60,6 +63,11 @@ private fun MajkSignUpScreen(
     state: MajkSignUpState,
     onAction: (MajkSignUpAction) -> Unit
 ) {
+    val usernameFocusRequester = remember { FocusRequester() }
+    val emailFocusRequester = remember { FocusRequester() }
+    val passwordFocusRequester = remember { FocusRequester() }
+    val familyCodeFocusRequester = remember { FocusRequester() }
+
     if (state.errorMessage != null) {
         MajkAlertDialog(
             error = state.errorMessage,
@@ -77,20 +85,20 @@ private fun MajkSignUpScreen(
     ) {
         Spacer(modifier = Modifier.weight(1f))
 
-        Text(
-            text = stringResource(Res.string.sign_up),
-            style = TextStyle(
-                fontSize = 18.sp,
-                color = DarkTeal,
-                fontWeight = FontWeight.Bold
-            ),
-            textAlign = TextAlign.Center,
-            lineHeight = 24.sp,
-            modifier = Modifier
-                .padding(horizontal = 50.dp)
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
+//        Text(
+//            text = stringResource(Res.string.sign_up),
+//            style = TextStyle(
+//                fontSize = 18.sp,
+//                color = DarkTeal,
+//                fontWeight = FontWeight.Bold
+//            ),
+//            textAlign = TextAlign.Center,
+//            lineHeight = 24.sp,
+//            modifier = Modifier
+//                .padding(horizontal = 50.dp)
+//        )
+//
+//        Spacer(modifier = Modifier.weight(1f))
 
         MajkLogo(
             modifier = Modifier
@@ -102,7 +110,7 @@ private fun MajkSignUpScreen(
         Text(
             text = "Podaj nazwę użytkownika, e-mail, hasło i kod rodziny",
             style = TextStyle(
-                fontSize = 20.sp,
+                fontSize = 16.sp,
                 color = DarkTeal,
                 fontWeight = FontWeight.Bold
             ),
@@ -119,7 +127,9 @@ private fun MajkSignUpScreen(
             onTextChange = { onAction(MajkSignUpAction.OnUsernameChange(it)) },
             placeholder = stringResource(Res.string.user),
             isPassword = false,
-            keyboardType = KeyboardType.Text
+            keyboardType = KeyboardType.Text,
+            focusRequester = usernameFocusRequester,
+            onNextFocus = { emailFocusRequester.requestFocus() }
         )
 
         MajkTextField(
@@ -127,7 +137,9 @@ private fun MajkSignUpScreen(
             onTextChange = { onAction(MajkSignUpAction.OnEmailChange(it)) },
             placeholder = stringResource(Res.string.email),
             isPassword = false,
-            keyboardType = KeyboardType.Email
+            keyboardType = KeyboardType.Email,
+            focusRequester = emailFocusRequester,
+            onNextFocus = { passwordFocusRequester.requestFocus() }
         )
 
         MajkTextField(
@@ -135,7 +147,9 @@ private fun MajkSignUpScreen(
             onTextChange = { onAction(MajkSignUpAction.OnPasswordChange(it)) },
             placeholder = stringResource(Res.string.password),
             isPassword = true,
-            keyboardType = KeyboardType.Password
+            keyboardType = KeyboardType.Password,
+            focusRequester = passwordFocusRequester,
+            onNextFocus = { familyCodeFocusRequester.requestFocus() }
         )
 
         MajkTextField(
@@ -143,7 +157,10 @@ private fun MajkSignUpScreen(
             onTextChange = { onAction(MajkSignUpAction.OnFamilyCodeChange(it)) },
             placeholder = stringResource(Res.string.family_code),
             isPassword = false,
-            keyboardType = KeyboardType.Number
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done,
+            focusRequester = familyCodeFocusRequester,
+            onNextFocus = {}
         )
 
         Spacer(modifier = Modifier.weight(1f))

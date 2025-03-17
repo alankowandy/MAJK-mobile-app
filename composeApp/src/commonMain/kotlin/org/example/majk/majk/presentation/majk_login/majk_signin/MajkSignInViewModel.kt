@@ -1,6 +1,5 @@
 package org.example.majk.majk.presentation.majk_login.majk_signin
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -9,7 +8,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.example.majk.core.domain.Result
 import org.example.majk.majk.domain.AuthRepository
 
 class MajkSignInViewModel(
@@ -18,8 +16,6 @@ class MajkSignInViewModel(
 
     private val _state = MutableStateFlow(MajkSignInState())
     val state = _state.asStateFlow()
-
-    val interactionSource = MutableInteractionSource()
 
     private val _toastMessage = mutableStateOf("")
     val toastMessage: State<String> = _toastMessage

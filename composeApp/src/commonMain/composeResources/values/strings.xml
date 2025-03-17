@@ -9,6 +9,7 @@
     <string name="user">Nazwa uzytkownika</string>
     <string name="family_code">Kod rodziny</string>
     <string name="device_code">Kod urządzenia</string>
+    <string name="log_out">Wyloguj się</string>
 
     <!--Error strings-->
     <string name="error_disk_full">Oops, it seems like your disk is full.</string>

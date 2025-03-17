@@ -88,7 +88,7 @@ private fun MajkStartScreen(
             onAction = { onAction(MajkStartAction.OnSignInClick) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 20.dp, start = 50.dp, end = 50.dp, bottom = 5.dp)
+                .padding(horizontal = 50.dp)
         )
 
         MajkButton(
@@ -96,7 +96,7 @@ private fun MajkStartScreen(
             onAction = { onAction(MajkStartAction.OnSignUpClick) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 50.dp, end = 50.dp, bottom = 5.dp)
+                .padding(horizontal = 50.dp)
         )
 
         MajkButton(

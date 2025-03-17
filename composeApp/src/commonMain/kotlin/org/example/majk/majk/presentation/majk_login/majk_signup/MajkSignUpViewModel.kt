@@ -53,14 +53,16 @@ class MajkSignUpViewModel(
         val password = _state.value.passwordEntry
         val username = _state.value.usernameEntry
         val familyCode = _state.value.familyCode.toLong()
-        var signUpComplete: Boolean = false
-        var familyCodeExists: Boolean = false
+        var signUpComplete = false
+        var familyCodeExists = false
+        var result: Boolean
 
         viewModelScope.launch {
             runCatching {
-                authRepository.checkFamilyCode(familyCode)
-            }.onSuccess {
-                familyCodeExists = true
+                result = authRepository.checkFamilyCode(familyCode)
+                if (result) {
+                    familyCodeExists = true
+                }
             }.onFailure { error ->
                 _state.update {
                     it.copy(errorMessage = error.message)

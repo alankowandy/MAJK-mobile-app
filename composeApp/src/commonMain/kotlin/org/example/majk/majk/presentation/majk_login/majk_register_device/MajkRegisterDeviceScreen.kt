@@ -12,11 +12,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -64,6 +67,11 @@ private fun MajkRegisterDeviceScreen(
     state: MajkRegisterDeviceState,
     onAction: (MajkRegisterDeviceAction) -> Unit
 ) {
+    val usernameFocusRequester = remember { FocusRequester() }
+    val emailFocusRequester = remember { FocusRequester() }
+    val passwordFocusRequester = remember { FocusRequester() }
+    val deviceCodeFocusRequester = remember { FocusRequester() }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -72,24 +80,24 @@ private fun MajkRegisterDeviceScreen(
     ) {
         Spacer(modifier = Modifier.weight(1f))
 
-        Text(
-            text = stringResource(Res.string.register_device),
-            style = TextStyle(
-                fontSize = 18.sp,
-                color = DarkTeal,
-                fontWeight = FontWeight.Bold
-            ),
-            textAlign = TextAlign.Center,
-            lineHeight = 24.sp,
-            modifier = Modifier
-                .padding(horizontal = 50.dp)
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
+//        Text(
+//            text = stringResource(Res.string.register_device),
+//            style = TextStyle(
+//                fontSize = 18.sp,
+//                color = DarkTeal,
+//                fontWeight = FontWeight.Bold
+//            ),
+//            textAlign = TextAlign.Center,
+//            lineHeight = 24.sp,
+//            modifier = Modifier
+//                .padding(horizontal = 50.dp)
+//        )
+//
+//        Spacer(modifier = Modifier.weight(1f))
 
         MajkLogo(
             modifier = Modifier
-                .size(200.dp)
+                .size(150.dp)
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -97,7 +105,7 @@ private fun MajkRegisterDeviceScreen(
         Text(
             text = "Podaj nazwę użytkownika, e-mail, hasło i kod urządzenia",
             style = TextStyle(
-                fontSize = 20.sp,
+                fontSize = 16.sp,
                 color = DarkTeal,
                 fontWeight = FontWeight.Bold
             ),
@@ -120,15 +128,15 @@ private fun MajkRegisterDeviceScreen(
                 )
         ) {
             Text(
-                text = "Rejestrując urządzenie, stajesz się Administratorem rodziny",
+                text = "Rejestrując urządzenie, stajesz się\nAdministratorem rodziny",
                 style = TextStyle(
-                    fontSize = 16.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     color = OffWhite
                 ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .padding(vertical = 5.dp)
+                    .padding(vertical = 10.dp, horizontal = 10.dp)
             )
         }
 
@@ -139,7 +147,9 @@ private fun MajkRegisterDeviceScreen(
             onTextChange = { onAction(MajkRegisterDeviceAction.OnUsernameChange(it)) },
             placeholder = stringResource(Res.string.user),
             isPassword = false,
-            keyboardType = KeyboardType.Text
+            keyboardType = KeyboardType.Text,
+            focusRequester = usernameFocusRequester,
+            onNextFocus = { emailFocusRequester.requestFocus() }
         )
 
         MajkTextField(
@@ -147,7 +157,9 @@ private fun MajkRegisterDeviceScreen(
             onTextChange = { onAction(MajkRegisterDeviceAction.OnEmailChange(it)) },
             placeholder = stringResource(Res.string.email),
             isPassword = false,
-            keyboardType = KeyboardType.Email
+            keyboardType = KeyboardType.Email,
+            focusRequester = emailFocusRequester,
+            onNextFocus = { passwordFocusRequester.requestFocus() }
         )
 
         MajkTextField(
@@ -155,7 +167,9 @@ private fun MajkRegisterDeviceScreen(
             onTextChange = { onAction(MajkRegisterDeviceAction.OnPasswordChange(it)) },
             placeholder = stringResource(Res.string.password),
             isPassword = true,
-            keyboardType = KeyboardType.Password
+            keyboardType = KeyboardType.Password,
+            focusRequester = passwordFocusRequester,
+            onNextFocus = { deviceCodeFocusRequester.requestFocus() }
         )
 
         MajkTextField(
@@ -163,7 +177,10 @@ private fun MajkRegisterDeviceScreen(
             onTextChange = { onAction(MajkRegisterDeviceAction.OnDeviceCodeChange(it)) },
             placeholder = stringResource(Res.string.device_code),
             isPassword = false,
-            keyboardType = KeyboardType.Number
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done,
+            focusRequester = deviceCodeFocusRequester,
+            onNextFocus = {}
         )
 
         Spacer(modifier = Modifier.weight(1f))

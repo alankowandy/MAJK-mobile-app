@@ -1,4 +1,4 @@
-package org.example.majk.majk.presentation.majk_main
+package org.example.majk.majk.presentation.majk_main.majk_main_view
 
 //import org.example.majk.majk.data.getPlatform
 //
