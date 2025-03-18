@@ -1,4 +1,4 @@
-package org.example.majk.majk.presentation.majk_main.majk_main_view.components
+package org.example.majk.core.presentation
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -17,9 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.example.majk.core.presentation.Cyan
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.majk.data.DrawerData
+import org.example.majk.core.data.DrawerData
 
 @Composable
 fun DrawerItem(

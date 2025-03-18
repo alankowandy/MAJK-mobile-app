@@ -77,3 +77,23 @@ sealed class Route(
         title = "Autoryzacja"
     )
 }
+
+fun routeFromString(route: String): Route {
+    return when (route) {
+        Route.LogInGraph::class.qualifiedName -> Route.LogInGraph
+        Route.MajkGraph::class.qualifiedName -> Route.MajkGraph
+        Route.MajkStart::class.qualifiedName -> Route.MajkStart
+        Route.MajkSignIn::class.qualifiedName -> Route.MajkSignIn
+        Route.MajkSignUp::class.qualifiedName -> Route.MajkSignUp
+        Route.MajkRegisterDevice::class.qualifiedName -> Route.MajkRegisterDevice
+        Route.MajkHome::class.qualifiedName -> Route.MajkHome
+        Route.MajkMySchedule::class.qualifiedName -> Route.MajkMySchedule
+        Route.MajkHistory::class.qualifiedName -> Route.MajkHistory
+        Route.MajkMyMedkit::class.qualifiedName -> Route.MajkMyMedkit
+        Route.MajkContainersState::class.qualifiedName -> Route.MajkContainersState
+        Route.MajkManageFamily::class.qualifiedName -> Route.MajkManageFamily
+        Route.MajkAddProfile::class.qualifiedName -> Route.MajkAddProfile
+        Route.MajkAdminAuth::class.qualifiedName -> Route.MajkAdminAuth
+        else -> Route.MajkStart
+    }
+}

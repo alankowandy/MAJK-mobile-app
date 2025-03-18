@@ -3,14 +3,17 @@ package org.example.majk.majk.data.repository
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
+import io.github.jan.supabase.auth.status.SessionStatus
 import io.github.jan.supabase.exceptions.HttpRequestException
 import io.github.jan.supabase.exceptions.RestException
 import io.github.jan.supabase.postgrest.postgrest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
+import org.example.majk.core.data.SessionState
 import org.example.majk.core.domain.AuthError
 import org.example.majk.core.domain.Result
 import org.example.majk.majk.data.dto.DeviceCodeDto
@@ -76,12 +79,13 @@ class AuthRepositoryImpl(
 
     override suspend fun checkFamilyCode(familyCode: Long): Boolean {
         return withContext(Dispatchers.IO) {
-            postgrest.rpc(
+            val data = postgrest.rpc(
                 function = "checkFamilyCode",
                 parameters = buildJsonObject {
                     put("family_code", familyCode)
                 }
             ).decodeSingle<Boolean>()
+            data
         }
     }
 
@@ -93,6 +97,16 @@ class AuthRepositoryImpl(
                     put("id", deviceCode)
                 }
             ).decodeSingle<DeviceCodeDto>()
+        }
+    }
+
+    override fun sessionStatus(): Flow<SessionStatus> {
+        return auth.sessionStatus
+    }
+
+    override suspend fun signOut() {
+        return withContext(Dispatchers.IO) {
+            auth.signOut()
         }
     }
 }

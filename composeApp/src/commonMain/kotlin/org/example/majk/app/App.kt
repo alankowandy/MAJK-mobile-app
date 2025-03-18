@@ -2,15 +2,31 @@ package org.example.majk.app
 
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.layout.Column
+import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.Diversity3
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import org.example.majk.majk.presentation.majk_login.majk_login_main_view.MainLoginView
+import io.github.jan.supabase.auth.status.SessionStatus
+import kotlinx.coroutines.launch
+import org.example.majk.core.presentation.DarkTeal
+import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.SharedViewModel
 import org.example.majk.majk.presentation.majk_login.majk_register_device.MajkRegisterDeviceScreenRoot
 import org.example.majk.majk.presentation.majk_login.majk_register_device.MajkRegisterDeviceViewModel
 import org.example.majk.majk.presentation.majk_login.majk_signin.MajkSignInScreenRoot
@@ -18,236 +34,297 @@ import org.example.majk.majk.presentation.majk_login.majk_signin.MajkSignInViewM
 import org.example.majk.majk.presentation.majk_login.majk_signup.MajkSignUpScreenRoot
 import org.example.majk.majk.presentation.majk_login.majk_signup.MajkSignUpViewModel
 import org.example.majk.majk.presentation.majk_login.majk_start.MajkStartScreenRoot
-import org.example.majk.majk.presentation.majk_main.majk_main_view.MainView
+import org.example.majk.majk.presentation.majk_main.majk_add_profile.AddProfileScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_containers_state.ContainerStateScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_history.HistoryScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_home.HomeScreenRoot
+import org.example.majk.core.presentation.Drawer
+import org.example.majk.majk.presentation.majk_main.majk_manage_family.ManageFamilyScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_my_medkit.MyMedkitScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_my_schedule.MyScheduleScreenRoot
 import org.koin.compose.viewmodel.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App() {
     MaterialTheme {
         val navController = rememberNavController()
+        val scope = rememberCoroutineScope()
+        val scaffoldState = rememberScaffoldState()
+        val sharedViewModel = koinViewModel<SharedViewModel>()
+        val sessionStatus by sharedViewModel.sessionStatus.collectAsState()
+
         val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.parent?.route
-            ?: navBackStackEntry?.destination?.route
+        val currentRoute = navBackStackEntry?.destination?.route?.let {
+            routeFromString(it)
+        } ?: Route.LogInGraph
+        val currentGraph = navBackStackEntry?.destination?.parent?.route?.let {
+            routeFromString(it)
+        }
 
-        NavHost(
-            navController = navController,
-            startDestination = Route.LogInGraph
+        LaunchedEffect(sessionStatus) {
+            when (sessionStatus) {
+                is SessionStatus.Authenticated -> {
+                    navController.navigate(Route.MajkGraph) {
+                        launchSingleTop = true
+                        popUpTo(Route.LogInGraph) { inclusive = true }
+                    }
+                }
+                SessionStatus.Initializing -> {
+
+                }
+                is SessionStatus.NotAuthenticated, is SessionStatus.RefreshFailure -> {
+                    navController.navigate(Route.LogInGraph) {
+                        launchSingleTop = true
+                        popUpTo(Route.MajkGraph) { inclusive = true }
+                    }
+                }
+            }
+        }
+
+        Scaffold(
+            topBar = {
+                CenterAlignedTopAppBar(
+                    title = {
+                        if (currentRoute != Route.MajkStart) {
+                            Text(
+                                text = currentRoute.title,
+                                fontWeight = FontWeight.Bold
+                            )
+                        } else {
+                            Text(
+                                text = ""
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = OffWhite,
+                        navigationIconContentColor = DarkTeal,
+                        actionIconContentColor = DarkTeal,
+                        titleContentColor = DarkTeal
+                    ),
+                    navigationIcon = {
+                        if (currentRoute !is Route.MajkStart) {
+                            androidx.compose.material3.IconButton(
+                                onClick = {
+                                    if (currentGraph is Route.MajkGraph) {
+                                        println(currentGraph)
+                                        scope.launch { scaffoldState.drawerState.open() }
+                                    } else {
+                                        navController.navigateUp()
+                                    }
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = if (currentGraph is Route.MajkGraph) Icons.Default.Menu
+                                    else Icons.Default.ArrowBackIosNew,
+                                    contentDescription = "navigation icon"
+                                )
+                            }
+                        }
+                    },
+                    actions = {
+                        if (currentGraph is Route.MajkGraph) {
+                            IconButton(
+                                onClick = {
+
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Diversity3,
+                                    contentDescription = "family_details"
+                                )
+                            }
+                        }
+                    }
+                )
+            },
+            scaffoldState = scaffoldState,
+            drawerContent = {
+                Drawer(
+                    currentRoute = currentRoute,
+                    onSignOutClick = {
+                        scope.launch {
+                            sharedViewModel.signOut()
+                        }
+                    },
+                    onItemClick = { clickedRoute ->
+                        scope.launch {
+                            scaffoldState.drawerState.close()
+                        }
+                        navController.navigate(clickedRoute) {
+                            launchSingleTop = true
+                            restoreState = true
+                            popUpTo(Route.MajkHome) {
+                                inclusive = false
+                                saveState = true
+                            }
+                        }
+                    }
+                )
+            }
         ) {
-            navigation<Route.LogInGraph>(
-                startDestination = Route.MajkStart
+            NavHost(
+                navController = navController,
+                startDestination = Route.LogInGraph
             ) {
-                composable<Route.MajkStart>(
-                    exitTransition = { slideOutHorizontally() },
-                    popEnterTransition = { slideInHorizontally() }
+                navigation<Route.LogInGraph>(
+                    startDestination = Route.MajkStart
                 ) {
-                    MajkStartScreenRoot(
-                        onSignInClick = {
-                            navController.navigate(Route.MajkSignIn)
-                        },
-                        onSignUpClick = {
-                            navController.navigate(Route.MajkSignUp)
-                        },
-                        onRegisterDeviceClick = {
-                            navController.navigate(Route.MajkRegisterDevice)
-                        }
-                    )
+                    composable<Route.MajkStart>(
+                        exitTransition = { slideOutHorizontally() },
+                        popEnterTransition = { slideInHorizontally() },
+                        enterTransition = { slideInHorizontally { initialOffset ->
+                            initialOffset
+                        } }
+                    ) {
+                        MajkStartScreenRoot(
+                            onSignInClick = {
+                                navController.navigate(Route.MajkSignIn)
+                            },
+                            onSignUpClick = {
+                                navController.navigate(Route.MajkSignUp)
+                            },
+                            onRegisterDeviceClick = {
+                                navController.navigate(Route.MajkRegisterDevice)
+                            }
+                        )
+                    }
+                    composable<Route.MajkSignIn>(
+                        enterTransition = { slideInHorizontally { initialOffset ->
+                            initialOffset
+                        } },
+                        exitTransition = { slideOutHorizontally { initialOffset ->
+                            initialOffset
+                        } }
+                    ) {
+                        val viewModel = koinViewModel<MajkSignInViewModel>()
+                        MajkSignInScreenRoot(
+                            viewModel = viewModel,
+                            onBackClick = {
+                                navController.navigateUp()
+                            }
+                        )
+                    }
+                    composable<Route.MajkSignUp>(
+                        enterTransition = { slideInHorizontally { initialOffset ->
+                            initialOffset
+                        } },
+                        exitTransition = { slideOutHorizontally { initialOffset ->
+                            initialOffset
+                        } }
+                    ) {
+                        val viewModel = koinViewModel<MajkSignUpViewModel>()
+                        MajkSignUpScreenRoot(
+                            viewModel = viewModel,
+                            onBackClick = {
+                                navController.navigateUp()
+                            }
+                        )
+                    }
+                    composable<Route.MajkRegisterDevice>(
+                        enterTransition = { slideInHorizontally { initialOffset ->
+                            initialOffset
+                        } },
+                        exitTransition = { slideOutHorizontally { initialOffset ->
+                            initialOffset
+                        } }
+                    ) {
+                        val viewModel = koinViewModel<MajkRegisterDeviceViewModel>()
+                        MajkRegisterDeviceScreenRoot(
+                            viewModel = viewModel,
+                            onBackClick = {
+                                navController.navigateUp()
+                            }
+                        )
+                    }
                 }
-                composable<Route.MajkSignIn>(
-                    enterTransition = { slideInHorizontally { initialOffset ->
-                        initialOffset
-                    } },
-                    exitTransition = { slideOutHorizontally { initialOffset ->
-                        initialOffset
-                    } }
+                navigation<Route.MajkGraph>(
+                    startDestination = Route.MajkHome
                 ) {
-                    val viewModel = koinViewModel<MajkSignInViewModel>()
-                    MainLoginView(
-                        onBackClick = {
-                            navController.navigateUp()
-                        },
-                        scaffoldContent = {
-                            MajkSignInScreenRoot(
-                                viewModel = viewModel,
-                                onUserLogged = {
-                                    navController.navigate(Route.MajkGraph)
-                                },
-                                onBackClick = {
-                                    navController.navigateUp()
-                                }
-                            )
-                        },
-                        currentRoute = Route.MajkSignIn
-                    )
-                }
-                composable<Route.MajkSignUp>(
-                    enterTransition = { slideInHorizontally { initialOffset ->
-                        initialOffset
-                    } },
-                    exitTransition = { slideOutHorizontally { initialOffset ->
-                        initialOffset
-                    } }
-                ) {
-                    val viewModel = koinViewModel<MajkSignUpViewModel>()
-                    MainLoginView(
-                        onBackClick = {
-                            navController.navigateUp()
-                        },
-                        scaffoldContent = {
-                            MajkSignUpScreenRoot(
-                                viewModel = viewModel,
-                                onBackClick = {
-                                    navController.navigateUp()
-                                }
-                            )
-                        },
-                        currentRoute = Route.MajkSignUp
-                    )
-                }
-                composable<Route.MajkRegisterDevice>(
-                    enterTransition = { slideInHorizontally { initialOffset ->
-                        initialOffset
-                    } },
-                    exitTransition = { slideOutHorizontally { initialOffset ->
-                        initialOffset
-                    } }
-                ) {
-                    val viewModel = koinViewModel<MajkRegisterDeviceViewModel>()
-                    MainLoginView(
-                        onBackClick = {
-                            navController.navigateUp()
-                        },
-                        scaffoldContent = {
-                            MajkRegisterDeviceScreenRoot(
-                                viewModel = viewModel,
-                                onBackClick = {
-                                    navController.navigateUp()
-                                }
-                            )
-                        },
-                        currentRoute = Route.MajkRegisterDevice
-                    )
+                    composable<Route.MajkHome>(
+                        exitTransition = { slideOutHorizontally() },
+                        popEnterTransition = { slideInHorizontally() },
+                        enterTransition = { slideInHorizontally { initialOffset ->
+                            initialOffset
+                        } }
+                    ) {
+                        HomeScreenRoot()
+                    }
+                    composable<Route.MajkMySchedule>(
+                        enterTransition = { slideInHorizontally { initialOffset ->
+                            initialOffset
+                        } },
+                        exitTransition = { slideOutHorizontally { initialOffset ->
+                            initialOffset
+                        } }
+                    ) {
+                        MyScheduleScreenRoot()
+                    }
+                    composable<Route.MajkHistory>(
+                        enterTransition = { slideInHorizontally { initialOffset ->
+                            initialOffset
+                        } },
+                        exitTransition = { slideOutHorizontally { initialOffset ->
+                            initialOffset
+                        } }
+                    ) {
+                        HistoryScreenRoot()
+                    }
+                    composable<Route.MajkMyMedkit>(
+                        enterTransition = { slideInHorizontally { initialOffset ->
+                            initialOffset
+                        } },
+                        exitTransition = { slideOutHorizontally { initialOffset ->
+                            initialOffset
+                        } }
+                    ) {
+                        MyMedkitScreenRoot()
+                    }
+                    composable<Route.MajkContainersState>(
+                        enterTransition = { slideInHorizontally { initialOffset ->
+                            initialOffset
+                        } },
+                        exitTransition = { slideOutHorizontally { initialOffset ->
+                            initialOffset
+                        } }
+                    ) {
+                        ContainerStateScreenRoot()
+                    }
+                    composable<Route.MajkManageFamily>(
+                        enterTransition = { slideInHorizontally { initialOffset ->
+                            initialOffset
+                        } },
+                        exitTransition = { slideOutHorizontally { initialOffset ->
+                            initialOffset
+                        } }
+                    ) {
+                        ManageFamilyScreenRoot()
+                    }
+                    composable<Route.MajkAddProfile>(
+                        enterTransition = { slideInHorizontally { initialOffset ->
+                            initialOffset
+                        } },
+                        exitTransition = { slideOutHorizontally { initialOffset ->
+                            initialOffset
+                        } }
+                    ) {
+                        AddProfileScreenRoot()
+                    }
+                    composable<Route.MajkAdminAuth>(
+                        enterTransition = { slideInHorizontally { initialOffset ->
+                            initialOffset
+                        } },
+                        exitTransition = { slideOutHorizontally { initialOffset ->
+                            initialOffset
+                        } }
+                    ) {
+                        AdminAuthScreenRoot()
+                    }
                 }
             }
-            navigation<Route.MajkGraph>(
-                startDestination = Route.MajkHome
-            ) {
-                composable<Route.MajkHome>(
-                    exitTransition = { slideOutHorizontally() },
-                    popEnterTransition = { slideInHorizontally() }
-                ) {
-                    MainView(
-                        currentRoute = Route.MajkHome,
-                        scaffoldContent = {
 
-                        }
-                    )
-                }
-                composable<Route.MajkMySchedule>(
-                    enterTransition = { slideInHorizontally { initialOffset ->
-                        initialOffset
-                    } },
-                    exitTransition = { slideOutHorizontally { initialOffset ->
-                        initialOffset
-                    } }
-                ) {
-                    MainView(
-                        currentRoute = Route.MajkMySchedule,
-                        scaffoldContent = {
-
-                        }
-                    )
-                }
-                composable<Route.MajkHistory>(
-                    enterTransition = { slideInHorizontally { initialOffset ->
-                        initialOffset
-                    } },
-                    exitTransition = { slideOutHorizontally { initialOffset ->
-                        initialOffset
-                    } }
-                ) {
-                    MainView(
-                        currentRoute = Route.MajkHistory,
-                        scaffoldContent = {
-
-                        }
-                    )
-                }
-                composable<Route.MajkMyMedkit>(
-                    enterTransition = { slideInHorizontally { initialOffset ->
-                        initialOffset
-                    } },
-                    exitTransition = { slideOutHorizontally { initialOffset ->
-                        initialOffset
-                    } }
-                ) {
-                    MainView(
-                        currentRoute = Route.MajkMyMedkit,
-                        scaffoldContent = {
-
-                        }
-                    )
-                }
-                composable<Route.MajkContainersState>(
-                    enterTransition = { slideInHorizontally { initialOffset ->
-                        initialOffset
-                    } },
-                    exitTransition = { slideOutHorizontally { initialOffset ->
-                        initialOffset
-                    } }
-                ) {
-                    MainView(
-                        currentRoute = Route.MajkContainersState,
-                        scaffoldContent = {
-
-                        }
-                    )
-                }
-                composable<Route.MajkManageFamily>(
-                    enterTransition = { slideInHorizontally { initialOffset ->
-                        initialOffset
-                    } },
-                    exitTransition = { slideOutHorizontally { initialOffset ->
-                        initialOffset
-                    } }
-                ) {
-                    MainView(
-                        currentRoute = Route.MajkManageFamily,
-                        scaffoldContent = {
-
-                        }
-                    )
-                }
-                composable<Route.MajkAddProfile>(
-                    enterTransition = { slideInHorizontally { initialOffset ->
-                        initialOffset
-                    } },
-                    exitTransition = { slideOutHorizontally { initialOffset ->
-                        initialOffset
-                    } }
-                ) {
-                    MainView(
-                        currentRoute = Route.MajkAddProfile,
-                        scaffoldContent = {
-
-                        }
-                    )
-                }
-                composable<Route.MajkAdminAuth>(
-                    enterTransition = { slideInHorizontally { initialOffset ->
-                        initialOffset
-                    } },
-                    exitTransition = { slideOutHorizontally { initialOffset ->
-                        initialOffset
-                    } }
-                ) {
-                    MainView(
-                        currentRoute = Route.MajkAdminAuth,
-                        scaffoldContent = {
-
-                        }
-                    )
-                }
-            }
         }
     }
 }

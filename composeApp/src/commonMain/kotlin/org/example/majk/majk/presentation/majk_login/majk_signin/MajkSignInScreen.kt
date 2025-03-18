@@ -50,16 +50,9 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun MajkSignInScreenRoot(
     viewModel: MajkSignInViewModel = koinViewModel(),
-    onUserLogged: () -> Unit,
     onBackClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-
-    LaunchedEffect(state.isLogged) {
-        if (state.isLogged) {
-            onUserLogged()
-        }
-    }
 
     MajkSignInScreen(
         state = state,
@@ -99,21 +92,6 @@ private fun MajkSignInScreen(
         }
 
         Spacer(modifier = Modifier.weight(1f))
-
-//        Text(
-//            text = stringResource(Res.string.sign_in),
-//            style = TextStyle(
-//                fontSize = 18.sp,
-//                color = DarkTeal,
-//                fontWeight = FontWeight.Bold
-//            ),
-//            textAlign = TextAlign.Center,
-//            lineHeight = 24.sp,
-//            modifier = Modifier
-//                .padding(horizontal = 50.dp)
-//        )
-//
-//        Spacer(modifier = Modifier.weight(1f))
 
         MajkLogo(
             modifier = Modifier
