@@ -39,7 +39,7 @@ import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthScr
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.ContainerStateScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_history.HistoryScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_home.HomeScreenRoot
-import org.example.majk.core.presentation.Drawer
+import org.example.majk.core.presentation.components.Drawer
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.ManageFamilyScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.MyMedkitScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.MyScheduleScreenRoot
@@ -71,9 +71,7 @@ fun App() {
                         popUpTo(Route.LogInGraph) { inclusive = true }
                     }
                 }
-                SessionStatus.Initializing -> {
-
-                }
+                SessionStatus.Initializing -> {  }
                 is SessionStatus.NotAuthenticated, is SessionStatus.RefreshFailure -> {
                     navController.navigate(Route.LogInGraph) {
                         launchSingleTop = true

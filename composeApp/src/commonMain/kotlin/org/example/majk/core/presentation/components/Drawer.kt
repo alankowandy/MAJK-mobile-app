@@ -1,4 +1,4 @@
-package org.example.majk.core.presentation
+package org.example.majk.core.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -20,6 +20,8 @@ import majk.composeapp.generated.resources.Res
 import majk.composeapp.generated.resources.log_out
 import org.example.majk.app.Route
 import org.example.majk.core.data.itemsInDrawer
+import org.example.majk.core.presentation.DarkTeal
+import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.presentation.majk_login.components.MajkButton
 import org.example.majk.majk.presentation.majk_login.components.MajkLogo
 import org.jetbrains.compose.resources.stringResource

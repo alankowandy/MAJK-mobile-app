@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.majk.core.presentation.DarkTeal
@@ -20,7 +21,7 @@ fun MajkButton(
 ) {
     Button(
         onClick = { onAction() },
-        shape = RoundedCornerShape(100),
+        shape = RoundedCornerShape(16.dp),
         colors = ButtonDefaults.buttonColors(
             contentColor = OffWhite,
             containerColor = DarkTeal
@@ -29,6 +30,7 @@ fun MajkButton(
     ) {
         Text(
             text = text,
+            textAlign = TextAlign.Center,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold
         )
