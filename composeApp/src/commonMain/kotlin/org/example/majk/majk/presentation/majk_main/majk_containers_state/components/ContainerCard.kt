@@ -20,8 +20,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.majk.core.presentation.DarkTeal
@@ -30,7 +33,7 @@ import org.example.majk.core.presentation.LightGray
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.core.presentation.WarningRed
 import org.example.majk.core.presentation.WatchYellow
-import org.example.majk.majk.presentation.majk_login.components.MajkButton
+import org.example.majk.majk.presentation.components.MajkButton
 
 @Composable
 fun ContainerCard(
@@ -105,7 +108,7 @@ fun ContainerCard(
                 ) {
                     Text(
                         text = "Stan pojemnika",
-                        fontSize = 16.sp,
+                        fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = DarkTeal,
                         modifier = Modifier
@@ -114,7 +117,7 @@ fun ContainerCard(
 
                     Text(
                         text = state,
-                        fontSize = 14.sp,
+                        fontSize = 16.sp,
                         color = OffWhite,
                         modifier = Modifier
                             .padding(8.dp)
@@ -132,7 +135,7 @@ fun ContainerCard(
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
-                            .size(120.dp)
+                            .size(145.dp)
                             .padding(8.dp)
                             .background(
                                 color = OffWhite,
@@ -145,7 +148,24 @@ fun ContainerCard(
                             )
                     ) {
                         Text(
-                            text = "$numberOfPills\nszt.",
+                            text = buildAnnotatedString {
+                                withStyle(
+                                    style = SpanStyle(
+                                        fontSize = 32.sp,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                ) {
+                                    append("$numberOfPills")
+                                }
+                                append("\n")
+                                withStyle(
+                                    style = SpanStyle(
+                                        fontSize = 18.sp
+                                    )
+                                ) {
+                                    append("\t\tszt.")
+                                }
+                            },
                             fontSize = 18.sp,
                             color = DarkTeal
                         )
@@ -161,33 +181,37 @@ fun ContainerCard(
                     MajkButton(
                         text = "uzupełnij pojemnik",
                         onAction = { onFillContainerClick() },
+                        boldText = false,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(50.dp)
+                            .height(55.dp)
                     )
 
                     MajkButton(
                         text = "opróżnij pojemnik",
-                        onAction = { onFillContainerClick() },
+                        onAction = { onEmptyContainerClick() },
+                        boldText = false,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(50.dp)
+                            .height(55.dp)
                     )
 
                     MajkButton(
                         text = "zastąp lekarstwo",
-                        onAction = { onFillContainerClick() },
+                        onAction = { onReplaceMedicamentClick() },
+                        boldText = false,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(50.dp)
+                            .height(55.dp)
                     )
 
                     MajkButton(
                         text = "informacje",
-                        onAction = { onFillContainerClick() },
+                        onAction = { onInformationClick() },
+                        boldText = false,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(50.dp)
+                            .height(55.dp)
                     )
                 }
             }

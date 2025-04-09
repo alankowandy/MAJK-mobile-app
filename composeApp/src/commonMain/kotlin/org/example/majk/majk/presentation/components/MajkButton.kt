@@ -1,4 +1,4 @@
-package org.example.majk.majk.presentation.majk_login.components
+package org.example.majk.majk.presentation.components
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -17,6 +17,7 @@ import org.example.majk.core.presentation.OffWhite
 fun MajkButton(
     text: String,
     onAction: () -> Unit,
+    boldText: Boolean,
     modifier: Modifier
 ) {
     Button(
@@ -32,7 +33,7 @@ fun MajkButton(
             text = text,
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = if (boldText) FontWeight.Bold else FontWeight.Normal
         )
     }
 }

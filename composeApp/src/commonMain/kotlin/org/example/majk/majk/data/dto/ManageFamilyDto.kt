@@ -4,7 +4,10 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class FamilyCodeDto(
-    @SerialName("family_exists")
-    val familyCodeExists: Boolean? = false
+data class ManageFamilyDto(
+    @SerialName("id")
+    val userId: Long,
+
+    @SerialName("name")
+    val username: String
 )

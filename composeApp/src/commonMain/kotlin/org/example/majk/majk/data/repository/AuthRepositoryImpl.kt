@@ -77,14 +77,14 @@ class AuthRepositoryImpl(
         }
     }
 
-    override suspend fun checkFamilyCode(familyCode: Long): Boolean {
+    override suspend fun checkFamilyCode(familyCode: Long): FamilyCodeDto {
         return withContext(Dispatchers.IO) {
             val data = postgrest.rpc(
-                function = "checkFamilyCode",
+                function = "check_family_exists",
                 parameters = buildJsonObject {
                     put("family_code", familyCode)
                 }
-            ).decodeSingle<Boolean>()
+            ).decodeSingle<FamilyCodeDto>()
             data
         }
     }

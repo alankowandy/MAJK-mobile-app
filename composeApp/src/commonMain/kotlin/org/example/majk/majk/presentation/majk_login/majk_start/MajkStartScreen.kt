@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
@@ -24,8 +23,8 @@ import majk.composeapp.generated.resources.sign_in
 import majk.composeapp.generated.resources.sign_up
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
-import org.example.majk.majk.presentation.majk_login.components.MajkButton
-import org.example.majk.majk.presentation.majk_login.components.MajkLogo
+import org.example.majk.majk.presentation.components.MajkButton
+import org.example.majk.majk.presentation.components.MajkLogo
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -86,6 +85,7 @@ private fun MajkStartScreen(
         MajkButton(
             text = stringResource(Res.string.sign_in),
             onAction = { onAction(MajkStartAction.OnSignInClick) },
+            boldText = true,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 50.dp)
@@ -94,6 +94,7 @@ private fun MajkStartScreen(
         MajkButton(
             text = stringResource(Res.string.sign_up),
             onAction = { onAction(MajkStartAction.OnSignUpClick) },
+            boldText = true,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 50.dp)
@@ -102,6 +103,7 @@ private fun MajkStartScreen(
         MajkButton(
             text = stringResource(Res.string.register_device),
             onAction = { onAction(MajkStartAction.OnRegisterDeviceClick) },
+            boldText = true,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 50.dp, end = 50.dp, bottom = 20.dp)

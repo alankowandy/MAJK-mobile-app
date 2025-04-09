@@ -27,16 +27,14 @@ import majk.composeapp.generated.resources.back
 import majk.composeapp.generated.resources.email
 import majk.composeapp.generated.resources.family_code
 import majk.composeapp.generated.resources.password
-import majk.composeapp.generated.resources.sign_in
 import majk.composeapp.generated.resources.sign_up
 import majk.composeapp.generated.resources.user
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.presentation.majk_login.components.MajkAlertDialog
-import org.example.majk.majk.presentation.majk_login.components.MajkButton
-import org.example.majk.majk.presentation.majk_login.components.MajkLogo
-import org.example.majk.majk.presentation.majk_login.components.MajkTextField
-import org.example.majk.majk.presentation.majk_login.majk_signin.MajkSignInAction
+import org.example.majk.majk.presentation.components.MajkButton
+import org.example.majk.majk.presentation.components.MajkLogo
+import org.example.majk.majk.presentation.components.MajkTextField
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -168,6 +166,7 @@ private fun MajkSignUpScreen(
         MajkButton(
             text = stringResource(Res.string.sign_up),
             onAction = { onAction(MajkSignUpAction.OnSignUpClick) },
+            boldText = true,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 50.dp)
@@ -176,6 +175,7 @@ private fun MajkSignUpScreen(
         MajkButton(
             text = stringResource(Res.string.back),
             onAction = { onAction(MajkSignUpAction.OnBackClick) },
+            boldText = true,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 50.dp, end = 50.dp, bottom = 20.dp)

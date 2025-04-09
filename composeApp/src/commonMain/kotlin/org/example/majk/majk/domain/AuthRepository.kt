@@ -13,7 +13,7 @@ interface AuthRepository {
     suspend fun registerDevice(email: String, password: String)
     suspend fun signOut()
     suspend fun insertNewUsername(username: String, familyCode: Long)
-    suspend fun checkFamilyCode(familyCode: Long): Boolean
+    suspend fun checkFamilyCode(familyCode: Long): FamilyCodeDto
     suspend fun checkDeviceCode(deviceCode: Long): DeviceCodeDto
     fun sessionStatus(): Flow<SessionStatus>
 

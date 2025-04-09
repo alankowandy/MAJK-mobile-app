@@ -40,7 +40,10 @@ import org.example.majk.majk.presentation.majk_main.majk_containers_state.Contai
 import org.example.majk.majk.presentation.majk_main.majk_history.HistoryScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_home.HomeScreenRoot
 import org.example.majk.core.presentation.components.Drawer
+import org.example.majk.majk.presentation.majk_main.majk_add_profile.AddProfileViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.ManageFamilyScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_manage_family.ManageFamilyState
+import org.example.majk.majk.presentation.majk_main.majk_manage_family.ManageFamilyViewModel
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.MyMedkitScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.MyScheduleScreenRoot
 import org.koin.compose.viewmodel.koinViewModel
@@ -144,6 +147,7 @@ fun App() {
                     currentRoute = currentRoute,
                     onSignOutClick = {
                         scope.launch {
+                            scaffoldState.drawerState.close()
                             sharedViewModel.signOut()
                         }
                     },
@@ -298,6 +302,8 @@ fun App() {
                             initialOffset
                         } }
                     ) {
+                        val viewModel = koinViewModel<ManageFamilyViewModel>()
+
                         ManageFamilyScreenRoot()
                     }
                     composable<Route.MajkAddProfile>(
@@ -308,7 +314,11 @@ fun App() {
                             initialOffset
                         } }
                     ) {
-                        AddProfileScreenRoot()
+                        val viewModel = koinViewModel<AddProfileViewModel>()
+
+                        AddProfileScreenRoot(
+                            viewModel = viewModel
+                        )
                     }
                     composable<Route.MajkAdminAuth>(
                         enterTransition = { slideInHorizontally { initialOffset ->

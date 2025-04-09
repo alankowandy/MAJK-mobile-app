@@ -5,24 +5,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.BasicAlertDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -30,7 +22,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import majk.composeapp.generated.resources.Res
 import majk.composeapp.generated.resources.back
@@ -40,10 +31,9 @@ import majk.composeapp.generated.resources.sign_in
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.presentation.majk_login.components.MajkAlertDialog
-import org.example.majk.majk.presentation.majk_login.components.MajkButton
-import org.example.majk.majk.presentation.majk_login.components.MajkLogo
-import org.example.majk.majk.presentation.majk_login.components.MajkTextField
-import org.jetbrains.compose.resources.StringResource
+import org.example.majk.majk.presentation.components.MajkButton
+import org.example.majk.majk.presentation.components.MajkLogo
+import org.example.majk.majk.presentation.components.MajkTextField
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -141,6 +131,7 @@ private fun MajkSignInScreen(
         MajkButton(
             text = stringResource(Res.string.sign_in),
             onAction = { onAction(MajkSignInAction.OnSignInClick) },
+            boldText = true,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 50.dp)
@@ -149,6 +140,7 @@ private fun MajkSignInScreen(
         MajkButton(
             text = stringResource(Res.string.back),
             onAction = { onAction(MajkSignInAction.OnBackClick) },
+            boldText = true,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 50.dp, end = 50.dp, bottom = 20.dp)
