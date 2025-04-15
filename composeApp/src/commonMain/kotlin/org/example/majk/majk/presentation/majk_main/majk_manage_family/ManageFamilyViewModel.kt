@@ -20,6 +20,10 @@ class ManageFamilyViewModel(
     private val _users = MutableStateFlow<List<ManageFamily>>(listOf())
     val users = _users.asStateFlow()
 
+    init {
+        collectUsers(1)
+    }
+
     fun onAction(action: ManageFamilyAction) {
         when (action) {
             is ManageFamilyAction.OnScheduleClick -> {
@@ -60,6 +64,9 @@ class ManageFamilyViewModel(
             runCatching {
                 val result = appRepository.collectUsers(familyId)
                 _users.emit(result.map { it.asDomainModel() })
+            }.onFailure { error ->
+
+                println(error)
             }
         }
     }

@@ -304,7 +304,9 @@ fun App() {
                     ) {
                         val viewModel = koinViewModel<ManageFamilyViewModel>()
 
-                        ManageFamilyScreenRoot()
+                        ManageFamilyScreenRoot(
+                            viewModel = viewModel
+                        )
                     }
                     composable<Route.MajkAddProfile>(
                         enterTransition = { slideInHorizontally { initialOffset ->

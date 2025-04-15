@@ -23,9 +23,9 @@ class AppRepositoryImpl(
     override suspend fun collectUsers(familyId: Long): List<ManageFamilyDto> {
         return withContext(Dispatchers.IO) {
             val data = postgrest.rpc(
-                function = "",
+                function = "collect_profiles",
                 parameters = buildJsonObject {
-                    put("familyId", familyId)
+                    put("family_id", familyId)
                 }
             ).decodeList<ManageFamilyDto>()
             data
