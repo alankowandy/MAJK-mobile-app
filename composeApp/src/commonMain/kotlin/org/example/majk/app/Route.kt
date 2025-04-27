@@ -63,7 +63,22 @@ sealed class Route(
     )
 
     @Serializable
+    data class MajkContainerSettings(val id: String): Route(
+        title = "Ustawienia pojemnika"
+    )
+
+    @Serializable
+    data object ManageFamilyGraph: Route(
+        title = "Zarządzaj rodziną"
+    )
+
+    @Serializable
     data object MajkManageFamily: Route(
+        title = "Zarządzaj rodziną"
+    )
+
+    @Serializable
+    data class MajkManageFamilySettings(val userId: Long): Route(
         title = "Zarządzaj rodziną"
     )
 
@@ -94,6 +109,7 @@ fun routeFromString(route: String): Route {
         Route.MajkManageFamily::class.qualifiedName -> Route.MajkManageFamily
         Route.MajkAddProfile::class.qualifiedName -> Route.MajkAddProfile
         Route.MajkAdminAuth::class.qualifiedName -> Route.MajkAdminAuth
+        Route.ManageFamilyGraph::class.qualifiedName -> Route.ManageFamilyGraph
         else -> Route.MajkStart
     }
 }

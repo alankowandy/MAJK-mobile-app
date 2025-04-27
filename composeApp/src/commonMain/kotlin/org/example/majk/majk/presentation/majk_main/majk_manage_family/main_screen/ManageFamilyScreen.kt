@@ -1,0 +1,64 @@
+package org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen
+
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.example.majk.core.presentation.DarkTeal
+import org.example.majk.majk.domain.ManageFamily
+import org.example.majk.majk.presentation.majk_main.majk_manage_family.components.UserList
+import org.koin.compose.viewmodel.koinViewModel
+
+@Composable
+fun ManageFamilyScreenRoot(
+    viewModel: ManageFamilyViewModel = koinViewModel(),
+    onScheduleClick: (Long) -> Unit,
+    onSettingsClick: (Long) -> Unit
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val users by viewModel.users.collectAsStateWithLifecycle()
+
+    ManageFamilyScreen(
+        users = users,
+        state = state,
+        onAction = { action ->
+            when (action) {
+                is ManageFamilyAction.OnScheduleClick -> onScheduleClick(action.userId)
+                is ManageFamilyAction.OnSettingsClick -> onSettingsClick(action.userId)
+            }
+        }
+    )
+}
+
+@Composable
+fun ManageFamilyScreen(
+    users: List<ManageFamily>,
+    state: ManageFamilyState,
+    onAction: (ManageFamilyAction) -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        if (state.isLoading) {
+            CircularProgressIndicator(
+                color = DarkTeal
+            )
+        } else {
+            UserList(
+                users = users,
+                onScheduleClick = {
+                    onAction(ManageFamilyAction.OnScheduleClick(it))
+                },
+                onSettingsClick = {
+                    onAction(ManageFamilyAction.OnSettingsClick(it))
+                }
+            )
+        }
+    }
+}

@@ -15,6 +15,11 @@ class MajkSignInViewModel(
     private val _state = MutableStateFlow(MajkSignInState())
     val state = _state.asStateFlow()
 
+    private val _emailRegex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
+    private val _emailError = _state.value.emailEntry.isBlank()
+            || !_emailRegex.matches(_state.value.emailEntry)
+    private val _passwordError = _state.value.passwordEntry.isBlank()
+
     fun onAction(action: MajkSignInAction) {
         when(action) {
             is MajkSignInAction.OnEmailChange -> {
@@ -32,7 +37,31 @@ class MajkSignInViewModel(
                     it.copy(errorMessage = null)
                 }
             }
-            is MajkSignInAction.OnSignInClick -> majkSignIn()
+            is MajkSignInAction.OnSignInClick -> {
+                if (_emailError) {
+                    _state.update {
+                        it.copy(
+                            emailError = true
+                        )
+                    }
+                }
+                if (_passwordError) {
+                    _state.update {
+                        it.copy(
+                            passwordError = true
+                        )
+                    }
+                }
+                if (_state.value.emailError || _state.value.passwordError) {
+                    _state.update {
+                        it.copy(
+                            errorMessage = "Nieprawidłowy format danych"
+                        )
+                    }
+                } else {
+                    majkSignIn()
+                }
+            }
             else -> Unit
         }
     }

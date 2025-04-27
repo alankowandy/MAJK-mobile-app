@@ -38,9 +38,7 @@ fun UserTile(
     username: String,
     userColor: Color,
     onScheduleClick: () -> Unit,
-    onPermissionsClick: () -> Unit,
-    onEditClick: () -> Unit,
-    onDeleteClick: () -> Unit
+    onSettingsClick: () -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -90,9 +88,7 @@ fun UserTile(
             Spacer(modifier = Modifier.weight(1f))
 
             IconButton(
-                onClick = {
-
-                },
+                onClick = { onScheduleClick() },
                 modifier = Modifier
             ) {
                 Icon(
@@ -103,9 +99,7 @@ fun UserTile(
             }
 
             IconButton(
-                onClick = {
-
-                },
+                onClick = { onSettingsClick() },
                 modifier = Modifier
             ) {
                 Icon(
@@ -115,89 +109,5 @@ fun UserTile(
                 )
             }
         }
-//        Column(
-//            modifier = Modifier
-//                .padding(16.dp)
-//        ) {
-//            Text(
-//                text = username,
-//                fontWeight = FontWeight.Bold,
-//                fontSize = 24.sp,
-//                textAlign = TextAlign.Center,
-//                color = DarkTeal,
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(bottom = 16.dp)
-//            )
-//
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(top = 12.dp)
-//            ) {
-//                Column(
-//                    horizontalAlignment = Alignment.CenterHorizontally,
-//                    verticalArrangement = Arrangement.Center
-//                ) {
-//                    Box(
-//                        contentAlignment = Alignment.Center,
-//                        modifier = Modifier
-//                            .padding(top = 40.dp)
-//                            .size(120.dp)
-//                            .background(
-//                                color = DarkTeal,
-//                                shape = RoundedCornerShape(100)
-//                            )
-//                    ) {
-//                        Icon(
-//                            imageVector = Icons.Outlined.Person,
-//                            contentDescription = "user",
-//                            modifier = Modifier
-//                                .size(100.dp),
-//                            tint = userColor
-//                        )
-//                    }
-//                }
-//
-//                Column(
-//                    verticalArrangement = Arrangement.spacedBy(8.dp),
-//                    horizontalAlignment = Alignment.CenterHorizontally,
-//                    modifier = Modifier
-//                        .padding(start = 20.dp, end = 8.dp)
-//                ) {
-//                    MajkButton(
-//                        text = "harmonogram",
-//                        onAction = { onScheduleClick() },
-//                        boldText = false,
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                    )
-//
-//                    MajkButton(
-//                        text = "uprawnienia",
-//                        onAction = { onPermissionsClick() },
-//                        boldText = false,
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                    )
-//
-//                    MajkButton(
-//                        text = "edytuj",
-//                        onAction = { onEditClick() },
-//                        boldText = false,
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                    )
-//
-//                    MajkButton(
-//                        text = "usuń",
-//                        onAction = { onDeleteClick() },
-//                        boldText = false,
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                    )
-//                }
-//            }
-//        }
     }
 }

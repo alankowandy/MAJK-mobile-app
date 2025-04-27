@@ -71,6 +71,9 @@ kotlin {
 
             // Icons
             implementation(compose.materialIconsExtended)
+
+            // Message Bars
+            //implementation("com.stevdza-san:messagebarkmp:1.0.7")
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

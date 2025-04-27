@@ -15,6 +15,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -34,7 +35,8 @@ fun MajkTextField(
     keyboardType: KeyboardType,
     imeAction: ImeAction = ImeAction.Next,
     focusRequester: FocusRequester,
-    onNextFocus: () -> Unit
+    onNextFocus: () -> Unit,
+    isError: Boolean = false
 ) {
     CompositionLocalProvider(
         LocalTextSelectionColors provides TextSelectionColors(
@@ -72,12 +74,17 @@ fun MajkTextField(
                 fontSize = 14.sp,
                 lineHeight = 12.sp
             ),
+            isError = isError,
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedContainerColor = LightGray,
                 focusedContainerColor = LightGray,
                 focusedTextColor = DarkTeal,
                 unfocusedTextColor = DarkTeal,
-                focusedBorderColor = DarkTeal,
+                focusedBorderColor = if (isError) Color.Red else DarkTeal,
+                unfocusedBorderColor = if (isError) Color.Red else DarkTeal,
+                errorPlaceholderColor = DarkTeal,
+                errorTextColor = DarkTeal,
+                errorContainerColor = LightGray,
                 cursorColor = DarkTeal
             ),
             modifier = Modifier

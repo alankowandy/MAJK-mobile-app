@@ -8,5 +8,9 @@ data class MajkRegisterDeviceState(
     val usernameEntry: String = "",
     val deviceCode: String = "",
     val isProcessing: Boolean = false,
-    val errorMessage: UiText? = null
+    val errorMessage: String? = null,
+    val usernameError: Boolean = false,
+    val emailError: Boolean = false,
+    val passwordError: Boolean = false,
+    val deviceCodeError: Boolean = false
 )

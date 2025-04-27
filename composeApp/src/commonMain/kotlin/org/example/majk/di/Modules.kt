@@ -9,7 +9,8 @@ import org.example.majk.majk.presentation.majk_login.majk_register_device.MajkRe
 import org.example.majk.majk.presentation.majk_login.majk_signin.MajkSignInViewModel
 import org.example.majk.majk.presentation.majk_login.majk_signup.MajkSignUpViewModel
 import org.example.majk.majk.presentation.majk_main.majk_add_profile.AddProfileViewModel
-import org.example.majk.majk.presentation.majk_main.majk_manage_family.ManageFamilyViewModel
+import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyViewModel
+import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsViewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
@@ -25,4 +26,5 @@ val sharedModule = module {
     viewModelOf(::MajkRegisterDeviceViewModel)
     viewModelOf(::ManageFamilyViewModel)
     viewModelOf(::AddProfileViewModel)
+    viewModelOf(::SettingsViewModel)
 }

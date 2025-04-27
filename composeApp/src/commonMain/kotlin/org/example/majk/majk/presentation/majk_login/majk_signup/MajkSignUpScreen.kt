@@ -1,6 +1,7 @@
 package org.example.majk.majk.presentation.majk_login.majk_signup
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -61,6 +65,8 @@ private fun MajkSignUpScreen(
     state: MajkSignUpState,
     onAction: (MajkSignUpAction) -> Unit
 ) {
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
     val usernameFocusRequester = remember { FocusRequester() }
     val emailFocusRequester = remember { FocusRequester() }
     val passwordFocusRequester = remember { FocusRequester() }
@@ -78,7 +84,13 @@ private fun MajkSignUpScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(OffWhite),
+            .background(OffWhite)
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
+                }
+            },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.weight(1f))
@@ -127,7 +139,8 @@ private fun MajkSignUpScreen(
             isPassword = false,
             keyboardType = KeyboardType.Text,
             focusRequester = usernameFocusRequester,
-            onNextFocus = { emailFocusRequester.requestFocus() }
+            onNextFocus = { emailFocusRequester.requestFocus() },
+            isError = state.usernameError
         )
 
         MajkTextField(
@@ -137,7 +150,8 @@ private fun MajkSignUpScreen(
             isPassword = false,
             keyboardType = KeyboardType.Email,
             focusRequester = emailFocusRequester,
-            onNextFocus = { passwordFocusRequester.requestFocus() }
+            onNextFocus = { passwordFocusRequester.requestFocus() },
+            isError = state.emailError
         )
 
         MajkTextField(
@@ -147,7 +161,8 @@ private fun MajkSignUpScreen(
             isPassword = true,
             keyboardType = KeyboardType.Password,
             focusRequester = passwordFocusRequester,
-            onNextFocus = { familyCodeFocusRequester.requestFocus() }
+            onNextFocus = { familyCodeFocusRequester.requestFocus() },
+            isError = state.passwordError
         )
 
         MajkTextField(
@@ -158,7 +173,11 @@ private fun MajkSignUpScreen(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Done,
             focusRequester = familyCodeFocusRequester,
-            onNextFocus = {}
+            onNextFocus = {
+                focusManager.clearFocus()
+                keyboardController?.hide()
+            },
+            isError = state.familyCodeError
         )
 
         Spacer(modifier = Modifier.weight(1f))

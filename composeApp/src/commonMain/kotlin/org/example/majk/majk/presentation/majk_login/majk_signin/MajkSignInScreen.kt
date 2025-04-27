@@ -1,6 +1,7 @@
 package org.example.majk.majk.presentation.majk_login.majk_signin
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -60,16 +64,21 @@ private fun MajkSignInScreen(
     state: MajkSignInState,
     onAction: (MajkSignInAction) -> Unit
 ) {
-    val scrollState = rememberScrollState()
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
     val emailFocusRequester = remember { FocusRequester() }
     val passwordFocusRequester = remember { FocusRequester() }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(OffWhite),
-            //.imePadding()
-            //.verticalScroll(scrollState),
+            .background(OffWhite)
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
+                }
+            },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (state.errorMessage != null) {
@@ -112,7 +121,8 @@ private fun MajkSignInScreen(
             isPassword = false,
             keyboardType = KeyboardType.Email,
             focusRequester = emailFocusRequester,
-            onNextFocus = { passwordFocusRequester.requestFocus() }
+            onNextFocus = { passwordFocusRequester.requestFocus() },
+            isError = state.emailError
         )
 
         MajkTextField(
@@ -123,7 +133,11 @@ private fun MajkSignInScreen(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Done,
             focusRequester = passwordFocusRequester,
-            onNextFocus = {}
+            onNextFocus = {
+                focusManager.clearFocus()
+                keyboardController?.hide()
+            },
+            isError = state.passwordError
         )
 
         Spacer(modifier = Modifier.weight(1f))

@@ -8,6 +8,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import org.example.majk.majk.data.dto.ManageFamilyDto
+import org.example.majk.majk.data.dto.UserSettingsDto
 import org.example.majk.majk.domain.AppRepository
 
 class AppRepositoryImpl(
@@ -28,6 +29,18 @@ class AppRepositoryImpl(
                     put("family_id", familyId)
                 }
             ).decodeList<ManageFamilyDto>()
+            data
+        }
+    }
+
+    override suspend fun fetchUserSettings(userId: Long): List<UserSettingsDto> {
+        return withContext(Dispatchers.IO) {
+            val data = postgrest.rpc(
+                function = "get_user_settings",
+                parameters = buildJsonObject {
+                    put("user_id", userId)
+                }
+            ).decodeList<UserSettingsDto>()
             data
         }
     }

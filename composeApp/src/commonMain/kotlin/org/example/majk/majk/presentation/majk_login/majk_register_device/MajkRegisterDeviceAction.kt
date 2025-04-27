@@ -5,6 +5,7 @@ interface MajkRegisterDeviceAction {
     data class OnPasswordChange(val password: String): MajkRegisterDeviceAction
     data class OnUsernameChange(val username: String): MajkRegisterDeviceAction
     data class OnDeviceCodeChange(val deviceCode: String): MajkRegisterDeviceAction
+    data object OnErrorClear: MajkRegisterDeviceAction
     data object OnRegisterClick: MajkRegisterDeviceAction
     data object OnBackClick: MajkRegisterDeviceAction
 }

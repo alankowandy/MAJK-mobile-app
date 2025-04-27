@@ -41,9 +41,10 @@ import org.example.majk.majk.presentation.majk_main.majk_history.HistoryScreenRo
 import org.example.majk.majk.presentation.majk_main.majk_home.HomeScreenRoot
 import org.example.majk.core.presentation.components.Drawer
 import org.example.majk.majk.presentation.majk_main.majk_add_profile.AddProfileViewModel
-import org.example.majk.majk.presentation.majk_main.majk_manage_family.ManageFamilyScreenRoot
-import org.example.majk.majk.presentation.majk_main.majk_manage_family.ManageFamilyState
-import org.example.majk.majk.presentation.majk_main.majk_manage_family.ManageFamilyViewModel
+import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyViewModel
+import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsViewModel
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.MyMedkitScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.MyScheduleScreenRoot
 import org.koin.compose.viewmodel.koinViewModel
@@ -109,17 +110,45 @@ fun App() {
                         if (currentRoute !is Route.MajkStart) {
                             androidx.compose.material3.IconButton(
                                 onClick = {
-                                    if (currentGraph is Route.MajkGraph) {
-                                        println(currentGraph)
-                                        scope.launch { scaffoldState.drawerState.open() }
-                                    } else {
-                                        navController.navigateUp()
+                                    when (currentGraph) {
+                                        is Route.MajkGraph -> {
+                                            scope.launch { scaffoldState.drawerState.open() }
+                                        }
+                                        is Route.ManageFamilyGraph -> {
+                                            println(currentRoute)
+                                            if (currentRoute == Route.MajkManageFamily) {
+                                                scope.launch { scaffoldState.drawerState.open() }
+                                            } else {
+                                                navController.navigateUp()
+                                            }
+                                        }
+                                        else -> {
+                                            navController.navigateUp()
+                                        }
                                     }
+//                                    if (currentGraph is Route.MajkGraph) {
+//                                        scope.launch { scaffoldState.drawerState.open() }
+//                                    } else {
+//                                        navController.navigateUp()
+//                                    }
                                 }
                             ) {
                                 Icon(
-                                    imageVector = if (currentGraph is Route.MajkGraph) Icons.Default.Menu
-                                    else Icons.Default.ArrowBackIosNew,
+                                    imageVector = when (currentGraph) {
+                                        is Route.MajkGraph -> Icons.Default.Menu
+                                        is Route.ManageFamilyGraph -> {
+                                            if (currentRoute == Route.MajkManageFamily) {
+                                                Icons.Default.Menu
+                                            } else {
+                                                Icons.Default.ArrowBackIosNew
+                                            }
+                                        }
+                                        else -> {
+                                            Icons.Default.ArrowBackIosNew
+                                        }
+                                    },
+//                                    if (currentGraph is Route.MajkGraph) Icons.Default.Menu
+//                                    else Icons.Default.ArrowBackIosNew,
                                     contentDescription = "navigation icon"
                                 )
                             }
@@ -193,6 +222,7 @@ fun App() {
                             }
                         )
                     }
+
                     composable<Route.MajkSignIn>(
                         enterTransition = { slideInHorizontally { initialOffset ->
                             initialOffset
@@ -202,6 +232,7 @@ fun App() {
                         } }
                     ) {
                         val viewModel = koinViewModel<MajkSignInViewModel>()
+
                         MajkSignInScreenRoot(
                             viewModel = viewModel,
                             onBackClick = {
@@ -209,6 +240,7 @@ fun App() {
                             }
                         )
                     }
+
                     composable<Route.MajkSignUp>(
                         enterTransition = { slideInHorizontally { initialOffset ->
                             initialOffset
@@ -218,6 +250,7 @@ fun App() {
                         } }
                     ) {
                         val viewModel = koinViewModel<MajkSignUpViewModel>()
+
                         MajkSignUpScreenRoot(
                             viewModel = viewModel,
                             onBackClick = {
@@ -225,6 +258,7 @@ fun App() {
                             }
                         )
                     }
+
                     composable<Route.MajkRegisterDevice>(
                         enterTransition = { slideInHorizontally { initialOffset ->
                             initialOffset
@@ -234,6 +268,7 @@ fun App() {
                         } }
                     ) {
                         val viewModel = koinViewModel<MajkRegisterDeviceViewModel>()
+
                         MajkRegisterDeviceScreenRoot(
                             viewModel = viewModel,
                             onBackClick = {
@@ -242,6 +277,7 @@ fun App() {
                         )
                     }
                 }
+
                 navigation<Route.MajkGraph>(
                     startDestination = Route.MajkHome
                 ) {
@@ -254,6 +290,7 @@ fun App() {
                     ) {
                         HomeScreenRoot()
                     }
+
                     composable<Route.MajkMySchedule>(
                         enterTransition = { slideInHorizontally { initialOffset ->
                             initialOffset
@@ -264,6 +301,7 @@ fun App() {
                     ) {
                         MyScheduleScreenRoot()
                     }
+
                     composable<Route.MajkHistory>(
                         enterTransition = { slideInHorizontally { initialOffset ->
                             initialOffset
@@ -274,6 +312,7 @@ fun App() {
                     ) {
                         HistoryScreenRoot()
                     }
+
                     composable<Route.MajkMyMedkit>(
                         enterTransition = { slideInHorizontally { initialOffset ->
                             initialOffset
@@ -284,6 +323,7 @@ fun App() {
                     ) {
                         MyMedkitScreenRoot()
                     }
+
                     composable<Route.MajkContainersState>(
                         enterTransition = { slideInHorizontally { initialOffset ->
                             initialOffset
@@ -294,20 +334,53 @@ fun App() {
                     ) {
                         ContainerStateScreenRoot()
                     }
-                    composable<Route.MajkManageFamily>(
-                        enterTransition = { slideInHorizontally { initialOffset ->
-                            initialOffset
-                        } },
-                        exitTransition = { slideOutHorizontally { initialOffset ->
-                            initialOffset
-                        } }
-                    ) {
-                        val viewModel = koinViewModel<ManageFamilyViewModel>()
 
-                        ManageFamilyScreenRoot(
-                            viewModel = viewModel
-                        )
+                    navigation<Route.ManageFamilyGraph>(
+                        startDestination = Route.MajkManageFamily
+                    ) {
+                        composable<Route.MajkManageFamily>(
+                            enterTransition = { slideInHorizontally { initialOffset ->
+                                initialOffset
+                            } },
+                            exitTransition = { slideOutHorizontally { initialOffset ->
+                                initialOffset
+                            } }
+                        ) {
+                            val viewModel = koinViewModel<ManageFamilyViewModel>()
+
+                            ManageFamilyScreenRoot(
+                                viewModel = viewModel,
+                                onScheduleClick = { user ->
+                                    navController.navigate(
+                                        // do zmiany nawigacja
+                                        Route.MajkManageFamilySettings(user)
+                                    )
+                                },
+                                onSettingsClick = { user ->
+                                    navController.navigate(
+                                        Route.MajkManageFamilySettings(user)
+                                    )
+                                }
+                            )
+                        }
+
+                        composable<Route.MajkManageFamilySettings>(
+                            enterTransition = { slideInHorizontally { initialOffset ->
+                                initialOffset
+                            } },
+                            exitTransition = { slideOutHorizontally { initialOffset ->
+                                initialOffset
+                            } }
+                        ) {
+                            val viewModel = koinViewModel<SettingsViewModel>()
+
+                            SettingsScreenRoot(
+                                viewModel = viewModel,
+                                onBackClick = { navController.navigateUp() }
+                            )
+                        }
                     }
+
                     composable<Route.MajkAddProfile>(
                         enterTransition = { slideInHorizontally { initialOffset ->
                             initialOffset
@@ -322,6 +395,7 @@ fun App() {
                             viewModel = viewModel
                         )
                     }
+
                     composable<Route.MajkAdminAuth>(
                         enterTransition = { slideInHorizontally { initialOffset ->
                             initialOffset

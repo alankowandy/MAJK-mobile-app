@@ -1,5 +1,6 @@
 package org.example.majk.majk.presentation.majk_login.majk_signup
 
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +16,13 @@ class MajkSignUpViewModel(
 
     private val _state = MutableStateFlow(MajkSignUpState())
     val state = _state.asStateFlow()
+
+    private val _emailRegex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
+    private val _emailError = _state.value.emailEntry.isBlank()
+            || !_emailRegex.matches(_state.value.emailEntry)
+    private val _usernameError = _state.value.usernameEntry.isBlank()
+    private val _passwordError = _state.value.passwordEntry.isBlank()
+    private val _familyCodeError = _state.value.familyCode.isBlank()
 
     fun onAction(action: MajkSignUpAction) {
         when(action) {
@@ -43,7 +51,46 @@ class MajkSignUpViewModel(
                     it.copy(errorMessage = null)
                 }
             }
-            is MajkSignUpAction.OnSignUpClick -> majkSignUp()
+            is MajkSignUpAction.OnSignUpClick -> {
+                if (_usernameError) {
+                    _state.update {
+                        it.copy(
+                            usernameError = true
+                        )
+                    }
+                }
+                if (_emailError) {
+                    _state.update {
+                        it.copy(
+                            emailError = true
+                        )
+                    }
+                }
+                if (_passwordError) {
+                    _state.update {
+                        it.copy(
+                            passwordError = true
+                        )
+                    }
+                }
+                if (_familyCodeError) {
+                    _state.update {
+                        it.copy(
+                            familyCodeError = true
+                        )
+                    }
+                }
+                if (_state.value.usernameError || _state.value.emailError
+                    || _state.value.passwordError || _state.value.familyCodeError) {
+                    _state.update {
+                        it.copy(
+                            errorMessage = "Nieprawidłowy format danych"
+                        )
+                    }
+                } else {
+                    majkSignUp()
+                }
+            }
             else -> Unit
         }
     }
@@ -53,14 +100,13 @@ class MajkSignUpViewModel(
         val password = _state.value.passwordEntry
         val username = _state.value.usernameEntry
         val familyCode = _state.value.familyCode.toLong()
-        var signUpComplete = false
+        var isSignUpReady = false
         var familyCodeExists = false
 
         viewModelScope.launch {
             runCatching {
                 val result = authRepository.checkFamilyCode(familyCode)
                 familyCodeExists = result.familyCodeExists ?: false
-                println(familyCodeExists)
                 _state.update {
                     it.copy(familyCodeExists = result.familyCodeExists)
                 }
@@ -72,9 +118,9 @@ class MajkSignUpViewModel(
 
             if (familyCodeExists) {
                 runCatching {
-                    authRepository.signUp(email, password)
+                    authRepository.insertNewUsername(username, familyCode)
                 }.onSuccess {
-                    signUpComplete = true
+                    isSignUpReady = true
                 }.onFailure { error ->
                     _state.update {
                         it.copy(errorMessage = error.message)
@@ -82,9 +128,13 @@ class MajkSignUpViewModel(
                 }
             }
 
-            if (signUpComplete) {
+            if (isSignUpReady) {
                 runCatching {
-                    authRepository.insertNewUsername(username, familyCode)
+                    authRepository.signUp(email, password)
+                }.onFailure { error ->
+                    _state.update {
+                        it.copy(errorMessage = error.message)
+                    }
                 }
             }
         }

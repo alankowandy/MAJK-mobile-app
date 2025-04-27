@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -16,6 +18,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.example.majk.core.presentation.DarkTeal
+import org.example.majk.core.presentation.LightGray
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,14 +37,16 @@ fun MajkAlertDialog(
                 .wrapContentHeight()
                 .wrapContentWidth(),
             shape = MaterialTheme.shapes.large,
-            tonalElevation = AlertDialogDefaults.TonalElevation
+            tonalElevation = AlertDialogDefaults.TonalElevation,
+            color = LightGray
         ) {
             Column(
                 modifier = Modifier
                     .padding(24.dp)
             ) {
                 Text(
-                    text = error
+                    text = error,
+                    color = DarkTeal
                 )
                 Spacer(Modifier.weight(1f))
                 TextButton(
@@ -48,7 +54,7 @@ fun MajkAlertDialog(
                     modifier = Modifier
                         .align(Alignment.End)
                 ) {
-                    Text(text = "Confirm")
+                    Text(text = "Ok")
                 }
             }
         }

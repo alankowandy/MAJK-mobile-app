@@ -1,6 +1,7 @@
 package org.example.majk.majk.presentation.majk_login.majk_register_device
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +17,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -37,6 +41,8 @@ import org.example.majk.core.presentation.WarningRed
 import org.example.majk.majk.presentation.components.MajkButton
 import org.example.majk.majk.presentation.components.MajkLogo
 import org.example.majk.majk.presentation.components.MajkTextField
+import org.example.majk.majk.presentation.majk_login.components.MajkAlertDialog
+import org.example.majk.majk.presentation.majk_login.majk_signin.MajkSignInAction
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -63,6 +69,8 @@ private fun MajkRegisterDeviceScreen(
     state: MajkRegisterDeviceState,
     onAction: (MajkRegisterDeviceAction) -> Unit
 ) {
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
     val usernameFocusRequester = remember { FocusRequester() }
     val emailFocusRequester = remember { FocusRequester() }
     val passwordFocusRequester = remember { FocusRequester() }
@@ -71,25 +79,25 @@ private fun MajkRegisterDeviceScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(OffWhite),
+            .background(OffWhite)
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
+                }
+            },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.weight(1f))
+        if (state.errorMessage != null) {
+            MajkAlertDialog(
+                error = state.errorMessage,
+                dismissAction = {
+                    onAction(MajkRegisterDeviceAction.OnErrorClear)
+                }
+            )
+        }
 
-//        Text(
-//            text = stringResource(Res.string.register_device),
-//            style = TextStyle(
-//                fontSize = 18.sp,
-//                color = DarkTeal,
-//                fontWeight = FontWeight.Bold
-//            ),
-//            textAlign = TextAlign.Center,
-//            lineHeight = 24.sp,
-//            modifier = Modifier
-//                .padding(horizontal = 50.dp)
-//        )
-//
-//        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.weight(1f))
 
         MajkLogo(
             modifier = Modifier
@@ -145,7 +153,8 @@ private fun MajkRegisterDeviceScreen(
             isPassword = false,
             keyboardType = KeyboardType.Text,
             focusRequester = usernameFocusRequester,
-            onNextFocus = { emailFocusRequester.requestFocus() }
+            onNextFocus = { emailFocusRequester.requestFocus() },
+            isError = state.usernameError
         )
 
         MajkTextField(
@@ -155,7 +164,8 @@ private fun MajkRegisterDeviceScreen(
             isPassword = false,
             keyboardType = KeyboardType.Email,
             focusRequester = emailFocusRequester,
-            onNextFocus = { passwordFocusRequester.requestFocus() }
+            onNextFocus = { passwordFocusRequester.requestFocus() },
+            isError = state.emailError
         )
 
         MajkTextField(
@@ -165,7 +175,8 @@ private fun MajkRegisterDeviceScreen(
             isPassword = true,
             keyboardType = KeyboardType.Password,
             focusRequester = passwordFocusRequester,
-            onNextFocus = { deviceCodeFocusRequester.requestFocus() }
+            onNextFocus = { deviceCodeFocusRequester.requestFocus() },
+            isError = state.passwordError
         )
 
         MajkTextField(
@@ -176,7 +187,11 @@ private fun MajkRegisterDeviceScreen(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Done,
             focusRequester = deviceCodeFocusRequester,
-            onNextFocus = {}
+            onNextFocus = {
+                focusManager.clearFocus()
+                keyboardController?.hide()
+            },
+            isError = state.deviceCodeError
         )
 
         Spacer(modifier = Modifier.weight(1f))
