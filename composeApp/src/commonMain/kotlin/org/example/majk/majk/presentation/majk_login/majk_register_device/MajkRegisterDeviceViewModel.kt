@@ -1,11 +1,12 @@
 package org.example.majk.majk.presentation.majk_login.majk_register_device
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.example.majk.majk.domain.AuthRepository
-import org.example.majk.majk.presentation.majk_login.majk_signin.MajkSignInAction
 
 class MajkRegisterDeviceViewModel(
     private val authRepository: AuthRepository
@@ -93,6 +94,15 @@ class MajkRegisterDeviceViewModel(
     }
 
     private fun majkRegister() {
+        val email = _state.value.emailEntry
+        val username = _state.value.usernameEntry
+        val password = _state.value.passwordEntry
+        val deviceCode = _state.value.deviceCode
+        var isDeviceCodeCorrect = false
 
+
+        viewModelScope.launch {
+
+        }
     }
 }

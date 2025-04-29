@@ -22,12 +22,14 @@ import org.example.majk.app.Route
 import org.example.majk.core.data.itemsInDrawer
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.SharedState
 import org.example.majk.majk.presentation.components.MajkButton
 import org.example.majk.majk.presentation.components.MajkLogo
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun Drawer(
+    userInfo: SharedState?,
     currentRoute: Route,
     onSignOutClick: () -> Unit,
     onItemClick: (Route) -> Unit
@@ -45,7 +47,7 @@ fun Drawer(
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = "Cześć, Użytkownik 1!",
+            text = "Cześć, ${userInfo?.username}!",
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             fontSize = 24.sp,

@@ -58,6 +58,7 @@ fun App() {
         val scaffoldState = rememberScaffoldState()
         val sharedViewModel = koinViewModel<SharedViewModel>()
         val sessionStatus by sharedViewModel.sessionStatus.collectAsState()
+        val userInfo by sharedViewModel.userInfo.collectAsState()
 
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route?.let {
@@ -173,6 +174,7 @@ fun App() {
             scaffoldState = scaffoldState,
             drawerContent = {
                 Drawer(
+                    userInfo = userInfo,
                     currentRoute = currentRoute,
                     onSignOutClick = {
                         scope.launch {

@@ -4,11 +4,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.flow.map
 import org.example.majk.core.presentation.DarkTeal
+import org.example.majk.core.presentation.SharedViewModel
 import org.example.majk.majk.domain.ManageFamily
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.components.UserList
 import org.koin.compose.viewmodel.koinViewModel

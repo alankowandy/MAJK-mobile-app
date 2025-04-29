@@ -19,6 +19,7 @@ import org.koin.dsl.module
 val sharedModule = module {
     singleOf(::AuthRepositoryImpl).bind<AuthRepository>()
     singleOf(::AppRepositoryImpl).bind<AppRepository>()
+    singleOf(::SharedViewModel).bind<SharedViewModel>()
 
     viewModelOf(::SharedViewModel)
     viewModelOf(::MajkSignInViewModel)
