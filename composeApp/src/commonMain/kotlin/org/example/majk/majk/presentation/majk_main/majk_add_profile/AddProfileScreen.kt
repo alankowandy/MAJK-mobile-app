@@ -1,6 +1,7 @@
 package org.example.majk.majk.presentation.majk_main.majk_add_profile
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,10 +13,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -32,6 +37,7 @@ import org.example.majk.core.presentation.WarningRed
 import org.example.majk.majk.presentation.components.MajkButton
 import org.example.majk.majk.presentation.components.MajkLogo
 import org.example.majk.majk.presentation.components.MajkTextField
+import org.example.majk.majk.presentation.majk_login.components.MajkAlertDialog
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -43,9 +49,11 @@ fun AddProfileScreenRoot(
 
     AddProfileScreen(
         state = state,
-        onAction = {action ->
+        onAction = { action ->
             when (action) {
                 is AddProfileAction.OnUsernameChange -> viewModel.onAction(action)
+                is AddProfileAction.OnAddProfileClick -> viewModel.onAction(action)
+                is AddProfileAction.OnDialogClear -> viewModel.onAction(action)
             }
         }
     )
@@ -56,6 +64,8 @@ fun AddProfileScreen(
     state: AddProfileState,
     onAction: (AddProfileAction) -> Unit
 ) {
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
     val usernameFocusRequester = remember { FocusRequester() }
 
     Column(
@@ -64,7 +74,30 @@ fun AddProfileScreen(
             .fillMaxSize()
             .background(color = OffWhite)
             .padding(top = 20.dp)
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    focusManager.clearFocus()
+                    keyboardController?.hide()
+                }
+            }
     ) {
+        if (state.errorMessage != null) {
+            MajkAlertDialog(
+                error = state.errorMessage,
+                dismissAction = {
+                    onAction(AddProfileAction.OnDialogClear)
+                }
+            )
+        }
+
+        if (state.successMessage != null) {
+            MajkAlertDialog(
+                error = state.successMessage,
+                dismissAction = {
+                    onAction(AddProfileAction.OnDialogClear)
+                }
+            )
+        }
 
         MajkLogo(
             modifier = Modifier
@@ -94,7 +127,11 @@ fun AddProfileScreen(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Done,
             focusRequester = usernameFocusRequester,
-            onNextFocus = {}
+            onNextFocus = {
+                focusManager.clearFocus()
+                keyboardController?.hide()
+            },
+            isError = state.usernameError
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -124,7 +161,7 @@ fun AddProfileScreen(
 
         MajkButton(
             text = "Dodaj profil",
-            onAction = {},
+            onAction = { onAction(AddProfileAction.OnAddProfileClick) },
             boldText = true,
             modifier = Modifier
                 .fillMaxWidth()

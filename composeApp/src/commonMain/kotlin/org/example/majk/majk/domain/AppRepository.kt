@@ -7,4 +7,5 @@ interface AppRepository {
     suspend fun collectContainerState()
     suspend fun collectUsers(familyId: Long): List<ManageFamilyDto>
     suspend fun fetchUserSettings(userId: Long): List<UserSettingsDto>
+    suspend fun insertLimitedProfile(username: String, uuid: String, familyId: Long)
 }

@@ -29,12 +29,14 @@ class SharedViewModel(
     private val _userInfo = MutableStateFlow<SharedState?>(null)
     val userInfo = _userInfo.asStateFlow()
 
+    private var id: String = ""
+
     init {
         viewModelScope.launch {
             sessionStatus
                 .filterIsInstance<SessionStatus.Authenticated>()
                 .collect { auth ->
-                    val id = auth.session.user?.id ?: return@collect
+                    id = auth.session.user?.id ?: return@collect
                     fetchUserInfo(id)
                 }
         }
@@ -62,6 +64,7 @@ class SharedViewModel(
 
     private fun SharedStateDto.asDomainModel(): SharedState {
         return SharedState(
+            uuid = id,
             accountId = this.accountId,
             username = this.username,
             familyId = this.familyId,

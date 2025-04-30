@@ -2,6 +2,7 @@ package org.example.majk.majk.data.repository
 
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.postgrest
+import io.github.jan.supabase.postgrest.rpc
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
@@ -42,6 +43,19 @@ class AppRepositoryImpl(
                 }
             ).decodeList<UserSettingsDto>()
             data
+        }
+    }
+
+    override suspend fun insertLimitedProfile(username: String, uuid: String, familyId: Long) {
+        return withContext(Dispatchers.IO) {
+            postgrest.rpc(
+                function = "insert_limited_profile",
+                parameters = buildJsonObject {
+                    put("name", username)
+                    put("account_id", uuid)
+                    put("family_id", familyId)
+                }
+            )
         }
     }
 }
