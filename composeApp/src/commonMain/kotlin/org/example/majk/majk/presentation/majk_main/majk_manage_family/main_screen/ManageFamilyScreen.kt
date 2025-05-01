@@ -1,5 +1,6 @@
 package org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
@@ -12,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.map
 import org.example.majk.core.presentation.DarkTeal
+import org.example.majk.core.presentation.OffWhite
 import org.example.majk.core.presentation.SharedViewModel
 import org.example.majk.majk.domain.ManageFamily
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.components.UserList
@@ -46,7 +48,8 @@ fun ManageFamilyScreen(
 ) {
     Box(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(color = OffWhite),
         contentAlignment = Alignment.Center
     ) {
         if (state.isLoading) {

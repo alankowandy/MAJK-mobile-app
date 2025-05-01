@@ -8,8 +8,10 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
+import org.example.majk.majk.data.dto.AdminAuthDto
 import org.example.majk.majk.data.dto.ManageFamilyDto
 import org.example.majk.majk.data.dto.UserSettingsDto
+import org.example.majk.majk.domain.AdminAuthUsers
 import org.example.majk.majk.domain.AppRepository
 
 class AppRepositoryImpl(
@@ -30,6 +32,18 @@ class AppRepositoryImpl(
                     put("family_id", familyId)
                 }
             ).decodeList<ManageFamilyDto>()
+            data
+        }
+    }
+
+    override suspend fun collectUsersAdminAuth(familyId: Long): List<AdminAuthDto> {
+        return withContext(Dispatchers.IO) {
+            val data = postgrest.rpc(
+                function = "collect_profiles",
+                parameters = buildJsonObject {
+                    put("family_id", familyId)
+                }
+            ).decodeList<AdminAuthDto>()
             data
         }
     }

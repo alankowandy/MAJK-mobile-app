@@ -41,6 +41,7 @@ import org.example.majk.majk.presentation.majk_main.majk_history.HistoryScreenRo
 import org.example.majk.majk.presentation.majk_main.majk_home.HomeScreenRoot
 import org.example.majk.core.presentation.components.Drawer
 import org.example.majk.majk.presentation.majk_main.majk_add_profile.AddProfileViewModel
+import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsScreenRoot
@@ -406,7 +407,11 @@ fun App() {
                             initialOffset
                         } }
                     ) {
-                        AdminAuthScreenRoot()
+                        val viewModel = koinViewModel<AdminAuthViewModel>()
+
+                        AdminAuthScreenRoot(
+                            viewModel = viewModel
+                        )
                     }
                 }
             }
