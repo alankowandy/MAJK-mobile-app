@@ -10,6 +10,7 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import org.example.majk.majk.data.dto.AdminAuthDto
 import org.example.majk.majk.data.dto.ManageFamilyDto
+import org.example.majk.majk.data.dto.MyMedicamentListDto
 import org.example.majk.majk.data.dto.UserSettingsDto
 import org.example.majk.majk.domain.AdminAuthUsers
 import org.example.majk.majk.domain.AppRepository
@@ -70,6 +71,18 @@ class AppRepositoryImpl(
                     put("family_id", familyId)
                 }
             )
+        }
+    }
+
+    override suspend fun fetchMedicamentList(familyId: Long): List<MyMedicamentListDto> {
+        return withContext(Dispatchers.IO) {
+            val data = postgrest.rpc(
+                function = "fetch_medicament_list",
+                parameters = buildJsonObject {
+                    put("family_id", familyId)
+                }
+            ).decodeList<MyMedicamentListDto>()
+            data
         }
     }
 }

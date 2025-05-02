@@ -78,7 +78,7 @@ fun UserTile(
             Text(
                 text = username,
                 fontWeight = FontWeight.Bold,
-                fontSize = 24.sp,
+                fontSize = 20.sp,
                 textAlign = TextAlign.Center,
                 color = DarkTeal,
                 modifier = Modifier

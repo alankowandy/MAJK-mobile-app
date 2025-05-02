@@ -3,7 +3,6 @@ package org.example.majk.majk.domain
 import io.github.jan.supabase.auth.status.SessionStatus
 import io.github.jan.supabase.auth.user.UserSession
 import kotlinx.coroutines.flow.Flow
-import org.example.majk.core.data.SessionState
 import org.example.majk.core.data.dto.SharedStateDto
 import org.example.majk.majk.data.dto.DeviceCodeDto
 import org.example.majk.majk.data.dto.FamilyCodeDto

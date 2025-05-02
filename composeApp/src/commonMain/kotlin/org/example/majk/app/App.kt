@@ -46,7 +46,8 @@ import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_scre
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsViewModel
-import org.example.majk.majk.presentation.majk_main.majk_my_medkit.MyMedkitScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_my_medkit.MyMedicamentScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_my_medkit.MyMedicamentViewModel
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.MyScheduleScreenRoot
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -62,6 +63,8 @@ fun App() {
         val userInfo by sharedViewModel.userInfo.collectAsState()
 
         val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRouteTest = navBackStackEntry?.destination?.route
+
         val currentRoute = navBackStackEntry?.destination?.route?.let {
             routeFromString(it)
         } ?: Route.LogInGraph
@@ -91,7 +94,7 @@ fun App() {
             topBar = {
                 CenterAlignedTopAppBar(
                     title = {
-                        if (currentRoute != Route.MajkStart) {
+                        if (currentRouteTest != "org.example.majk.app.Route.MajkStart") {
                             Text(
                                 text = currentRoute.title,
                                 fontWeight = FontWeight.Bold
@@ -117,8 +120,7 @@ fun App() {
                                             scope.launch { scaffoldState.drawerState.open() }
                                         }
                                         is Route.ManageFamilyGraph -> {
-                                            println(currentRoute)
-                                            if (currentRoute == Route.MajkManageFamily) {
+                                            if (currentRouteTest == "org.example.majk.app.Route.MajkManageFamily") {
                                                 scope.launch { scaffoldState.drawerState.open() }
                                             } else {
                                                 navController.navigateUp()
@@ -139,7 +141,7 @@ fun App() {
                                     imageVector = when (currentGraph) {
                                         is Route.MajkGraph -> Icons.Default.Menu
                                         is Route.ManageFamilyGraph -> {
-                                            if (currentRoute == Route.MajkManageFamily) {
+                                            if (currentRouteTest == "org.example.majk.app.Route.MajkManageFamily") {
                                                 Icons.Default.Menu
                                             } else {
                                                 Icons.Default.ArrowBackIosNew
@@ -149,8 +151,6 @@ fun App() {
                                             Icons.Default.ArrowBackIosNew
                                         }
                                     },
-//                                    if (currentGraph is Route.MajkGraph) Icons.Default.Menu
-//                                    else Icons.Default.ArrowBackIosNew,
                                     contentDescription = "navigation icon"
                                 )
                             }
@@ -292,6 +292,7 @@ fun App() {
                         } }
                     ) {
                         HomeScreenRoot()
+                        println(currentRouteTest)
                     }
 
                     composable<Route.MajkMySchedule>(
@@ -324,7 +325,12 @@ fun App() {
                             initialOffset
                         } }
                     ) {
-                        MyMedkitScreenRoot()
+                        val viewModel = koinViewModel<MyMedicamentViewModel>()
+
+                        MyMedicamentScreenRoot(
+                            viewModel = viewModel
+                        )
+                        println(currentRouteTest)
                     }
 
                     composable<Route.MajkContainersState>(

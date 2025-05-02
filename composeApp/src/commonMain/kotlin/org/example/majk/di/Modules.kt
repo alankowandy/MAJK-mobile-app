@@ -12,6 +12,7 @@ import org.example.majk.majk.presentation.majk_main.majk_add_profile.AddProfileV
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsViewModel
+import org.example.majk.majk.presentation.majk_main.majk_my_medkit.MyMedicamentViewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
@@ -30,4 +31,5 @@ val sharedModule = module {
     viewModelOf(::AddProfileViewModel)
     viewModelOf(::SettingsViewModel)
     viewModelOf(::AdminAuthViewModel)
+    viewModelOf(::MyMedicamentViewModel)
 }
