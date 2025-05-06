@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,7 +33,7 @@ import majk.composeapp.generated.resources.password
 import majk.composeapp.generated.resources.sign_in
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
-import org.example.majk.majk.presentation.majk_login.components.MajkAlertDialog
+import org.example.majk.majk.presentation.components.MajkAlertDialog
 import org.example.majk.majk.presentation.components.MajkButton
 import org.example.majk.majk.presentation.components.MajkLogo
 import org.example.majk.majk.presentation.components.MajkTextField

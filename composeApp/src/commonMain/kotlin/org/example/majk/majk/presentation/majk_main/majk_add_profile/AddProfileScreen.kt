@@ -13,7 +13,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,7 +36,7 @@ import org.example.majk.core.presentation.WarningRed
 import org.example.majk.majk.presentation.components.MajkButton
 import org.example.majk.majk.presentation.components.MajkLogo
 import org.example.majk.majk.presentation.components.MajkTextField
-import org.example.majk.majk.presentation.majk_login.components.MajkAlertDialog
+import org.example.majk.majk.presentation.components.MajkAlertDialog
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -92,6 +91,7 @@ fun AddProfileScreen(
 
         if (state.successMessage != null) {
             MajkAlertDialog(
+                title = "Sukces!",
                 error = state.successMessage,
                 dismissAction = {
                     onAction(AddProfileAction.OnDialogClear)

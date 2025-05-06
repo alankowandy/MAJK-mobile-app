@@ -20,6 +20,7 @@ import majk.composeapp.generated.resources.Res
 import majk.composeapp.generated.resources.log_out
 import org.example.majk.app.Route
 import org.example.majk.core.data.itemsInDrawer
+import org.example.majk.core.domain.RouteTitle
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.core.presentation.SharedState
@@ -30,7 +31,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun Drawer(
     userInfo: SharedState?,
-    currentRoute: Route,
+    currentRouteTitle: RouteTitle,
     onSignOutClick: () -> Unit,
     onItemClick: (Route) -> Unit
 ) {
@@ -57,7 +58,7 @@ fun Drawer(
         itemsInDrawer.forEach { item ->
             DrawerItem(
                 item = item,
-                selected = currentRoute.title == item.title,
+                selected = currentRouteTitle.title == item.title,
                 modifier = Modifier.padding(horizontal = 40.dp),
                 onDrawerItemClick = { onItemClick(item.route) }
             )

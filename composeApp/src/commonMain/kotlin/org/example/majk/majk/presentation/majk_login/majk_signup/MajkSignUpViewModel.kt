@@ -18,11 +18,6 @@ class MajkSignUpViewModel(
     val state = _state.asStateFlow()
 
     private val _emailRegex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
-    private val _emailError = _state.value.emailEntry.isBlank()
-            || !_emailRegex.matches(_state.value.emailEntry)
-    private val _usernameError = _state.value.usernameEntry.isBlank()
-    private val _passwordError = _state.value.passwordEntry.isBlank()
-    private val _familyCodeError = _state.value.familyCode.isBlank()
 
     fun onAction(action: MajkSignUpAction) {
         when(action) {
@@ -52,28 +47,29 @@ class MajkSignUpViewModel(
                 }
             }
             is MajkSignUpAction.OnSignUpClick -> {
-                if (_usernameError) {
+                if (_state.value.usernameEntry.isBlank()) {
                     _state.update {
                         it.copy(
                             usernameError = true
                         )
                     }
                 }
-                if (_emailError) {
+                if (_state.value.emailEntry.isBlank()
+                    || !_emailRegex.matches(_state.value.emailEntry)) {
                     _state.update {
                         it.copy(
                             emailError = true
                         )
                     }
                 }
-                if (_passwordError) {
+                if (_state.value.passwordEntry.isBlank()) {
                     _state.update {
                         it.copy(
                             passwordError = true
                         )
                     }
                 }
-                if (_familyCodeError) {
+                if (_state.value.familyCode.isBlank()) {
                     _state.update {
                         it.copy(
                             familyCodeError = true

@@ -6,6 +6,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -18,6 +19,7 @@ fun MajkButton(
     text: String,
     onAction: () -> Unit,
     boldText: Boolean,
+    containerColor: Color = DarkTeal,
     modifier: Modifier
 ) {
     Button(
@@ -25,7 +27,7 @@ fun MajkButton(
         shape = RoundedCornerShape(16.dp),
         colors = ButtonDefaults.buttonColors(
             contentColor = OffWhite,
-            containerColor = DarkTeal
+            containerColor = containerColor
         ),
         modifier = modifier
     ) {

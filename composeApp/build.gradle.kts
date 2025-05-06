@@ -41,6 +41,9 @@ kotlin {
             implementation(libs.koin.androidx.compose)
 
             implementation(libs.ktor.client.okhttp)
+
+            // Calendar
+            //implementation("io.github.wojciechosak:calendar:1.7.0")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -72,8 +75,11 @@ kotlin {
             // Icons
             implementation(compose.materialIconsExtended)
 
-            // Message Bars
-            //implementation("com.stevdza-san:messagebarkmp:1.0.7")
+            // Pull to refresh
+            //implementation(libs.androidx.material.pullrefresh)
+
+            // Calendar
+            //implementation("io.github.wojciechosak:calendar:1.7.0")
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

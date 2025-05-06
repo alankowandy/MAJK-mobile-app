@@ -4,7 +4,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 
 @Composable
-fun MyScheduleScreenRoot() {
+fun ScheduleScreenRoot() {
+
+
+}
+
+@Composable
+fun ScheduleScreen() {
+
     Column {
 
     }

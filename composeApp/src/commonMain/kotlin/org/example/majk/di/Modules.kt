@@ -10,6 +10,7 @@ import org.example.majk.majk.presentation.majk_login.majk_signin.MajkSignInViewM
 import org.example.majk.majk.presentation.majk_login.majk_signup.MajkSignUpViewModel
 import org.example.majk.majk.presentation.majk_main.majk_add_profile.AddProfileViewModel
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthViewModel
+import org.example.majk.majk.presentation.majk_main.majk_manage_family.ManageFamilySharedViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsViewModel
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.MyMedicamentViewModel
@@ -22,6 +23,7 @@ val sharedModule = module {
     singleOf(::AuthRepositoryImpl).bind<AuthRepository>()
     singleOf(::AppRepositoryImpl).bind<AppRepository>()
     singleOf(::SharedViewModel).bind<SharedViewModel>()
+    singleOf(::ManageFamilySharedViewModel).bind<ManageFamilySharedViewModel>()
 
     viewModelOf(::SharedViewModel)
     viewModelOf(::MajkSignInViewModel)
@@ -32,4 +34,5 @@ val sharedModule = module {
     viewModelOf(::SettingsViewModel)
     viewModelOf(::AdminAuthViewModel)
     viewModelOf(::MyMedicamentViewModel)
+    viewModelOf(::ManageFamilySharedViewModel)
 }

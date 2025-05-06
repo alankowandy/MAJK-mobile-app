@@ -15,10 +15,12 @@ import kotlinx.coroutines.launch
 import org.example.majk.core.presentation.SharedViewModel
 import org.example.majk.majk.data.dto.ManageFamilyDto
 import org.example.majk.majk.domain.ManageFamily
+import org.example.majk.majk.presentation.majk_main.majk_manage_family.ManageFamilySharedViewModel
 
 class ManageFamilyViewModel(
     private val appRepository: AppRepository,
-    private val sharedViewModel: SharedViewModel
+    private val sharedViewModel: SharedViewModel,
+    private val manageFamilySharedViewModel: ManageFamilySharedViewModel
 ): ViewModel() {
 
     private val _state = MutableStateFlow(ManageFamilyState())
@@ -48,6 +50,20 @@ class ManageFamilyViewModel(
             is ManageFamilyAction.OnSettingsClick -> {
 
             }
+            is ManageFamilyAction.OnRefreshData -> {
+                if (manageFamilySharedViewModel.shouldRefresh.value) {
+                    sharedViewModel.userInfo
+                        .map { it?.familyId }
+                        .filter { it != 0L }
+                        .distinctUntilChanged()
+                        .onEach { familyId ->
+                            if (familyId != null) {
+                                collectUsers(familyId)
+                            }
+                        }
+                        .launchIn(viewModelScope)
+                }
+            }
         }
     }
 
@@ -72,7 +88,6 @@ class ManageFamilyViewModel(
                         errorMessage = "Dane nie mogły zostać pobrane."
                     )
                 }
-                println(_state.value.errorMessage)
             }
         }
     }

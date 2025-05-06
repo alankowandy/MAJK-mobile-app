@@ -35,7 +35,7 @@ import majk.composeapp.generated.resources.sign_up
 import majk.composeapp.generated.resources.user
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
-import org.example.majk.majk.presentation.majk_login.components.MajkAlertDialog
+import org.example.majk.majk.presentation.components.MajkAlertDialog
 import org.example.majk.majk.presentation.components.MajkButton
 import org.example.majk.majk.presentation.components.MajkLogo
 import org.example.majk.majk.presentation.components.MajkTextField

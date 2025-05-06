@@ -25,7 +25,7 @@ sealed class DrawerData(
 
     data object MySchedule: DrawerData(
         title = "Mój harmonogram",
-        route = Route.MajkMySchedule,
+        route = Route.MajkSchedule,
         icon = Icons.Default.Schedule
     )
 

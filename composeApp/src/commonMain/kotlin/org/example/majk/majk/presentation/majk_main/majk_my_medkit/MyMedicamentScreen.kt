@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +19,7 @@ import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.domain.MyMedicamentList
 import org.example.majk.majk.presentation.components.MajkButton
-import org.example.majk.majk.presentation.majk_login.components.MajkAlertDialog
+import org.example.majk.majk.presentation.components.MajkAlertDialog
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.components.MedicamentList
 import org.koin.compose.viewmodel.koinViewModel
 

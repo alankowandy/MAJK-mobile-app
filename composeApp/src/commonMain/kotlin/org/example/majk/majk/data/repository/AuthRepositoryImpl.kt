@@ -99,12 +99,13 @@ class AuthRepositoryImpl(
 
     override suspend fun checkDeviceCode(deviceCode: Long): DeviceCodeDto {
         return withContext(Dispatchers.IO) {
-            postgrest.rpc(
-                function = "checkDeviceCode",
+            val data = postgrest.rpc(
+                function = "check_device",
                 parameters = buildJsonObject {
-                    put("id", deviceCode)
+                    put("device_id_input", deviceCode)
                 }
             ).decodeSingle<DeviceCodeDto>()
+            data
         }
     }
 

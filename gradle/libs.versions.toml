@@ -19,6 +19,7 @@ kotlinx-coroutines = "1.10.1"
 
 koin = "4.0.0"
 koinComposeMultiplatform = "4.0.0"
+materialPullrefresh = "1.4.0"
 navigationCompose = "2.8.0-alpha10"
 lifecycleViewModel = "2.8.7"
 
@@ -29,6 +30,7 @@ material3Android = "1.3.1"
 composeMaterial3 = "1.0.0-alpha34"
 
 [libraries]
+androidx-material-pullrefresh = { module = "androidx.compose.material:material-pullrefresh", version.ref = "materialPullrefresh" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

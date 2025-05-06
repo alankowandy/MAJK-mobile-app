@@ -16,11 +16,6 @@ class MajkRegisterDeviceViewModel(
     val state = _state.asStateFlow()
 
     private val _emailRegex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
-    private val _emailError = _state.value.emailEntry.isBlank()
-            || !_emailRegex.matches(_state.value.emailEntry)
-    private val _usernameError = _state.value.usernameEntry.isBlank()
-    private val _passwordError = _state.value.passwordEntry.isBlank()
-    private val _deviceCodeError = _state.value.deviceCode.isBlank()
 
     fun onAction(action: MajkRegisterDeviceAction) {
         when(action) {
@@ -50,28 +45,29 @@ class MajkRegisterDeviceViewModel(
                 }
             }
             is MajkRegisterDeviceAction.OnRegisterClick -> {
-                if (_usernameError) {
+                if (_state.value.usernameEntry.isBlank()) {
                     _state.update {
                         it.copy(
                             usernameError = true
                         )
                     }
                 }
-                if (_emailError) {
+                if (_state.value.emailEntry.isBlank()
+                    || !_emailRegex.matches(_state.value.emailEntry)) {
                     _state.update {
                         it.copy(
                             emailError = true
                         )
                     }
                 }
-                if (_passwordError) {
+                if (_state.value.passwordEntry.isBlank()) {
                     _state.update {
                         it.copy(
                             passwordError = true
                         )
                     }
                 }
-                if (_deviceCodeError) {
+                if (_state.value.deviceCode.isBlank()) {
                     _state.update {
                         it.copy(
                             deviceCodeError = true,
@@ -97,12 +93,27 @@ class MajkRegisterDeviceViewModel(
         val email = _state.value.emailEntry
         val username = _state.value.usernameEntry
         val password = _state.value.passwordEntry
-        val deviceCode = _state.value.deviceCode
+        val deviceCode = _state.value.deviceCode.toLong()
         var isDeviceCodeCorrect = false
 
 
         viewModelScope.launch {
+            runCatching {
+                val result = authRepository.checkDeviceCode(deviceCode)
+                isDeviceCodeCorrect = result.deviceIdExists ?: false
+            }.onFailure {
+                _state.update {
+                    it.copy(
+                        errorMessage = "Błąd w pobieraniu danych."
+                    )
+                }
+            }
 
+            if (isDeviceCodeCorrect) {
+                runCatching {
+                    authRepository.signUp(email = email, password = password)
+                }
+            }
         }
     }
 }

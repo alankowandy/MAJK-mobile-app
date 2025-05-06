@@ -35,6 +35,7 @@ fun ManageFamilyScreenRoot(
             when (action) {
                 is ManageFamilyAction.OnScheduleClick -> onScheduleClick(action.userId)
                 is ManageFamilyAction.OnSettingsClick -> onSettingsClick(action.userId)
+                else -> viewModel.onAction(action)
             }
         }
     )
@@ -46,6 +47,8 @@ fun ManageFamilyScreen(
     state: ManageFamilyState,
     onAction: (ManageFamilyAction) -> Unit
 ) {
+    onAction(ManageFamilyAction.OnRefreshData)
+
     Box(
         modifier = Modifier
             .fillMaxSize()

@@ -49,7 +49,7 @@ class AppRepositoryImpl(
         }
     }
 
-    override suspend fun fetchUserSettings(userId: Long): List<UserSettingsDto> {
+    override suspend fun fetchUserSettings(userId: Long): UserSettingsDto {
         return withContext(Dispatchers.IO) {
             val data = postgrest.rpc(
                 function = "get_user_settings",
@@ -57,7 +57,32 @@ class AppRepositoryImpl(
                     put("user_id", userId)
                 }
             ).decodeList<UserSettingsDto>()
-            data
+            data[0]
+        }
+    }
+
+    override suspend fun updateUserSettings(id: Long, username: String, permission: String) {
+        return withContext(Dispatchers.IO) {
+            postgrest.rpc(
+                function = "update_profile",
+                parameters = buildJsonObject {
+                    put("profile_id_input", id)
+                    put("new_name", username)
+                    put("new_permission", permission)
+                }
+            )
+        }
+    }
+
+    override suspend fun deleteUserProfile(userId: Long, username: String) {
+        return withContext(Dispatchers.IO) {
+            postgrest.rpc(
+                function = "delete_profile",
+                parameters = buildJsonObject {
+                    put("user_id_input", userId)
+                    put("profile_name_input", username)
+                }
+            )
         }
     }
 

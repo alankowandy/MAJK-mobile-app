@@ -1,115 +1,96 @@
 package org.example.majk.app
 
 import kotlinx.serialization.Serializable
+import org.example.majk.core.domain.RouteTitle
 
 @Serializable
-sealed class Route(
-    val title: String
-) {
+sealed interface Route {
+
+    // Logging in
+    @Serializable
+    data object LogInGraph: Route
 
     @Serializable
-    data object LogInGraph: Route(
-        title = ""
-    )
+    data object MajkGraph: Route
 
     @Serializable
-    data object MajkGraph: Route(
-        title = ""
-    )
+    data object MajkStart: Route
 
     @Serializable
-    data object MajkStart: Route(
-        title = ""
-    )
+    data object MajkSignIn: Route
 
     @Serializable
-    data object MajkSignIn: Route(
-        title = "Zaloguj się"
-    )
+    data object MajkSignUp: Route
 
     @Serializable
-    data object MajkSignUp: Route(
-        title = "Zarejestruj się"
-    )
+    data object MajkRegisterDevice: Route
+
+    // Main app
+    @Serializable
+    data object MajkHome: Route
 
     @Serializable
-    data object MajkRegisterDevice: Route(
-        title = "Zarejestruj urządzenie"
-    )
+    data object MajkScheduleGraph: Route
 
     @Serializable
-    data object MajkHome: Route(
-        title = "Strona główna"
-    )
+    data object MajkSchedule: Route
 
     @Serializable
-    data object MajkMySchedule: Route(
-        title = "Mój harmonogram"
-    )
+    data class MajkScheduleDetails(val userId: Long): Route
 
     @Serializable
-    data object MajkHistory: Route(
-        title = "Historia wydania"
-    )
+    data object MajkHistory: Route
 
     @Serializable
-    data object MajkMyMedkit: Route(
-        title = "Moja apteczka"
-    )
+    data object MajkMyMedkit: Route
 
     @Serializable
-    data object MajkContainersState: Route(
-        title = "Stan pojemników"
-    )
+    data object MajkContainersState: Route
 
     @Serializable
-    data class MajkContainerSettings(val id: String): Route(
-        title = "Ustawienia pojemnika"
-    )
+    data class MajkContainerSettings(val containerId: String): Route
 
     @Serializable
-    data object ManageFamilyGraph: Route(
-        title = "Zarządzaj rodziną"
-    )
+    data object ManageFamilyGraph: Route
 
     @Serializable
-    data object MajkManageFamily: Route(
-        title = "Zarządzaj rodziną"
-    )
+    data object MajkManageFamily: Route
 
     @Serializable
-    data class MajkManageFamilySettings(val userId: Long): Route(
-        title = "Zarządzaj rodziną"
-    )
+    data class MajkManageFamilySettings(val userId: Long): Route
 
     @Serializable
-    data object MajkAddProfile: Route(
-        title = "Dodaj profil"
-    )
+    data object MajkAddProfile: Route
 
     @Serializable
-    data object MajkAdminAuth: Route(
-        title = "Autoryzacja"
-    )
+    data object MajkAdminAuth: Route
 }
 
-fun routeFromString(route: String): Route {
+fun graphFromString(route: String): Route {
     return when (route) {
         Route.LogInGraph::class.qualifiedName -> Route.LogInGraph
         Route.MajkGraph::class.qualifiedName -> Route.MajkGraph
-        Route.MajkStart::class.qualifiedName -> Route.MajkStart
-        Route.MajkSignIn::class.qualifiedName -> Route.MajkSignIn
-        Route.MajkSignUp::class.qualifiedName -> Route.MajkSignUp
-        Route.MajkRegisterDevice::class.qualifiedName -> Route.MajkRegisterDevice
-        Route.MajkHome::class.qualifiedName -> Route.MajkHome
-        Route.MajkMySchedule::class.qualifiedName -> Route.MajkMySchedule
-        Route.MajkHistory::class.qualifiedName -> Route.MajkHistory
-        Route.MajkMyMedkit::class.qualifiedName -> Route.MajkMyMedkit
-        Route.MajkContainersState::class.qualifiedName -> Route.MajkContainersState
-        Route.MajkManageFamily::class.qualifiedName -> Route.MajkManageFamily
-        Route.MajkAddProfile::class.qualifiedName -> Route.MajkAddProfile
-        Route.MajkAdminAuth::class.qualifiedName -> Route.MajkAdminAuth
         Route.ManageFamilyGraph::class.qualifiedName -> Route.ManageFamilyGraph
-        else -> Route.MajkStart
+        else -> Route.LogInGraph
+    }
+}
+
+fun routeFromString(route: String): RouteTitle {
+    return when (route) {
+        Route.MajkStart::class.qualifiedName -> RouteTitle.MajkStart
+        Route.MajkSignIn::class.qualifiedName -> RouteTitle.MajkSignIn
+        Route.MajkSignUp::class.qualifiedName -> RouteTitle.MajkSignUp
+        Route.MajkRegisterDevice::class.qualifiedName -> RouteTitle.MajkRegisterDevice
+        Route.MajkHome::class.qualifiedName -> RouteTitle.MajkHome
+        Route.MajkSchedule::class.qualifiedName -> RouteTitle.MajkMySchedule
+        Route.MajkHistory::class.qualifiedName -> RouteTitle.MajkHistory
+        Route.MajkMyMedkit::class.qualifiedName -> RouteTitle.MajkMyMedkit
+        Route.MajkContainersState::class.qualifiedName -> RouteTitle.MajkContainersState
+        Route.MajkContainerSettings::class.qualifiedName.plus("/{containerId}") -> RouteTitle.MajkContainerSettings
+        Route.MajkManageFamily::class.qualifiedName -> RouteTitle.MajkManageFamily
+        Route.MajkManageFamilySettings::class.qualifiedName.plus("/{userId}") -> RouteTitle.MajkManageFamilySettings
+        Route.MajkAddProfile::class.qualifiedName -> RouteTitle.MajkAddProfile
+        Route.MajkAdminAuth::class.qualifiedName -> RouteTitle.MajkAdminAuth
+        else -> RouteTitle.MajkStart
     }
 }
