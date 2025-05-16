@@ -24,8 +24,12 @@ sealed class RouteTitle(
         title = "Strona główna"
     )
 
-    data object MajkMySchedule: RouteTitle(
+    data object MajkSchedule: RouteTitle(
         title = "Mój harmonogram"
+    )
+
+    data object MajkScheduleDetails: RouteTitle(
+        title = "Szczegóły"
     )
 
     data object MajkHistory: RouteTitle(
@@ -34,6 +38,10 @@ sealed class RouteTitle(
 
     data object MajkMyMedkit: RouteTitle(
         title = "Moja apteczka"
+    )
+
+    data object MyMedkitEdit: RouteTitle(
+        title = "Dodaj/edytuj dawkę"
     )
 
     data object MajkContainersState: RouteTitle(

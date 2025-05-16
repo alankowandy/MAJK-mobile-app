@@ -6,7 +6,7 @@ import org.example.majk.core.domain.RouteTitle
 @Serializable
 sealed interface Route {
 
-    // Logging in
+    /** Logging in **/
     @Serializable
     data object LogInGraph: Route
 
@@ -25,7 +25,7 @@ sealed interface Route {
     @Serializable
     data object MajkRegisterDevice: Route
 
-    // Main app
+    /** Main app **/
     @Serializable
     data object MajkHome: Route
 
@@ -36,13 +36,19 @@ sealed interface Route {
     data object MajkSchedule: Route
 
     @Serializable
-    data class MajkScheduleDetails(val userId: Long): Route
+    data class MajkScheduleDetailsByDate(val date: String): Route
 
     @Serializable
     data object MajkHistory: Route
 
     @Serializable
+    data object MyMedkitGraph: Route
+
+    @Serializable
     data object MajkMyMedkit: Route
+
+    @Serializable
+    data class MyMedkitEdit(val medicineId: Long): Route
 
     @Serializable
     data object MajkContainersState: Route
@@ -71,6 +77,8 @@ fun graphFromString(route: String): Route {
         Route.LogInGraph::class.qualifiedName -> Route.LogInGraph
         Route.MajkGraph::class.qualifiedName -> Route.MajkGraph
         Route.ManageFamilyGraph::class.qualifiedName -> Route.ManageFamilyGraph
+        Route.MajkScheduleGraph::class.qualifiedName -> Route.MajkScheduleGraph
+        Route.MyMedkitGraph::class.qualifiedName -> Route.MyMedkitGraph
         else -> Route.LogInGraph
     }
 }
@@ -82,9 +90,11 @@ fun routeFromString(route: String): RouteTitle {
         Route.MajkSignUp::class.qualifiedName -> RouteTitle.MajkSignUp
         Route.MajkRegisterDevice::class.qualifiedName -> RouteTitle.MajkRegisterDevice
         Route.MajkHome::class.qualifiedName -> RouteTitle.MajkHome
-        Route.MajkSchedule::class.qualifiedName -> RouteTitle.MajkMySchedule
+        Route.MajkSchedule::class.qualifiedName -> RouteTitle.MajkSchedule
+        Route.MajkScheduleDetailsByDate::class.qualifiedName.plus("/{date}") -> RouteTitle.MajkScheduleDetails
         Route.MajkHistory::class.qualifiedName -> RouteTitle.MajkHistory
         Route.MajkMyMedkit::class.qualifiedName -> RouteTitle.MajkMyMedkit
+        Route.MyMedkitEdit::class.qualifiedName.plus("/{medicamentId}") -> RouteTitle.MyMedkitEdit
         Route.MajkContainersState::class.qualifiedName -> RouteTitle.MajkContainersState
         Route.MajkContainerSettings::class.qualifiedName.plus("/{containerId}") -> RouteTitle.MajkContainerSettings
         Route.MajkManageFamily::class.qualifiedName -> RouteTitle.MajkManageFamily

@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DeviceCodeDto(
-    @SerialName("id_exists")
+    @SerialName("found")
     val deviceIdExists: Boolean? = false
 )

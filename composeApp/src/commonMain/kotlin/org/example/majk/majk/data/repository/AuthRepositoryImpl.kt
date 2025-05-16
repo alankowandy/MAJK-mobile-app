@@ -5,6 +5,7 @@ import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.status.SessionStatus
 import io.github.jan.supabase.postgrest.postgrest
+import io.github.jan.supabase.postgrest.rpc
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
@@ -81,6 +82,19 @@ class AuthRepositoryImpl(
         }
     }
 
+    override suspend fun insertAdminProfile(username: String, deviceCode: Long, email: String) {
+        return withContext(Dispatchers.IO) {
+            postgrest.rpc(
+                function = "insert_admin_profile",
+                parameters = buildJsonObject {
+                    put("new_name", username)
+                    put("device_id_input", deviceCode)
+                    put("user_email_input", email)
+                }
+            )
+        }
+    }
+
     override suspend fun insertNewUser(username: String) {
 
     }
@@ -100,12 +114,12 @@ class AuthRepositoryImpl(
     override suspend fun checkDeviceCode(deviceCode: Long): DeviceCodeDto {
         return withContext(Dispatchers.IO) {
             val data = postgrest.rpc(
-                function = "check_device",
+                function = "check_device_exists",
                 parameters = buildJsonObject {
                     put("device_id_input", deviceCode)
                 }
-            ).decodeSingle<DeviceCodeDto>()
-            data
+            ).decodeList<DeviceCodeDto>()
+            data[0]
         }
     }
 

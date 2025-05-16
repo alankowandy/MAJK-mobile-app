@@ -2,8 +2,12 @@ package org.example.majk.majk.presentation.majk_login.majk_register_device
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.github.jan.supabase.auth.status.SessionStatus
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.example.majk.majk.domain.AuthRepository
@@ -16,6 +20,7 @@ class MajkRegisterDeviceViewModel(
     val state = _state.asStateFlow()
 
     private val _emailRegex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
+    private val _passwordRegex = Regex("^.{6,}$")
 
     fun onAction(action: MajkRegisterDeviceAction) {
         when(action) {
@@ -60,7 +65,8 @@ class MajkRegisterDeviceViewModel(
                         )
                     }
                 }
-                if (_state.value.passwordEntry.isBlank()) {
+                if (_state.value.passwordEntry.isBlank()
+                    || !_passwordRegex.matches(_state.value.passwordEntry)) {
                     _state.update {
                         it.copy(
                             passwordError = true
@@ -78,7 +84,7 @@ class MajkRegisterDeviceViewModel(
                     || _state.value.passwordError || _state.value.deviceCodeError) {
                     _state.update {
                         it.copy(
-                            errorMessage = "Nieprawidłowy format danych"
+                            errorMessage = "Nieprawidłowy format danych lub hasło poniżej 6 znaków"
                         )
                     }
                 } else {
@@ -95,13 +101,24 @@ class MajkRegisterDeviceViewModel(
         val password = _state.value.passwordEntry
         val deviceCode = _state.value.deviceCode.toLong()
         var isDeviceCodeCorrect = false
+        var isSignedUp = false
+        var isUserInserted = false
 
 
         viewModelScope.launch {
             runCatching {
                 val result = authRepository.checkDeviceCode(deviceCode)
                 isDeviceCodeCorrect = result.deviceIdExists ?: false
-            }.onFailure {
+                if (!isDeviceCodeCorrect) {
+                    _state.update {
+                        it.copy(
+                            errorMessage = "Urządzenie o podanym kodzie nie istnieje."
+                        )
+                    }
+                }
+                println(isDeviceCodeCorrect)
+            }.onFailure { error ->
+                println(error)
                 _state.update {
                     it.copy(
                         errorMessage = "Błąd w pobieraniu danych."
@@ -112,6 +129,60 @@ class MajkRegisterDeviceViewModel(
             if (isDeviceCodeCorrect) {
                 runCatching {
                     authRepository.signUp(email = email, password = password)
+                }.onSuccess {
+                    isSignedUp = true
+//                    runCatching {
+//                        authRepository.signIn(email = email, password = password)
+//                    }.onSuccess {
+//                        val sessionStatus = authRepository.sessionStatus().stateIn(
+//                            scope = viewModelScope,
+//                            started = SharingStarted.Eagerly,
+//                            initialValue = SessionStatus.Initializing
+//                        )
+//                        sessionStatus.filterIsInstance<SessionStatus.Authenticated>()
+//                            .collect { auth ->
+//                                val id = auth.session.user?.id ?: return@collect
+//                                authRepository.insertAdminProfile(
+//                                    username = username,
+//                                    deviceCode = deviceCode,
+//                                    accountId = id
+//                                )
+//                            }
+//                    }
+                }.onFailure { error ->
+                    _state.update {
+                        it.copy(
+                            errorMessage = "Błąd przy logowaniu. Spróbuj ponownie."
+                        )
+                    }
+                    println(error)
+                }
+            }
+
+            if (isSignedUp) {
+                runCatching {
+                    authRepository.insertAdminProfile(
+                        username = username,
+                        deviceCode = deviceCode,
+                        email = email
+                    )
+                }.onSuccess {
+                    isUserInserted = true
+                }.onFailure { error ->
+                    _state.update {
+                        it.copy(
+                            errorMessage = "Błąd"
+                        )
+                    }
+                    println(error)
+                }
+            }
+
+            if (isUserInserted) {
+                runCatching {
+                    authRepository.signIn(email, password)
+                }.onFailure { error ->
+                    println(error)
                 }
             }
         }

@@ -2,7 +2,6 @@ package org.example.majk.majk.presentation.majk_main.majk_my_medkit.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,7 +18,7 @@ import org.example.majk.core.presentation.Cyan
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.domain.MyMedicamentList
-import org.example.majk.majk.presentation.majk_main.majk_my_medkit.MyMedicamentAction
+import org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.MyMedicamentAction
 
 @Composable
 fun MedicamentList(
@@ -47,7 +46,10 @@ fun MedicamentList(
                     ActionIcon(
                         onClick = {
                             //medicamentList[index] = medicament.copy(isOptionsRevealed = false)
-                            onAction(MyMedicamentAction.OnDeleteMedicamentClick)
+                            onAction(
+                                MyMedicamentAction.OnDeleteMedicamentClick(
+                                medicamentId = medicament.medicamentId
+                            ))
                         },
                         backgroundColor = Color.Red,
                         icon = Icons.Outlined.Delete,
@@ -59,6 +61,7 @@ fun MedicamentList(
                     text = medicament.medicamentName,
                     color = DarkTeal,
                     modifier = Modifier
+                        .background(OffWhite)
                         .padding(8.dp)
                 )
             }

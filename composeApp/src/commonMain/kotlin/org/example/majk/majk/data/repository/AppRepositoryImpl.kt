@@ -6,6 +6,7 @@ import io.github.jan.supabase.postgrest.rpc
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import org.example.majk.majk.data.dto.AdminAuthDto
@@ -14,6 +15,7 @@ import org.example.majk.majk.data.dto.MyMedicamentListDto
 import org.example.majk.majk.data.dto.UserSettingsDto
 import org.example.majk.majk.domain.AdminAuthUsers
 import org.example.majk.majk.domain.AppRepository
+import org.example.majk.majk.domain.MedicineEntry
 
 class AppRepositoryImpl(
     client: SupabaseClient
@@ -109,5 +111,28 @@ class AppRepositoryImpl(
             ).decodeList<MyMedicamentListDto>()
             data
         }
+    }
+
+    override suspend fun deleteMedicament(medicamentId: Long) {
+        return withContext(Dispatchers.IO) {
+            postgrest.rpc(
+                function = "delete_medicament",
+                parameters = buildJsonObject {
+                    put("medicament_id_input", medicamentId)
+                }
+            )
+        }
+    }
+
+    override suspend fun fetchScheduleForDate(date: LocalDate): Map<Int, List<MedicineEntry>> {
+        return mapOf(
+            8  to listOf(MedicineEntry("Witamina C", taken = true)),
+            10 to listOf(MedicineEntry("Witamina D", taken = false),
+                MedicineEntry("Witamina B", taken = false)),
+            12 to listOf(MedicineEntry("Witamina A", taken = false),
+                MedicineEntry("Izotek", taken = false)),
+            13 to listOf(MedicineEntry("Witamina A", taken = false),
+                MedicineEntry("Izotek", taken = false))
+        )
     }
 }

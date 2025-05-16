@@ -17,6 +17,7 @@ interface AuthRepository {
     suspend fun insertNewUser(username: String)
     suspend fun checkFamilyCode(familyCode: Long): FamilyCodeDto
     suspend fun checkDeviceCode(deviceCode: Long): DeviceCodeDto
+    suspend fun insertAdminProfile(username: String, deviceCode: Long, email: String)
     fun sessionStatus(): Flow<SessionStatus>
     suspend fun fetchProfileDetails(authId: String): SharedStateDto
 

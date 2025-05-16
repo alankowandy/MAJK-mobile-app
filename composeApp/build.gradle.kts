@@ -79,7 +79,7 @@ kotlin {
             //implementation(libs.androidx.material.pullrefresh)
 
             // Calendar
-            //implementation("io.github.wojciechosak:calendar:1.7.0")
+            implementation(libs.compose.multiplatform.calendar)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

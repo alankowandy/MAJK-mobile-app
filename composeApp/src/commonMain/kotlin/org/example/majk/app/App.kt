@@ -46,15 +46,18 @@ import org.example.majk.majk.presentation.majk_main.majk_home.HomeScreenRoot
 import org.example.majk.core.presentation.components.Drawer
 import org.example.majk.majk.presentation.majk_main.majk_add_profile.AddProfileViewModel
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthViewModel
-import org.example.majk.majk.presentation.majk_main.majk_manage_family.ManageFamilySharedViewModel
-import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyAction
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsViewModel
-import org.example.majk.majk.presentation.majk_main.majk_my_medkit.MyMedicamentScreenRoot
-import org.example.majk.majk.presentation.majk_main.majk_my_medkit.MyMedicamentViewModel
-import org.example.majk.majk.presentation.majk_main.majk_my_schedule.ScheduleScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.MyMedkitEditScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.MyMedkitEditViewModel
+import org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.MyMedicamentScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.MyMedicamentViewModel
+import org.example.majk.majk.presentation.majk_main.majk_my_schedule.main_screen.ScheduleScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_my_schedule.main_screen.ScheduleViewModel
+import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_details_screen.DetailsScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_details_screen.DetailsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -133,6 +136,20 @@ fun App() {
                                                 navController.navigateUp()
                                             }
                                         }
+                                        is Route.MajkScheduleGraph -> {
+                                            if (currentRoute == "org.example.majk.app.Route.MajkSchedule") {
+                                                scope.launch { scaffoldState.drawerState.open() }
+                                            } else {
+                                                navController.navigateUp()
+                                            }
+                                        }
+                                        is Route.MyMedkitGraph -> {
+                                            if (currentRoute == "org.example.majk.app.Route.MajkMyMedkit") {
+                                                scope.launch { scaffoldState.drawerState.open() }
+                                            } else {
+                                                navController.navigateUp()
+                                            }
+                                        }
                                         else -> {
                                             navController.navigateUp()
                                         }
@@ -144,6 +161,20 @@ fun App() {
                                         is Route.MajkGraph -> Icons.Default.Menu
                                         is Route.ManageFamilyGraph -> {
                                             if (currentRoute == "org.example.majk.app.Route.MajkManageFamily") {
+                                                Icons.Default.Menu
+                                            } else {
+                                                Icons.Default.ArrowBackIosNew
+                                            }
+                                        }
+                                        is Route.MajkScheduleGraph -> {
+                                            if (currentRoute == "org.example.majk.app.Route.MajkSchedule") {
+                                                Icons.Default.Menu
+                                            } else {
+                                                Icons.Default.ArrowBackIosNew
+                                            }
+                                        }
+                                        is Route.MyMedkitGraph -> {
+                                            if (currentRoute == "org.example.majk.app.Route.MajkMyMedkit") {
                                                 Icons.Default.Menu
                                             } else {
                                                 Icons.Default.ArrowBackIosNew
@@ -297,16 +328,45 @@ fun App() {
                         HomeScreenRoot()
                     }
 
-                    composable<Route.MajkSchedule>(
-                        enterTransition = { slideInHorizontally { initialOffset ->
-                            initialOffset
-                        } },
-                        exitTransition = { slideOutHorizontally { initialOffset ->
-                            initialOffset
-                        } }
+                    navigation<Route.MajkScheduleGraph>(
+                        startDestination = Route.MajkSchedule
                     ) {
-                        ScheduleScreenRoot()
+                        composable<Route.MajkSchedule>(
+                            exitTransition = { slideOutHorizontally() },
+                            popEnterTransition = { slideInHorizontally() },
+                            enterTransition = { slideInHorizontally { initialOffset ->
+                                initialOffset
+                            } }
+                        ) {
+                            val viewModel = koinViewModel<ScheduleViewModel>()
+                            ScheduleScreenRoot(
+                                viewModel = viewModel,
+                                onDateClick = { date ->
+                                    navController.navigate(
+                                        Route.MajkScheduleDetailsByDate(date)
+                                    )
+                                }
+                            )
+                        }
+                        composable<Route.MajkScheduleDetailsByDate>(
+                            enterTransition = { slideInHorizontally { initialOffset ->
+                                initialOffset
+                            } },
+                            exitTransition = { slideOutHorizontally { initialOffset ->
+                                initialOffset
+                            } }
+                        ) {
+                            val viewModel = koinViewModel<DetailsViewModel>()
+
+                            DetailsScreenRoot(
+                                viewModel = viewModel,
+                                onBackClick = {
+                                    navController.navigateUp()
+                                }
+                            )
+                        }
                     }
+
 
                     composable<Route.MajkHistory>(
                         enterTransition = { slideInHorizontally { initialOffset ->
@@ -319,20 +379,39 @@ fun App() {
                         HistoryScreenRoot()
                     }
 
-                    composable<Route.MajkMyMedkit>(
-                        enterTransition = { slideInHorizontally { initialOffset ->
-                            initialOffset
-                        } },
-                        exitTransition = { slideOutHorizontally { initialOffset ->
-                            initialOffset
-                        } }
+                    navigation<Route.MyMedkitGraph>(
+                        startDestination = Route.MajkMyMedkit
                     ) {
-                        val viewModel = koinViewModel<MyMedicamentViewModel>()
+                        composable<Route.MajkMyMedkit>(
+                            exitTransition = { slideOutHorizontally() },
+                            popEnterTransition = { slideInHorizontally() },
+                            enterTransition = { slideInHorizontally { initialOffset ->
+                                initialOffset
+                            } }
+                        ) {
+                            val viewModel = koinViewModel<MyMedicamentViewModel>()
 
-                        MyMedicamentScreenRoot(
-                            viewModel = viewModel
-                        )
+                            MyMedicamentScreenRoot(
+                                viewModel = viewModel
+                            )
+                        }
+
+                        composable<Route.MyMedkitEdit>(
+                            enterTransition = { slideInHorizontally { initialOffset ->
+                                initialOffset
+                            } },
+                            exitTransition = { slideOutHorizontally { initialOffset ->
+                                initialOffset
+                            } }
+                        ) {
+                            val viewModel = koinViewModel<MyMedkitEditViewModel>()
+
+                            MyMedkitEditScreenRoot(
+                                viewModel = viewModel
+                            )
+                        }
                     }
+
 
                     composable<Route.MajkContainersState>(
                         enterTransition = { slideInHorizontally { initialOffset ->

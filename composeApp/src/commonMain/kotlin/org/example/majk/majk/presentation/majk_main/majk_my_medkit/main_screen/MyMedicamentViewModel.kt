@@ -1,4 +1,4 @@
-package org.example.majk.majk.presentation.majk_main.majk_my_medkit
+package org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -43,7 +43,9 @@ class MyMedicamentViewModel(
     fun onAction(action: MyMedicamentAction) {
         when (action) {
             is MyMedicamentAction.OnMedicamentDetailsClick -> {}
-            is MyMedicamentAction.OnDeleteMedicamentClick -> {}
+            is MyMedicamentAction.OnDeleteMedicamentClick -> {
+                deleteMedicament(action.medicamentId)
+            }
             is MyMedicamentAction.OnSortMedicamentClick -> {}
             is MyMedicamentAction.OnAddMedicamentClick -> {
 
@@ -79,6 +81,27 @@ class MyMedicamentViewModel(
                     it.copy(
                         isLoading = false,
                         errorMessage = "Błąd w pobieraniu danych."
+                    )
+                }
+            }
+        }
+    }
+
+    private fun deleteMedicament(medicamentId: Long) {
+        viewModelScope.launch {
+            runCatching {
+                appRepository.deleteMedicament(medicamentId)
+            }.onSuccess {
+                _state.update {
+                    it.copy(
+                        isLoading = false
+                    )
+                }
+            }.onFailure {
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = "Błąd przy usuwaniu leku. Spróbuj ponownie."
                     )
                 }
             }

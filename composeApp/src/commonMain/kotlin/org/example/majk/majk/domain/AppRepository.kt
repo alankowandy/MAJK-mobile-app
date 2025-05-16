@@ -1,5 +1,6 @@
 package org.example.majk.majk.domain
 
+import kotlinx.datetime.LocalDate
 import org.example.majk.majk.data.dto.AdminAuthDto
 import org.example.majk.majk.data.dto.ManageFamilyDto
 import org.example.majk.majk.data.dto.MyMedicamentListDto
@@ -14,4 +15,6 @@ interface AppRepository {
     suspend fun deleteUserProfile(userId: Long, username: String)
     suspend fun insertLimitedProfile(username: String, uuid: String, familyId: Long)
     suspend fun fetchMedicamentList(familyId: Long): List<MyMedicamentListDto>
+    suspend fun deleteMedicament(medicamentId: Long)
+    suspend fun fetchScheduleForDate(date: LocalDate): Map<Int, List<MedicineEntry>>
 }
