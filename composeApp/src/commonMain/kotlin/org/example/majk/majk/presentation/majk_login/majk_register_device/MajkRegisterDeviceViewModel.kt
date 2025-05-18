@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.example.majk.core.domain.flatMap
 import org.example.majk.majk.domain.AuthRepository
 
 class MajkRegisterDeviceViewModel(
@@ -101,8 +102,6 @@ class MajkRegisterDeviceViewModel(
         val password = _state.value.passwordEntry
         val deviceCode = _state.value.deviceCode.toLong()
         var isDeviceCodeCorrect = false
-        var isSignedUp = false
-        var isUserInserted = false
 
 
         viewModelScope.launch {
@@ -115,74 +114,22 @@ class MajkRegisterDeviceViewModel(
                             errorMessage = "Urządzenie o podanym kodzie nie istnieje."
                         )
                     }
+                    throw IllegalStateException("Urządzenie o podanym kodzie nie istnieje.")
                 }
-                println(isDeviceCodeCorrect)
+            }.flatMap {
+                authRepository.insertAdminProfile(
+                    username = username,
+                    deviceCode = deviceCode,
+                    email = email
+                )
+            }.flatMap {
+                authRepository.signUp(email, password)
             }.onFailure { error ->
                 println(error)
                 _state.update {
                     it.copy(
-                        errorMessage = "Błąd w pobieraniu danych."
+                        errorMessage = "Błąd w komunikacji z serwerem. Spróbuj ponownie."
                     )
-                }
-            }
-
-            if (isDeviceCodeCorrect) {
-                runCatching {
-                    authRepository.signUp(email = email, password = password)
-                }.onSuccess {
-                    isSignedUp = true
-//                    runCatching {
-//                        authRepository.signIn(email = email, password = password)
-//                    }.onSuccess {
-//                        val sessionStatus = authRepository.sessionStatus().stateIn(
-//                            scope = viewModelScope,
-//                            started = SharingStarted.Eagerly,
-//                            initialValue = SessionStatus.Initializing
-//                        )
-//                        sessionStatus.filterIsInstance<SessionStatus.Authenticated>()
-//                            .collect { auth ->
-//                                val id = auth.session.user?.id ?: return@collect
-//                                authRepository.insertAdminProfile(
-//                                    username = username,
-//                                    deviceCode = deviceCode,
-//                                    accountId = id
-//                                )
-//                            }
-//                    }
-                }.onFailure { error ->
-                    _state.update {
-                        it.copy(
-                            errorMessage = "Błąd przy logowaniu. Spróbuj ponownie."
-                        )
-                    }
-                    println(error)
-                }
-            }
-
-            if (isSignedUp) {
-                runCatching {
-                    authRepository.insertAdminProfile(
-                        username = username,
-                        deviceCode = deviceCode,
-                        email = email
-                    )
-                }.onSuccess {
-                    isUserInserted = true
-                }.onFailure { error ->
-                    _state.update {
-                        it.copy(
-                            errorMessage = "Błąd"
-                        )
-                    }
-                    println(error)
-                }
-            }
-
-            if (isUserInserted) {
-                runCatching {
-                    authRepository.signIn(email, password)
-                }.onFailure { error ->
-                    println(error)
                 }
             }
         }

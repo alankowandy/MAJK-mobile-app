@@ -1,13 +1,12 @@
 package org.example.majk.majk.presentation.majk_login.majk_signup
 
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.example.majk.majk.data.dto.FamilyCodeDto
+import org.example.majk.core.domain.flatMap
 import org.example.majk.majk.domain.AuthRepository
 
 class MajkSignUpViewModel(
@@ -18,6 +17,7 @@ class MajkSignUpViewModel(
     val state = _state.asStateFlow()
 
     private val _emailRegex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
+    private val _passwordRegex = Regex("^.{6,}$")
 
     fun onAction(action: MajkSignUpAction) {
         when(action) {
@@ -62,7 +62,8 @@ class MajkSignUpViewModel(
                         )
                     }
                 }
-                if (_state.value.passwordEntry.isBlank()) {
+                if (_state.value.passwordEntry.isBlank()
+                    || !_passwordRegex.matches(_state.value.passwordEntry)) {
                     _state.update {
                         it.copy(
                             passwordError = true
@@ -96,7 +97,6 @@ class MajkSignUpViewModel(
         val password = _state.value.passwordEntry
         val username = _state.value.usernameEntry
         val familyCode = _state.value.familyCode.toLong()
-        var isSignUpReady = false
         var familyCodeExists = false
 
         viewModelScope.launch {
@@ -106,32 +106,25 @@ class MajkSignUpViewModel(
                 _state.update {
                     it.copy(familyCodeExists = result.familyCodeExists)
                 }
+                if (!familyCodeExists) {
+                    _state.update {
+                        it.copy(errorMessage = "Podany kod rodziny nie istnieje.")
+                    }
+                    throw IllegalStateException("Podany kod rodziny nie istnieje.")
+                }
+            }.flatMap {
+                authRepository.insertNewUser(
+                    username = username,
+                    familyCode = familyCode,
+                    email = email
+                )
+            }.flatMap {
+                authRepository.signUp(email, password)
             }.onFailure { error ->
                 _state.update {
-                    it.copy(errorMessage = error.message)
+                    it.copy(errorMessage = "Błąd w komunikacji z serwerem. Spróbuj ponownie.")
                 }
-            }
-
-            if (familyCodeExists) {
-                runCatching {
-                    authRepository.insertNewUsername(username, familyCode)
-                }.onSuccess {
-                    isSignUpReady = true
-                }.onFailure { error ->
-                    _state.update {
-                        it.copy(errorMessage = error.message)
-                    }
-                }
-            }
-
-            if (isSignUpReady) {
-                runCatching {
-                    authRepository.signUp(email, password)
-                }.onFailure { error ->
-                    _state.update {
-                        it.copy(errorMessage = error.message)
-                    }
-                }
+                println(error)
             }
         }
     }

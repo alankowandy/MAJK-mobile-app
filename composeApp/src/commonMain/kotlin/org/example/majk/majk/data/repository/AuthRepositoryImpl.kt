@@ -35,12 +35,13 @@ class AuthRepositoryImpl(
     override suspend fun signUp(
         email: String,
         password: String
-    ) {
+    ): String {
         return withContext(Dispatchers.IO) {
-            auth.signUpWith(Email) {
+            val data = auth.signUpWith(Email) {
                 this.email = email
                 this.password = password
             }
+            data?.id ?: ""
         }
     }
 
@@ -57,13 +58,14 @@ class AuthRepositoryImpl(
         }
     }
 
-    override suspend fun insertNewUsername(username: String, familyCode: Long) {
+    override suspend fun insertNewUser(username: String, familyCode: Long, email: String) {
         return withContext(Dispatchers.IO) {
             postgrest.rpc(
-                function = "insertNewUsername",
+                function = "add_user_profile",
                 parameters = buildJsonObject {
                     put("new_username", username)
                     put("new_family_id", familyCode)
+                    put("new_email", email)
                 }
             )
         }
@@ -85,11 +87,11 @@ class AuthRepositoryImpl(
     override suspend fun insertAdminProfile(username: String, deviceCode: Long, email: String) {
         return withContext(Dispatchers.IO) {
             postgrest.rpc(
-                function = "insert_admin_profile",
+                function = "insert_admin_profile_with_email_and_initialize",
                 parameters = buildJsonObject {
                     put("new_name", username)
                     put("device_id_input", deviceCode)
-                    put("user_email_input", email)
+                    put("email_input", email)
                 }
             )
         }
@@ -127,12 +129,13 @@ class AuthRepositoryImpl(
         return auth.sessionStatus
     }
 
-    override suspend fun fetchProfileDetails(authId: String): SharedStateDto {
+    override suspend fun fetchProfileDetails(email: String, authId: String): SharedStateDto {
         return withContext(Dispatchers.IO) {
             val data = postgrest.rpc(
-                function = "fetch_user_info",
+                function = "get_and_update_profile_info_by_email",
                 parameters = buildJsonObject {
-                    put("account_id_input", authId)
+                    put("provided_email", email)
+                    put("provided_account_id", authId)
                 }
             ).decodeList<SharedStateDto>()
             data[0]

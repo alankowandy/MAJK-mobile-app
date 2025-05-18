@@ -30,6 +30,7 @@ class SharedViewModel(
     val userInfo = _userInfo.asStateFlow()
 
     private var id: String = ""
+    private var email: String = ""
 
     init {
         viewModelScope.launch {
@@ -37,15 +38,19 @@ class SharedViewModel(
                 .filterIsInstance<SessionStatus.Authenticated>()
                 .collect { auth ->
                     id = auth.session.user?.id ?: return@collect
-                    fetchUserInfo(id)
+                    email = auth.session.user?.email ?: return@collect
+                    fetchUserInfo(
+                        email = email,
+                        authId = id
+                    )
                 }
         }
     }
 
-    private fun fetchUserInfo(authId: String) {
+    private fun fetchUserInfo(email: String, authId: String) {
         viewModelScope.launch {
             runCatching {
-                val result = authRepository.fetchProfileDetails(authId)
+                val result = authRepository.fetchProfileDetails(email = email, authId = authId)
                 _userInfo.emit(result.asDomainModel())
             }.onFailure { error ->
                 _state.update {
