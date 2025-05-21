@@ -51,10 +51,13 @@ sealed interface Route {
     data class MyMedkitEdit(val medicineId: Long): Route
 
     @Serializable
+    data object MajkContainerGraph: Route
+
+    @Serializable
     data object MajkContainersState: Route
 
     @Serializable
-    data class MajkContainerSettings(val containerId: String): Route
+    data class MajkContainerSettings(val containerId: Long): Route
 
     @Serializable
     data object ManageFamilyGraph: Route
@@ -79,6 +82,7 @@ fun graphFromString(route: String): Route {
         Route.ManageFamilyGraph::class.qualifiedName -> Route.ManageFamilyGraph
         Route.MajkScheduleGraph::class.qualifiedName -> Route.MajkScheduleGraph
         Route.MyMedkitGraph::class.qualifiedName -> Route.MyMedkitGraph
+        Route.MajkContainerGraph::class.qualifiedName -> Route.MajkContainerGraph
         else -> Route.LogInGraph
     }
 }

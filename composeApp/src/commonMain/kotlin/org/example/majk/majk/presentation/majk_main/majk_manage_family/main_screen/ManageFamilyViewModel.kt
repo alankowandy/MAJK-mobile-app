@@ -2,7 +2,7 @@ package org.example.majk.majk.presentation.majk_main.majk_manage_family.main_scr
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import org.example.majk.majk.domain.AppRepository
+import org.example.majk.majk.domain.repository.AppRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -15,12 +15,10 @@ import kotlinx.coroutines.launch
 import org.example.majk.core.presentation.SharedViewModel
 import org.example.majk.majk.data.dto.ManageFamilyDto
 import org.example.majk.majk.domain.ManageFamily
-import org.example.majk.majk.presentation.majk_main.majk_manage_family.ManageFamilySharedViewModel
 
 class ManageFamilyViewModel(
     private val appRepository: AppRepository,
-    private val sharedViewModel: SharedViewModel,
-    private val manageFamilySharedViewModel: ManageFamilySharedViewModel
+    private val sharedViewModel: SharedViewModel
 ): ViewModel() {
 
     private val _state = MutableStateFlow(ManageFamilyState())
@@ -29,6 +27,8 @@ class ManageFamilyViewModel(
     private val _users = MutableStateFlow<List<ManageFamily>>(listOf())
     val users = _users.asStateFlow()
 
+    private var currentFamilyId: Long? = null
+
     init {
         sharedViewModel.userInfo
             .map { it?.familyId }
@@ -36,6 +36,7 @@ class ManageFamilyViewModel(
             .distinctUntilChanged()
             .onEach { familyId ->
                 if (familyId != null) {
+                    currentFamilyId = familyId
                     collectUsers(familyId)
                 }
             }
@@ -51,18 +52,8 @@ class ManageFamilyViewModel(
 
             }
             is ManageFamilyAction.OnRefreshData -> {
-                if (manageFamilySharedViewModel.shouldRefresh.value) {
-                    sharedViewModel.userInfo
-                        .map { it?.familyId }
-                        .filter { it != 0L }
-                        .distinctUntilChanged()
-                        .onEach { familyId ->
-                            if (familyId != null) {
-                                collectUsers(familyId)
-                            }
-                        }
-                        .launchIn(viewModelScope)
-                }
+                _state.update { it.copy(isLoading = true) }
+                currentFamilyId?.let { collectUsers(it) }
             }
         }
     }
@@ -79,7 +70,10 @@ class ManageFamilyViewModel(
                 _users.emit(result.map { it.asDomainModel() })
             }.onSuccess {
                 _state.update {
-                    it.copy(isLoading = false)
+                    it.copy(
+                        isLoading = false,
+                        initialLoadDone = true
+                    )
                 }
             }.onFailure {
                 _state.update {

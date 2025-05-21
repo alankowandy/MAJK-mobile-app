@@ -4,20 +4,16 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import io.wojciechosak.calendar.utils.today
-import org.example.majk.majk.domain.AppRepository
+import org.example.majk.majk.domain.repository.AppRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDate
 import kotlinx.datetime.toLocalDateTime
 import org.example.majk.app.Route
 import org.example.majk.majk.domain.MedicineEntry
-import org.example.majk.majk.presentation.majk_main.majk_my_schedule.main_screen.ScheduleState
 
 
 class DetailsViewModel(

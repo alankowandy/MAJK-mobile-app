@@ -3,7 +3,7 @@ package org.example.majk.core.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.jan.supabase.auth.status.SessionStatus
-import org.example.majk.majk.domain.AuthRepository
+import org.example.majk.majk.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.stateIn
@@ -12,6 +12,8 @@ import org.example.majk.core.data.dto.SharedStateDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterIsInstance
+import org.example.majk.core.data.dto.FamilyUsersDto
+import org.example.majk.core.domain.FamilyUsers
 
 class SharedViewModel(
     private val authRepository: AuthRepository
@@ -29,10 +31,17 @@ class SharedViewModel(
     private val _userInfo = MutableStateFlow<SharedState?>(null)
     val userInfo = _userInfo.asStateFlow()
 
+    private val _familyUsers = MutableStateFlow<List<FamilyUsers>>(emptyList())
+    val familyUsers = _familyUsers.asStateFlow()
+
     private var id: String = ""
     private var email: String = ""
 
     init {
+        filterSessionStatus()
+    }
+
+    private fun filterSessionStatus() {
         viewModelScope.launch {
             sessionStatus
                 .filterIsInstance<SessionStatus.Authenticated>()
@@ -52,6 +61,8 @@ class SharedViewModel(
             runCatching {
                 val result = authRepository.fetchProfileDetails(email = email, authId = authId)
                 _userInfo.emit(result.asDomainModel())
+            }.onSuccess {
+                _userInfo.value?.familyId?.let { fetchFamilyUsers(it) }
             }.onFailure { error ->
                 _state.update {
                     it.copy(
@@ -59,6 +70,32 @@ class SharedViewModel(
                     )
                 }
                 println(error.message)
+            }
+        }
+    }
+
+    private fun fetchFamilyUsers(familyId: Long) {
+        viewModelScope.launch {
+            runCatching {
+                val result = authRepository.fetchFamilyUsers(familyId)
+                _familyUsers.emit(result.map { it.asDomainModel() })
+            }.onFailure { error ->
+                _state.update {
+                    it.copy(
+                        actionErrorMessage = "Błąd w komunikacji z serwerem."
+                    )
+                }
+                println(error)
+            }
+        }
+    }
+
+    fun onAction(action: SharedAction) {
+        when (action) {
+            is SharedAction.OnExpandAction -> {
+                _state.update {
+                    it.copy(isActionExpanded = action.isExpanded)
+                }
             }
         }
     }
@@ -73,7 +110,16 @@ class SharedViewModel(
             accountId = this.accountId,
             username = this.username,
             familyId = this.familyId,
-            deviceId = this.deviceId
+            deviceId = this.deviceId,
+            permission = this.permission
+        )
+    }
+
+    private fun FamilyUsersDto.asDomainModel(): FamilyUsers {
+        return FamilyUsers(
+            userId = this.userId,
+            username = this.username,
+            permission = this.permission
         )
     }
 

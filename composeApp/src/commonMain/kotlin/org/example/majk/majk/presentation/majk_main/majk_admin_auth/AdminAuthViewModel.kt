@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import org.example.majk.core.presentation.SharedViewModel
 import org.example.majk.majk.data.dto.AdminAuthDto
 import org.example.majk.majk.domain.AdminAuthUsers
-import org.example.majk.majk.domain.AppRepository
+import org.example.majk.majk.domain.repository.AppRepository
 
 class AdminAuthViewModel(
     private val appRepository: AppRepository,

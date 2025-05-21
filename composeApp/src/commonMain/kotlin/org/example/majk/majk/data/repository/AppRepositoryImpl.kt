@@ -2,7 +2,6 @@ package org.example.majk.majk.data.repository
 
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.postgrest
-import io.github.jan.supabase.postgrest.rpc
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
@@ -10,11 +9,12 @@ import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import org.example.majk.majk.data.dto.AdminAuthDto
+import org.example.majk.majk.data.dto.ContainerSettingsDto
+import org.example.majk.majk.data.dto.ContainerStateDto
 import org.example.majk.majk.data.dto.ManageFamilyDto
 import org.example.majk.majk.data.dto.MyMedicamentListDto
 import org.example.majk.majk.data.dto.UserSettingsDto
-import org.example.majk.majk.domain.AdminAuthUsers
-import org.example.majk.majk.domain.AppRepository
+import org.example.majk.majk.domain.repository.AppRepository
 import org.example.majk.majk.domain.MedicineEntry
 
 class AppRepositoryImpl(
@@ -134,5 +134,29 @@ class AppRepositoryImpl(
             13 to listOf(MedicineEntry("Witamina A", taken = false),
                 MedicineEntry("Izotek", taken = false))
         )
+    }
+
+    override suspend fun fetchContainerState(deviceId: Long): List<ContainerStateDto> {
+        return withContext(Dispatchers.IO) {
+            val data = postgrest.rpc(
+                function = "get_containers_with_medicament_names",
+                parameters = buildJsonObject {
+                    put("deviceid_input", deviceId)
+                }
+            ).decodeList<ContainerStateDto>()
+            data
+        }
+    }
+
+    override suspend fun fetchContainerSettings(containerId: Long): ContainerSettingsDto {
+        return withContext(Dispatchers.IO) {
+            val data = postgrest.rpc(
+                function = "get_container_details_by_id",
+                parameters = buildJsonObject {
+                    put("container_id_input", containerId)
+                }
+            ).decodeList<ContainerSettingsDto>()
+            data[0]
+        }
     }
 }

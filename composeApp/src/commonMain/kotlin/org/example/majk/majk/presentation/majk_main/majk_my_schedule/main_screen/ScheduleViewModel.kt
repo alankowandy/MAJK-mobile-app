@@ -1,7 +1,7 @@
 package org.example.majk.majk.presentation.majk_main.majk_my_schedule.main_screen
 
 import androidx.lifecycle.ViewModel
-import org.example.majk.majk.domain.AppRepository
+import org.example.majk.majk.domain.repository.AppRepository
 import kotlinx.coroutines.flow.*
 
 

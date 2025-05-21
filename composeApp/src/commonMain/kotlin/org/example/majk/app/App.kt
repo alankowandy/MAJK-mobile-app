@@ -2,7 +2,9 @@ package org.example.majk.app
 
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material.IconButton
+import androidx.compose.material.ModalDrawer
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
@@ -10,11 +12,13 @@ import androidx.compose.material.icons.filled.Diversity3
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.ViewModel
@@ -30,7 +34,9 @@ import kotlinx.coroutines.launch
 import org.example.majk.core.domain.RouteTitle
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.SharedAction
 import org.example.majk.core.presentation.SharedViewModel
+import org.example.majk.core.presentation.components.ActionDropdown
 import org.example.majk.majk.presentation.majk_login.majk_register_device.MajkRegisterDeviceScreenRoot
 import org.example.majk.majk.presentation.majk_login.majk_register_device.MajkRegisterDeviceViewModel
 import org.example.majk.majk.presentation.majk_login.majk_signin.MajkSignInScreenRoot
@@ -40,12 +46,16 @@ import org.example.majk.majk.presentation.majk_login.majk_signup.MajkSignUpViewM
 import org.example.majk.majk.presentation.majk_login.majk_start.MajkStartScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_add_profile.AddProfileScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthScreenRoot
-import org.example.majk.majk.presentation.majk_main.majk_containers_state.ContainerStateScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_screen.ContainerStateScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_history.HistoryScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_home.HomeScreenRoot
 import org.example.majk.core.presentation.components.Drawer
 import org.example.majk.majk.presentation.majk_main.majk_add_profile.AddProfileViewModel
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthViewModel
+import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_screen.ContainerStateViewModel
+import org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen.ContainerSettingsScreen
+import org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen.ContainerSettingsScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen.ContainerSettingsViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsScreenRoot
@@ -67,9 +77,12 @@ fun App() {
         val navController = rememberNavController()
         val scope = rememberCoroutineScope()
         val scaffoldState = rememberScaffoldState()
+
         val sharedViewModel = koinViewModel<SharedViewModel>()
         val sessionStatus by sharedViewModel.sessionStatus.collectAsState()
         val userInfo by sharedViewModel.userInfo.collectAsState()
+        val familyUsers by sharedViewModel.familyUsers.collectAsState()
+        val sharedState by sharedViewModel.state.collectAsState()
 
         val navBackStackEntry by navController.currentBackStackEntryAsState()
 
@@ -150,6 +163,13 @@ fun App() {
                                                 navController.navigateUp()
                                             }
                                         }
+                                        is Route.MajkContainerGraph -> {
+                                            if (currentRoute == "org.example.majk.app.Route.MajkContainersState") {
+                                                scope.launch { scaffoldState.drawerState.open() }
+                                            } else {
+                                                navController.navigateUp()
+                                            }
+                                        }
                                         else -> {
                                             navController.navigateUp()
                                         }
@@ -180,6 +200,13 @@ fun App() {
                                                 Icons.Default.ArrowBackIosNew
                                             }
                                         }
+                                        is Route.MajkContainerGraph -> {
+                                            if (currentRoute == "org.example.majk.app.Route.MajkContainersState") {
+                                                Icons.Default.Menu
+                                            } else {
+                                                Icons.Default.ArrowBackIosNew
+                                            }
+                                        }
                                         else -> {
                                             Icons.Default.ArrowBackIosNew
                                         }
@@ -190,15 +217,30 @@ fun App() {
                         }
                     },
                     actions = {
-                        if (currentGraph is Route.MajkGraph) {
-                            IconButton(
-                                onClick = {
-
+                        if (currentGraph !is Route.LogInGraph) {
+                            Box {
+                                IconButton(
+                                    onClick = {
+                                        sharedViewModel.onAction(SharedAction.OnExpandAction(true))
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Filled.Diversity3,
+                                        contentDescription = "family_details"
+                                    )
                                 }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.Diversity3,
-                                    contentDescription = "family_details"
+                                ActionDropdown(
+                                    familyCode = userInfo?.familyId.toString(),
+                                    deviceCode = userInfo?.deviceId.toString(),
+                                    familyUsers = familyUsers,
+                                    isAdmin = (userInfo?.permission == "admin"),
+                                    onUserClick = {
+
+                                    },
+                                    onDismiss = {
+                                        sharedViewModel.onAction(SharedAction.OnExpandAction(false))
+                                    },
+                                    isExpanded = sharedState.isActionExpanded
                                 )
                             }
                         }
@@ -413,16 +455,45 @@ fun App() {
                     }
 
 
-                    composable<Route.MajkContainersState>(
-                        enterTransition = { slideInHorizontally { initialOffset ->
-                            initialOffset
-                        } },
-                        exitTransition = { slideOutHorizontally { initialOffset ->
-                            initialOffset
-                        } }
+                    navigation<Route.MajkContainerGraph>(
+                        startDestination = Route.MajkContainersState
                     ) {
-                        ContainerStateScreenRoot()
+                        composable<Route.MajkContainersState>(
+                            exitTransition = { slideOutHorizontally() },
+                            popEnterTransition = { slideInHorizontally() },
+                            enterTransition = { slideInHorizontally { initialOffset ->
+                                initialOffset
+                            } }
+                        ) {
+                            val viewModel = koinViewModel<ContainerStateViewModel>()
+
+                            ContainerStateScreenRoot(
+                                viewModel = viewModel,
+                                onSettingsClick = { container ->
+                                    navController.navigate(
+                                        Route.MajkContainerSettings(container)
+                                    )
+                                }
+                            )
+                        }
+
+                        composable<Route.MajkContainerSettings>(
+                            enterTransition = { slideInHorizontally { initialOffset ->
+                                initialOffset
+                            } },
+                            exitTransition = { slideOutHorizontally { initialOffset ->
+                                initialOffset
+                            } }
+                        ) {
+                            val viewModel = koinViewModel<ContainerSettingsViewModel>()
+
+                            ContainerSettingsScreenRoot(
+                                viewModel = viewModel,
+                                onBackClick = { navController.navigateUp() }
+                            )
+                        }
                     }
+
 
                     navigation<Route.ManageFamilyGraph>(
                         startDestination = Route.MajkManageFamily

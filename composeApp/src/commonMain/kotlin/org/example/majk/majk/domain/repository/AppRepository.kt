@@ -1,10 +1,13 @@
-package org.example.majk.majk.domain
+package org.example.majk.majk.domain.repository
 
 import kotlinx.datetime.LocalDate
 import org.example.majk.majk.data.dto.AdminAuthDto
+import org.example.majk.majk.data.dto.ContainerSettingsDto
+import org.example.majk.majk.data.dto.ContainerStateDto
 import org.example.majk.majk.data.dto.ManageFamilyDto
 import org.example.majk.majk.data.dto.MyMedicamentListDto
 import org.example.majk.majk.data.dto.UserSettingsDto
+import org.example.majk.majk.domain.MedicineEntry
 
 interface AppRepository {
     suspend fun collectContainerState()
@@ -17,4 +20,6 @@ interface AppRepository {
     suspend fun fetchMedicamentList(familyId: Long): List<MyMedicamentListDto>
     suspend fun deleteMedicament(medicamentId: Long)
     suspend fun fetchScheduleForDate(date: LocalDate): Map<Int, List<MedicineEntry>>
+    suspend fun fetchContainerState(deviceId: Long): List<ContainerStateDto>
+    suspend fun fetchContainerSettings(containerId: Long): ContainerSettingsDto
 }

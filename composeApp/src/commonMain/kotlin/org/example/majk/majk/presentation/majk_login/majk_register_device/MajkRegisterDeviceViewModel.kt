@@ -2,16 +2,12 @@ package org.example.majk.majk.presentation.majk_login.majk_register_device
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.github.jan.supabase.auth.status.SessionStatus
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.example.majk.core.domain.flatMap
-import org.example.majk.majk.domain.AuthRepository
+import org.example.majk.majk.domain.repository.AuthRepository
 
 class MajkRegisterDeviceViewModel(
     private val authRepository: AuthRepository

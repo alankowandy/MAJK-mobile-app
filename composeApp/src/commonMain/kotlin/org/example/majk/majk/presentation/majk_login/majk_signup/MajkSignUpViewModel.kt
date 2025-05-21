@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.example.majk.core.domain.flatMap
-import org.example.majk.majk.domain.AuthRepository
+import org.example.majk.majk.domain.repository.AuthRepository
 
 class MajkSignUpViewModel(
     private val authRepository: AuthRepository

@@ -15,5 +15,8 @@ data class SharedStateDto(
     val familyId: Long? = null,
 
     @SerialName("deviceId")
-    val deviceId: Long? = null
+    val deviceId: Long? = null,
+
+    @SerialName("permission")
+    val permission: String? = null
 )

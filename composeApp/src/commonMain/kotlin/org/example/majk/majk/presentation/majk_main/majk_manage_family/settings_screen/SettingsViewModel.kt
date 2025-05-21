@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import org.example.majk.app.Route
-import org.example.majk.majk.domain.AppRepository
+import org.example.majk.majk.domain.repository.AppRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,12 +15,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.example.majk.majk.data.dto.UserSettingsDto
 import org.example.majk.majk.domain.UserSettings
-import org.example.majk.majk.presentation.majk_main.majk_manage_family.ManageFamilySharedViewModel
 
 class SettingsViewModel(
     private val appRepository: AppRepository,
-    private val savedStateHandle: SavedStateHandle,
-    private val manageFamilySharedViewModel: ManageFamilySharedViewModel
+    private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
     private val user = savedStateHandle.toRoute<Route.MajkManageFamilySettings>().userId
@@ -64,8 +62,8 @@ class SettingsViewModel(
                         )
                     }
                 } else {
-                    var username = _state.value.usernameEntry
-                    var permission = when (_state.value.permissionEntry) {
+                    val username = _state.value.usernameEntry
+                    val permission = when (_state.value.permissionEntry) {
                         "Administrator" -> "admin"
                         "Użytkownik" -> "user"
                         "Ograniczony" -> "limited"
@@ -88,7 +86,6 @@ class SettingsViewModel(
                         )
                     }
                 } else {
-                    manageFamilySharedViewModel.switchRefresh(true)
                     deleteProfile(userId = user, username = _userSettings.value.currentUsername ?: "")
                 }
             }

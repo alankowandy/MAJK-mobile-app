@@ -10,6 +10,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.map
 import org.example.majk.core.presentation.DarkTeal
@@ -27,6 +29,15 @@ fun ManageFamilyScreenRoot(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val users by viewModel.users.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
+
+    LaunchedEffect(lifecycleState) {
+        println(lifecycleState.toString())
+        if (lifecycleState == Lifecycle.State.STARTED && state.initialLoadDone) {
+            viewModel.onAction(ManageFamilyAction.OnRefreshData)
+        }
+    }
 
     ManageFamilyScreen(
         users = users,
@@ -47,8 +58,6 @@ fun ManageFamilyScreen(
     state: ManageFamilyState,
     onAction: (ManageFamilyAction) -> Unit
 ) {
-    onAction(ManageFamilyAction.OnRefreshData)
-
     Box(
         modifier = Modifier
             .fillMaxSize()

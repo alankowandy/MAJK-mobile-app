@@ -3,7 +3,7 @@ package org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import org.example.majk.core.presentation.SharedViewModel
-import org.example.majk.majk.domain.AppRepository
+import org.example.majk.majk.domain.repository.AppRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged

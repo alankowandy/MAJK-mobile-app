@@ -5,17 +5,17 @@ import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.status.SessionStatus
 import io.github.jan.supabase.postgrest.postgrest
-import io.github.jan.supabase.postgrest.rpc
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
+import org.example.majk.core.data.dto.FamilyUsersDto
 import org.example.majk.core.data.dto.SharedStateDto
 import org.example.majk.majk.data.dto.DeviceCodeDto
 import org.example.majk.majk.data.dto.FamilyCodeDto
-import org.example.majk.majk.domain.AuthRepository
+import org.example.majk.majk.domain.repository.AuthRepository
 
 class AuthRepositoryImpl(
     client: SupabaseClient
@@ -139,6 +139,18 @@ class AuthRepositoryImpl(
                 }
             ).decodeList<SharedStateDto>()
             data[0]
+        }
+    }
+
+    override suspend fun fetchFamilyUsers(familyId: Long): List<FamilyUsersDto> {
+        return withContext(Dispatchers.IO) {
+            val data = postgrest.rpc(
+                function = "get_profiles_by_family_id",
+                parameters = buildJsonObject {
+                    put("family_id_input", familyId)
+                }
+            ).decodeList<FamilyUsersDto>()
+            data
         }
     }
 

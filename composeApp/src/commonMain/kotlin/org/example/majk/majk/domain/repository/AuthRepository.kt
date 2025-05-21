@@ -1,8 +1,8 @@
-package org.example.majk.majk.domain
+package org.example.majk.majk.domain.repository
 
 import io.github.jan.supabase.auth.status.SessionStatus
-import io.github.jan.supabase.auth.user.UserSession
 import kotlinx.coroutines.flow.Flow
+import org.example.majk.core.data.dto.FamilyUsersDto
 import org.example.majk.core.data.dto.SharedStateDto
 import org.example.majk.majk.data.dto.DeviceCodeDto
 import org.example.majk.majk.data.dto.FamilyCodeDto
@@ -20,5 +20,5 @@ interface AuthRepository {
     suspend fun insertAdminProfile(username: String, deviceCode: Long, email: String)
     fun sessionStatus(): Flow<SessionStatus>
     suspend fun fetchProfileDetails(email: String, authId: String): SharedStateDto
-
+    suspend fun fetchFamilyUsers(familyId: Long): List<FamilyUsersDto>
 }
