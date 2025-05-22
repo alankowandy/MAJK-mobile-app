@@ -36,6 +36,7 @@ class SharedViewModel(
 
     private var id: String = ""
     private var email: String = ""
+    private var currentFamilyId: Long = 0
 
     init {
         filterSessionStatus()
@@ -62,6 +63,7 @@ class SharedViewModel(
                 val result = authRepository.fetchProfileDetails(email = email, authId = authId)
                 _userInfo.emit(result.asDomainModel())
             }.onSuccess {
+                currentFamilyId = _userInfo.value?.familyId!!
                 _userInfo.value?.familyId?.let { fetchFamilyUsers(it) }
             }.onFailure { error ->
                 _state.update {
@@ -96,6 +98,10 @@ class SharedViewModel(
                 _state.update {
                     it.copy(isActionExpanded = action.isExpanded)
                 }
+            }
+            is SharedAction.OnRefreshActionData -> {
+                fetchFamilyUsers(currentFamilyId)
+                println("executed fetch")
             }
         }
     }

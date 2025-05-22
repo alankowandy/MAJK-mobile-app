@@ -13,12 +13,15 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.example.majk.core.presentation.SharedAction
+import org.example.majk.core.presentation.SharedViewModel
 import org.example.majk.majk.data.dto.UserSettingsDto
 import org.example.majk.majk.domain.UserSettings
 
 class SettingsViewModel(
     private val appRepository: AppRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val sharedViewModel: SharedViewModel
 ): ViewModel() {
 
     private val user = savedStateHandle.toRoute<Route.MajkManageFamilySettings>().userId
@@ -135,6 +138,8 @@ class SettingsViewModel(
         viewModelScope.launch {
             runCatching {
                 appRepository.updateUserSettings(userId, username, permission)
+            }.onSuccess {
+                sharedViewModel.onAction(SharedAction.OnRefreshActionData)
             }.onFailure {
                 _state.update {
                     it.copy(
@@ -152,6 +157,8 @@ class SettingsViewModel(
         viewModelScope.launch {
             runCatching {
                 appRepository.deleteUserProfile(userId, username)
+            }.onSuccess {
+                sharedViewModel.onAction(SharedAction.OnRefreshActionData)
             }.onFailure {
                 _state.update {
                     it.copy(

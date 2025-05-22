@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.example.majk.core.presentation.SharedAction
 import org.example.majk.core.presentation.SharedViewModel
 
 class AddProfileViewModel(
@@ -83,6 +84,7 @@ class AddProfileViewModel(
                 kotlin.runCatching {
                     appRepository.insertLimitedProfile(username, uuid, familyId)
                 }.onSuccess {
+                    sharedViewModel.onAction(SharedAction.OnRefreshActionData)
                     _state.update {
                         it.copy(
                             usernameError = false,

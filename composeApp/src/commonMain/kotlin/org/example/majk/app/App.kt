@@ -22,6 +22,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -80,8 +81,8 @@ fun App() {
 
         val sharedViewModel = koinViewModel<SharedViewModel>()
         val sessionStatus by sharedViewModel.sessionStatus.collectAsState()
-        val userInfo by sharedViewModel.userInfo.collectAsState()
-        val familyUsers by sharedViewModel.familyUsers.collectAsState()
+        val userInfo by sharedViewModel.userInfo.collectAsStateWithLifecycle()
+        val familyUsers by sharedViewModel.familyUsers.collectAsStateWithLifecycle()
         val sharedState by sharedViewModel.state.collectAsState()
 
         val navBackStackEntry by navController.currentBackStackEntryAsState()

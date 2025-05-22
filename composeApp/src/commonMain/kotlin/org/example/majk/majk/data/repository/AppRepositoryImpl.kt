@@ -10,6 +10,7 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import org.example.majk.majk.data.dto.AdminAuthDto
 import org.example.majk.majk.data.dto.ContainerSettingsDto
+import org.example.majk.majk.data.dto.ContainerSettingsSearchQueryDto
 import org.example.majk.majk.data.dto.ContainerStateDto
 import org.example.majk.majk.data.dto.ManageFamilyDto
 import org.example.majk.majk.data.dto.MyMedicamentListDto
@@ -157,6 +158,19 @@ class AppRepositoryImpl(
                 }
             ).decodeList<ContainerSettingsDto>()
             data[0]
+        }
+    }
+
+    override suspend fun searchMedicament(familyId: Long, partialName: String): List<ContainerSettingsSearchQueryDto> {
+        return withContext(Dispatchers.IO) {
+            val data = postgrest.rpc(
+                function = "search_medicaments_by_family_and_partial_name",
+                parameters = buildJsonObject {
+                    put("family_id_input", familyId)
+                    put("partial_name_input", partialName)
+                }
+            ).decodeList<ContainerSettingsSearchQueryDto>()
+            data
         }
     }
 }

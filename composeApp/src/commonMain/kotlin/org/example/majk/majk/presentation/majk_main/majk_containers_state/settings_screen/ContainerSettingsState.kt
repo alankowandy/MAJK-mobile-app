@@ -5,7 +5,9 @@ data class ContainerSettingsState(
     val errorMessage: String? = null,
     val searchEntry: String = "",
     val searchError: String? = null,
+    val isSearchExpanded: Boolean = false,
     val isEmptied: Boolean = false,
     val pillQuantityEntry: Int = 0,
+    val pillQuantityEntryError: Boolean = false,
     val isSearching: Boolean = false
 )

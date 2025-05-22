@@ -10,15 +10,23 @@ import org.example.majk.majk.domain.repository.AppRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.update
+import org.example.majk.core.presentation.SharedViewModel
 import org.example.majk.majk.data.dto.ContainerSettingsDto
+import org.example.majk.majk.data.dto.ContainerSettingsSearchQueryDto
 import org.example.majk.majk.domain.ContainerSettings
+import org.example.majk.majk.domain.ContainerSettingsSearchQuery
 
 class ContainerSettingsViewModel(
     private val appRepository: AppRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val sharedViewModel: SharedViewModel
 ): ViewModel() {
 
     private val container = savedStateHandle.toRoute<Route.MajkContainerSettings>().containerId
@@ -29,9 +37,16 @@ class ContainerSettingsViewModel(
     private val _containerSettings = MutableStateFlow(ContainerSettings())
     val containerSettings = _containerSettings.asStateFlow()
 
-    private val searchQuery = MutableStateFlow("")
+    private val _searchResult = MutableStateFlow<List<ContainerSettingsSearchQuery>>(emptyList())
+    val searchResult = _searchResult.asStateFlow()
+
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
+
+    private var currentFamilyId: Long = 0
 
     init {
+        fetchFamilyId()
         fetchContainerSettings(containerId = container)
         observeSearchText()
     }
@@ -39,8 +54,19 @@ class ContainerSettingsViewModel(
     fun onAction(action: ContainerSettingsAction) {
         when (action) {
             is ContainerSettingsAction.OnSearchQueryChange -> {
+                _searchQuery.value = action.medicamentSearch
                 _state.update {
                     it.copy(searchEntry = action.medicamentSearch)
+                }
+            }
+            is ContainerSettingsAction.OnPillQuantityChange -> {
+                _state.update {
+                    it.copy(pillQuantityEntry = action.pillQuantity)
+                }
+            }
+            is ContainerSettingsAction.OnSearchExpandedChange -> {
+                _state.update {
+                    it.copy(isSearchExpanded = action.isExpanded)
                 }
             }
         }
@@ -49,16 +75,29 @@ class ContainerSettingsViewModel(
     @OptIn(FlowPreview::class)
     private fun observeSearchText() {
         viewModelScope.launch {
-            searchQuery
+            _searchQuery
                 .debounce(500L)
                 .onEach { _state.update { it.copy(isSearching = true) } }
                 .collect { text ->
-                    if (text.isBlank()) {
-
-                    } else {
-
+                    if (text.isNotBlank()) {
+                        searchMedicament(familyId = currentFamilyId, partialName = text)
                     }
                 }
+        }
+    }
+
+    private fun fetchFamilyId() {
+        viewModelScope.launch {
+            sharedViewModel.userInfo
+                .map { it?.familyId }
+                .filter { it != 0L }
+                .distinctUntilChanged()
+                .onEach { familyId ->
+                    if (familyId != null) {
+                        currentFamilyId = familyId
+                    }
+                }
+                .launchIn(viewModelScope)
         }
     }
 
@@ -68,7 +107,11 @@ class ContainerSettingsViewModel(
                 val result = appRepository.fetchContainerSettings(containerId)
                 _containerSettings.emit(result.asDomainModel())
             }.onSuccess {
-                _state.update { it.copy(isLoading = false) }
+                _state.update { it.copy(
+                    isLoading = false,
+                    pillQuantityEntry = _containerSettings.value.pillQuantity.toInt()
+                ) }
+                _searchQuery.value = _containerSettings.value.medicamentName
             }.onFailure {
                 _state.update {
                     it.copy(
@@ -80,11 +123,35 @@ class ContainerSettingsViewModel(
         }
     }
 
+    private fun searchMedicament(familyId: Long, partialName: String) {
+        viewModelScope.launch {
+            runCatching {
+                val result = appRepository.searchMedicament(familyId, partialName)
+                _searchResult.emit(result.map { it.asDomainModel() })
+            }.onSuccess {
+                _state.update {
+                    it.copy(isSearching = false)
+                }
+            }.onFailure {
+                _state.update {
+                    it.copy(isSearching = false, searchError = "Błąd w wyszukiwaniu.")
+                }
+            }
+        }
+    }
+
     private fun ContainerSettingsDto.asDomainModel(): ContainerSettings {
         return ContainerSettings(
             medicamentName = this.medicamentName,
             containerNumber = this.containerNumber,
             pillQuantity = this.pillQuantity
+        )
+    }
+
+    private fun ContainerSettingsSearchQueryDto.asDomainModel(): ContainerSettingsSearchQuery {
+        return ContainerSettingsSearchQuery(
+            medicamentId = this.medicamentId,
+            medicamentName = this.medicamentName
         )
     }
 }

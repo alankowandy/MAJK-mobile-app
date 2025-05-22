@@ -2,6 +2,7 @@ package org.example.majk.core.presentation.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,11 +23,15 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MenuDefaults
+import androidx.compose.material3.MenuItemColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,6 +53,8 @@ fun ActionDropdown(
     onDismiss: () -> Unit,
     isExpanded: Boolean
 ) {
+    val clip = LocalClipboardManager.current
+
     DropdownMenu(
         expanded = isExpanded,
         onDismissRequest = { onDismiss() },
@@ -59,7 +66,7 @@ fun ActionDropdown(
             .width(200.dp)
     ) {
         DropdownMenuItem(
-            onClick = { /* no-op */ },
+            onClick = { clip.setText(AnnotatedString(familyCode)) },
             text = {
                 Column {
                     Text(
@@ -73,13 +80,14 @@ fun ActionDropdown(
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(color = LightGray, shape = RoundedCornerShape(6.dp))
+                            .padding(start = 8.dp)
                     )
                 }
             }
         )
         // device code
         DropdownMenuItem(
-            onClick = { /* no-op */ },
+            onClick = { clip.setText(AnnotatedString(deviceCode)) },
             text = {
                 Column {
                     Text(
@@ -93,13 +101,17 @@ fun ActionDropdown(
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(color = LightGray, shape = RoundedCornerShape(6.dp))
+                            .padding(start = 8.dp)
                     )
                 }
             }
         )
 
         if (isAdmin) {
-            HorizontalDivider()
+            HorizontalDivider(
+                modifier = Modifier
+                    .padding(top = 8.dp, bottom = 8.dp)
+            )
             familyUsers.forEach { user ->
                 DropdownMenuItem(
                     onClick = {
@@ -109,7 +121,7 @@ fun ActionDropdown(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(color = Cyan, shape = RoundedCornerShape(6.dp))
+                                .padding(8.dp)
                         ) {
                             Text(
                                 text = user.username,
@@ -117,109 +129,22 @@ fun ActionDropdown(
                                 color = DarkTeal
                             )
                             Text(
-                                text = user.permission,
+                                text = when (user.permission) {
+                                    "admin" -> "Administrator"
+                                    "user" -> "Użytkownik"
+                                    else -> "Ograniczony dostęp"
+                                },
                                 color = DarkTeal,
-                                fontSize = 6.sp
+                                fontSize = 12.sp
                             )
                         }
-                    }
+                    },
+                    modifier = Modifier
+                        .padding(horizontal = 12.dp, vertical = 4.dp)
+                        .background(color = Cyan, shape = RoundedCornerShape(16.dp))
+                        .border(width = 1.dp, color = DarkTeal, shape = RoundedCornerShape(16.dp))
                 )
             }
         }
     }
-//    Dialog(
-//        onDismissRequest = { onDismiss() },
-//        properties = DialogProperties(
-//            usePlatformDefaultWidth = false
-//        )
-//    ) {
-//        Box(
-//            modifier = Modifier
-//                .fillMaxSize()
-//        ) {
-//            Column(
-//                modifier = Modifier
-//                    .wrapContentSize(Alignment.TopEnd)
-//                    .offset(x = (-16).dp, y = 56.dp)
-//                    .padding(8.dp)
-//            ) {
-//                Card(
-//                    shape = RoundedCornerShape(12.dp),
-//                    colors = CardDefaults.cardColors(
-//                        containerColor = OffWhite
-//                    ),
-//                    modifier = Modifier
-//                        .width(200.dp)
-//                ) {
-//                    Column(
-//                        modifier = Modifier
-//                            .padding(12.dp)
-//                    ) {
-//                        Text(
-//                            text = "Kod rodziny:",
-//                            color = DarkTeal
-//                        )
-//                        Spacer(modifier = Modifier.height(4.dp))
-//                        Text(
-//                            text = familyCode,
-//                            color = DarkTeal,
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .background(
-//                                    color = LightGray,
-//                                    shape = RoundedCornerShape(8.dp)
-//                                )
-//                                .padding(6.dp)
-//                        )
-//
-//                        Spacer(modifier = Modifier.height(12.dp))
-//
-//                        Text(
-//                            text = "Kod urządzenia:",
-//                            color = DarkTeal
-//                        )
-//                        Spacer(modifier = Modifier.height(4.dp))
-//                        Text(
-//                            text = deviceCode,
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .background(
-//                                    color = LightGray,
-//                                    shape = RoundedCornerShape(8.dp)
-//                                )
-//                                .padding(6.dp)
-//                        )
-//
-//                        if (isAdmin) {
-//                            Spacer(modifier = Modifier.height(12.dp))
-//                            familyUsers.forEach { user ->
-//                                TextButton(
-//                                    onClick = onUserClick,
-//                                    modifier = Modifier
-//                                        .fillMaxSize()
-//                                        .padding(vertical = 8.dp),
-//                                    shape = RoundedCornerShape(12.dp),
-//                                    colors = ButtonDefaults.buttonColors(
-//                                        containerColor = Cyan
-//                                    ),
-//                                    border = BorderStroke(width = 1.dp, color = DarkTeal)
-//                                ) {
-//                                    Text(
-//                                        text = user.username,
-//                                        color = DarkTeal,
-//                                        fontWeight = FontWeight.Bold
-//                                    )
-//                                    Text(
-//                                        text = user.permission,
-//                                        color = DarkTeal,
-//                                        fontSize = 6.sp
-//                                    )
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
 }
