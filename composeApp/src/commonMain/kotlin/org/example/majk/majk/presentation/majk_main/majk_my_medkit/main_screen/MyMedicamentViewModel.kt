@@ -76,7 +76,9 @@ class MyMedicamentViewModel(
         viewModelScope.launch {
             runCatching {
                 val result = appRepository.fetchMedicamentList(familyId)
-                _myMedicamentList.emit(result.map { it.asDomainModel() })
+                    .map { it.asDomainModel() }
+                    .sortedBy { it.medicamentId }
+                _myMedicamentList.emit(result)
             }.onSuccess {
                 _state.update { it.copy(isLoading = false) }
             }.onFailure {

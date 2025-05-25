@@ -67,7 +67,9 @@ class ContainerStateViewModel(
         viewModelScope.launch {
             kotlin.runCatching {
                 val result = appRepository.fetchContainerState(deviceId)
-                _containersList.emit(result.map { it.asDomainModel() })
+                    .map { it.asDomainModel() }
+                    .sortedBy { it.containerNumber }
+                _containersList.emit(result)
             }.onSuccess {
                 _state.update {
                     it.copy(

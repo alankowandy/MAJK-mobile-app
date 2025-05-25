@@ -6,4 +6,5 @@ interface MyMedicamentAction {
     data object OnDismissDialog: MyMedicamentAction
     data object OnAddMedicamentClick: MyMedicamentAction
     data object OnRefreshData: MyMedicamentAction
+    data object OnLeafletClick: MyMedicamentAction
 }

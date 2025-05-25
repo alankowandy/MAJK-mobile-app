@@ -56,7 +56,9 @@ class AdminAuthViewModel(
             }
             runCatching {
                 val result = appRepository.collectUsersAdminAuth(familyId)
-                _users.emit(result.map { it.asDomainModel() })
+                    .map { it.asDomainModel() }
+                    .sortedBy { it.id }
+                _users.emit(result)
             }.onSuccess {
                 _state.update {
                     it.copy(isLoading = false)

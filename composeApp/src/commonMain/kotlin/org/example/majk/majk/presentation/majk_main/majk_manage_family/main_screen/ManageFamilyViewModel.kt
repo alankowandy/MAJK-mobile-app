@@ -67,7 +67,9 @@ class ManageFamilyViewModel(
             }
             runCatching {
                 val result = appRepository.collectUsers(familyId)
-                _users.emit(result.map { it.asDomainModel() })
+                    .map { it.asDomainModel() }
+                    .sortedBy { it.id }
+                _users.emit(result)
             }.onSuccess {
                 _state.update {
                     it.copy(
