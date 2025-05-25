@@ -5,10 +5,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MyMedicamentListDto(
-
     @SerialName("id")
     val medicamentId: Long,
 
     @SerialName("nameOfMedicament")
-    val medicamentName: String
+    val medicamentName: String,
+
+    @SerialName("leaflet")
+    val leafletUrl: String
 )

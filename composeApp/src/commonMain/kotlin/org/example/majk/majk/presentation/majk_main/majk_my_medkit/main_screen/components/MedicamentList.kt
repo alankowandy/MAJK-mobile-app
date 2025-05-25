@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,6 +40,8 @@ fun MedicamentList(
     medicamentList: List<MyMedicamentList>,
     onAction: (MyMedicamentAction) -> Unit
 ) {
+    val uriHandler = LocalUriHandler.current
+
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -92,7 +95,11 @@ fun MedicamentList(
                         )
 
                         IconButton(
-                            onClick = {},
+                            onClick = {
+                                medicament.leafletUrl.let { url ->
+                                    uriHandler.openUri(url)
+                                }
+                            },
                             colors = IconButtonDefaults.iconButtonColors(
                                 contentColor = DarkTeal
                             )

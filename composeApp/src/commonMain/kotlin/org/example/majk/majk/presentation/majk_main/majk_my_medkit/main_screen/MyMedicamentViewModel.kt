@@ -122,7 +122,8 @@ class MyMedicamentViewModel(
     private fun MyMedicamentListDto.asDomainModel(): MyMedicamentList {
         return MyMedicamentList(
             medicamentId = this.medicamentId,
-            medicamentName = this.medicamentName
+            medicamentName = this.medicamentName,
+            leafletUrl = this.leafletUrl
         )
     }
 }
