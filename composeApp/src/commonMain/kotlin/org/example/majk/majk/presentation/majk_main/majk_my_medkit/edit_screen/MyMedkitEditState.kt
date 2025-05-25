@@ -1,3 +1,22 @@
 package org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen
 
-class MyMedkitEditState()
+import kotlinx.datetime.LocalDate
+
+data class MyMedkitEditState(
+    val currentAccountId: Long = 0,
+    val isSearching: Boolean = false,
+    val isSearchExpanded: Boolean = false,
+    val initialSearchEntry: String = "",
+    val selectedMedicamentId: Long = 0,
+    val startDate: LocalDate? = null,
+    val endDate: LocalDate? = null,
+    val takingHour: LocalDate? = null,
+    val takingInterval: Int = 1,
+    val pillTakingAmount: Int = 1,
+    val beforeMeal: Boolean = false,
+    val duringMeal: Boolean = false,
+    val afterMeal: Boolean = false,
+    val note: String = "",
+    val leafletLink: String? = null,
+    val errorMessage: String? = null
+)

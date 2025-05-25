@@ -2,6 +2,7 @@ package org.example.majk.majk.data.repository
 
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.postgrest
+import io.github.jan.supabase.postgrest.rpc
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
@@ -13,6 +14,7 @@ import org.example.majk.majk.data.dto.ContainerSettingsDto
 import org.example.majk.majk.data.dto.ContainerSettingsSearchQueryDto
 import org.example.majk.majk.data.dto.ContainerStateDto
 import org.example.majk.majk.data.dto.ManageFamilyDto
+import org.example.majk.majk.data.dto.MedicamentSearchDto
 import org.example.majk.majk.data.dto.MyMedicamentListDto
 import org.example.majk.majk.data.dto.UserSettingsDto
 import org.example.majk.majk.domain.repository.AppRepository
@@ -161,6 +163,18 @@ class AppRepositoryImpl(
         }
     }
 
+    override suspend fun fetchMyMedicament(familyId: Long): List<ContainerSettingsSearchQueryDto> {
+        return withContext(Dispatchers.IO) {
+            val data = postgrest.rpc(
+                function = "get_medicaments_by_family_id",
+                parameters = buildJsonObject {
+                    put("family_id_input", familyId)
+                }
+            ).decodeList<ContainerSettingsSearchQueryDto>()
+            data
+        }
+    }
+
     override suspend fun searchMedicament(familyId: Long, partialName: String): List<ContainerSettingsSearchQueryDto> {
         return withContext(Dispatchers.IO) {
             val data = postgrest.rpc(
@@ -171,6 +185,63 @@ class AppRepositoryImpl(
                 }
             ).decodeList<ContainerSettingsSearchQueryDto>()
             data
+        }
+    }
+
+    override suspend fun updateContainerMedicament(containerId: Long, medicamentId: Long) {
+        return withContext(Dispatchers.IO) {
+            postgrest.rpc(
+                function = "update_container_medicament",
+                parameters = buildJsonObject {
+                    put("container_id_input", containerId)
+                    put("medicament_id_input", medicamentId)
+                }
+            )
+        }
+    }
+
+    override suspend fun updateNumberOfPills(containerId: Long, numberOfPills: Double) {
+        return withContext(Dispatchers.IO) {
+            postgrest.rpc(
+                function = "update_number_of_pills",
+                parameters = buildJsonObject {
+                    put("container_id_input", containerId)
+                    put("number_of_pills_input", numberOfPills)
+                }
+            )
+        }
+    }
+
+    override suspend fun searchMedicamentSet(partialName: String): List<MedicamentSearchDto> {
+        return withContext(Dispatchers.IO) {
+            val data = postgrest.rpc(
+                function = "search_medicament_set_by_partial_name",
+                parameters = buildJsonObject {
+                    put("partial_name_input", partialName)
+                }
+            ).decodeList<MedicamentSearchDto>()
+            data
+        }
+    }
+
+    override suspend fun fetchInitialMedicamentSet(): List<MedicamentSearchDto> {
+        return withContext(Dispatchers.IO) {
+            val data = postgrest.rpc(
+                function = "get_top_50_medicament_set"
+            ).decodeList<MedicamentSearchDto>()
+            data
+        }
+    }
+
+    override suspend fun insertMedicament(medicamentId: Long, familyId: Long) {
+        return withContext(Dispatchers.IO) {
+            postgrest.rpc(
+                function = "insert_medicament_from_set",
+                parameters = buildJsonObject {
+                    put("medicament_set_id_input", medicamentId)
+                    put("family_id_input", familyId)
+                }
+            )
         }
     }
 }

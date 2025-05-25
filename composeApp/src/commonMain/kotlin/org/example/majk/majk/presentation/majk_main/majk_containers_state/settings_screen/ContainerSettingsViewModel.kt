@@ -56,7 +56,7 @@ class ContainerSettingsViewModel(
             is ContainerSettingsAction.OnSearchQueryChange -> {
                 _searchQuery.value = action.medicamentSearch
                 _state.update {
-                    it.copy(searchEntry = action.medicamentSearch)
+                    it.copy(selectedMedicamentId = action.medicamentId)
                 }
             }
             is ContainerSettingsAction.OnPillQuantityChange -> {
@@ -69,6 +69,26 @@ class ContainerSettingsViewModel(
                     it.copy(isSearchExpanded = action.isExpanded)
                 }
             }
+            is ContainerSettingsAction.OnConfirmClick -> {
+                if (_searchQuery.value != _state.value.initialSearchEntry
+                    && _state.value.selectedMedicamentId != -1L) {
+                    updateContainerMedicament(
+                        containerId = container,
+                        medicamentId = _state.value.selectedMedicamentId
+                    )
+                } else {
+                    _state.update {
+                        it.copy(searchError = "Wybrany lek jest niepoprawny.")
+                    }
+                }
+
+                if (_state.value.pillQuantityEntry != _state.value.initialPillQuantity) {
+                    updateNumberOfPills(
+                        containerId = container,
+                        pillQuantity = _state.value.pillQuantityEntry.toDouble()
+                    )
+                }
+            }
         }
     }
 
@@ -79,7 +99,9 @@ class ContainerSettingsViewModel(
                 .debounce(500L)
                 .onEach { _state.update { it.copy(isSearching = true) } }
                 .collect { text ->
-                    if (text.isNotBlank()) {
+                    if (text.isBlank()) {
+                        fetchMyMedicament(currentFamilyId)
+                    } else {
                         searchMedicament(familyId = currentFamilyId, partialName = text)
                     }
                 }
@@ -109,6 +131,7 @@ class ContainerSettingsViewModel(
             }.onSuccess {
                 _state.update { it.copy(
                     isLoading = false,
+                    initialSearchEntry = _containerSettings.value.medicamentName,
                     pillQuantityEntry = _containerSettings.value.pillQuantity.toInt()
                 ) }
                 _searchQuery.value = _containerSettings.value.medicamentName
@@ -117,6 +140,24 @@ class ContainerSettingsViewModel(
                     it.copy(
                         isLoading = false,
                         errorMessage = "Błąd w komunikacji z serwerem."
+                    )
+                }
+            }
+        }
+    }
+
+    private fun fetchMyMedicament(familyId: Long) {
+        viewModelScope.launch {
+            runCatching {
+                val result = appRepository.fetchMyMedicament(familyId)
+                _searchResult.emit(result.map { it.asDomainModel() })
+            }.onSuccess {
+                _state.update { it.copy(isSearching = false) }
+            }.onFailure {
+                _state.update {
+                    it.copy(
+                        isSearching = false,
+                        errorMessage = "Błąd"
                     )
                 }
             }
@@ -135,6 +176,38 @@ class ContainerSettingsViewModel(
             }.onFailure {
                 _state.update {
                     it.copy(isSearching = false, searchError = "Błąd w wyszukiwaniu.")
+                }
+            }
+        }
+    }
+
+    private fun updateContainerMedicament(containerId: Long, medicamentId: Long) {
+        viewModelScope.launch {
+            runCatching {
+                appRepository.updateContainerMedicament(containerId, medicamentId)
+            }.onSuccess {
+                _state.update {
+                    it.copy(successMessage = "Pomyślnie zaktualizowano!")
+                }
+            }.onFailure {
+                _state.update {
+                    it.copy(errorMessage = "Błąd w komunikacji z serwerem.")
+                }
+            }
+        }
+    }
+
+    private fun updateNumberOfPills(containerId: Long, pillQuantity: Double) {
+        viewModelScope.launch {
+            runCatching {
+                appRepository.updateNumberOfPills(containerId, pillQuantity)
+            }.onSuccess {
+                _state.update {
+                    it.copy(successMessage = "Pomyślnie zaktualizowano!")
+                }
+            }.onFailure {
+                _state.update {
+                    it.copy(errorMessage = "Błąd w komunikacji z serwerem.")
                 }
             }
         }

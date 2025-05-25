@@ -2,7 +2,7 @@ package org.example.majk.majk.presentation.majk_main.majk_containers_state.setti
 
 interface ContainerSettingsAction {
     data class OnPillQuantityChange(val pillQuantity: Int): ContainerSettingsAction
-    data class OnSearchQueryChange(val medicamentSearch: String): ContainerSettingsAction
+    data class OnSearchQueryChange(val medicamentSearch: String, val medicamentId: Long): ContainerSettingsAction
     data class OnSearchExpandedChange(val isExpanded: Boolean): ContainerSettingsAction
     data object OnEmptyContainerClick: ContainerSettingsAction
     data object OnConfirmClick: ContainerSettingsAction

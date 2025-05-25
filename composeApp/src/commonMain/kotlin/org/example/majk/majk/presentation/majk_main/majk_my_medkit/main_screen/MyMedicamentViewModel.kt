@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -28,54 +29,56 @@ class MyMedicamentViewModel(
     val myMedicamentList = _myMedicamentList.asStateFlow()
 
     init {
+        fetchAccountDetails()
+    }
+
+    fun onAction(action: MyMedicamentAction) {
+        when (action) {
+            is MyMedicamentAction.OnDeleteMedicamentClick -> {
+                deleteMedicament(action.medicamentId)
+            }
+            is MyMedicamentAction.OnSortMedicamentClick -> {
+                TODO()
+            }
+            is MyMedicamentAction.OnAddMedicamentClick -> {
+                /** Navigate to add medicament screen. Done in screen root **/
+            }
+            is MyMedicamentAction.OnDismissDialog -> {
+                _state.update { it.copy(errorMessage = null) }
+            }
+            is MyMedicamentAction.OnRefreshData -> {
+                _state.update { it.copy(isLoading = true) }
+                fetchMedicamentList(_state.value.currentFamilyId)
+            }
+        }
+    }
+
+    private fun fetchAccountDetails() {
         sharedViewModel.userInfo
-            .map { it?.familyId }
-            .filter { it != 0L }
+            .filterNotNull()
             .distinctUntilChanged()
-            .onEach { familyId ->
+            .onEach { shared ->
+                val familyId = shared.familyId
                 if (familyId != null) {
                     fetchMedicamentList(familyId)
+                    _state.update {
+                        it.copy(
+                            currentFamilyId = familyId,
+                            initialLoadDone = true
+                        )
+                    }
                 }
             }
             .launchIn(viewModelScope)
     }
 
-    fun onAction(action: MyMedicamentAction) {
-        when (action) {
-            is MyMedicamentAction.OnMedicamentDetailsClick -> {}
-            is MyMedicamentAction.OnDeleteMedicamentClick -> {
-                deleteMedicament(action.medicamentId)
-            }
-            is MyMedicamentAction.OnSortMedicamentClick -> {}
-            is MyMedicamentAction.OnAddMedicamentClick -> {
-
-            }
-            is MyMedicamentAction.OnDismissDialog -> {
-                _state.update {
-                    it.copy(
-                        errorMessage = null
-                    )
-                }
-            }
-        }
-    }
-
     private fun fetchMedicamentList(familyId: Long) {
         viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    isLoading = true
-                )
-            }
             runCatching {
                 val result = appRepository.fetchMedicamentList(familyId)
                 _myMedicamentList.emit(result.map { it.asDomainModel() })
             }.onSuccess {
-                _state.update {
-                    it.copy(
-                        isLoading = false
-                    )
-                }
+                _state.update { it.copy(isLoading = false) }
             }.onFailure {
                 _state.update {
                     it.copy(
@@ -92,18 +95,24 @@ class MyMedicamentViewModel(
             runCatching {
                 appRepository.deleteMedicament(medicamentId)
             }.onSuccess {
-                _state.update {
-                    it.copy(
-                        isLoading = false
-                    )
+               fetchMedicamentList(_state.value.currentFamilyId)
+            }.onFailure { error ->
+                if (error.message?.contains("violates foreign key") == true) {
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = "Lek, który próbujesz usunąć jest w pojemniku lub ma ustawioną dawkę."
+                        )
+                    }
+                } else {
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = "Błąd przy usuwaniu leku. Spróbuj ponownie."
+                        )
+                    }
                 }
-            }.onFailure {
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        errorMessage = "Błąd przy usuwaniu leku. Spróbuj ponownie."
-                    )
-                }
+                println(error)
             }
         }
     }

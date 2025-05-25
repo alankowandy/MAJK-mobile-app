@@ -20,7 +20,6 @@ class ScheduleViewModel(
                         monthOffset = action.offset
                     )
                 }
-                println(action.offset)
             }
             is ScheduleAction.OnRefreshCurrentTime -> {
 

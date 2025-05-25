@@ -124,8 +124,8 @@ fun ContainerCard(
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = "Stan pojemnika",
@@ -154,11 +154,13 @@ fun ContainerCard(
                 )
             }
 
+            Spacer(modifier = Modifier.weight(1f))
+
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(70.dp)
-                    .padding(8.dp)
+                    .size(100.dp)
+                    .padding(end = 16.dp, top = 8.dp, bottom = 8.dp)
                     .background(
                         color = OffWhite,
                         shape = RoundedCornerShape(100)
@@ -173,16 +175,16 @@ fun ContainerCard(
                     text = buildAnnotatedString {
                         withStyle(
                             style = SpanStyle(
-                                fontSize = 16.sp,
+                                fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         ) {
-                            append("$numberOfPills")
+                            append("${numberOfPills.toInt()}")
                         }
                         append("\n")
                         withStyle(
                             style = SpanStyle(
-                                fontSize = 10.sp
+                                fontSize = 12.sp
                             )
                         ) {
                             append("\t\tszt.")
@@ -192,6 +194,8 @@ fun ContainerCard(
                     color = DarkTeal
                 )
             }
+
+            Spacer(modifier = Modifier.weight(1f))
         }
 
     }

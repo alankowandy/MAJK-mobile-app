@@ -1,4 +1,4 @@
-package org.example.majk.majk.presentation.majk_main.majk_my_medkit.components
+package org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.components
 
 import androidx.compose.foundation.background
 import androidx.compose.material3.Icon

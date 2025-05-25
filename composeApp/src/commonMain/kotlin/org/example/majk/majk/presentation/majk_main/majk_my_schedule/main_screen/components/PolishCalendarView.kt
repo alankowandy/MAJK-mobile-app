@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import io.wojciechosak.calendar.config.rememberCalendarState
 import io.wojciechosak.calendar.view.CalendarView
 import io.wojciechosak.calendar.view.HorizontalCalendarView
+import io.wojciechosak.calendar.view.MonthHeader
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.DayOfWeek
@@ -58,6 +59,7 @@ fun PolishMonthCalendar(
             LaunchedEffect(monthOffset) {
                 onMonthOffsetChange(monthOffset)
             }
+
             CalendarView(
                 config = rememberCalendarState(
                     startDate = state.selectedDate,
@@ -107,37 +109,11 @@ fun PolishMonthCalendar(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        IconButton(
-                            onClick = { onMonthOffsetChange(state.monthOffset - 1) },
-                            colors = IconButtonDefaults.iconButtonColors(
-                                contentColor = DarkTeal
-                            ),
-                            modifier = Modifier
-                                .size(20.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowBackIosNew,
-                                contentDescription = "previous month"
-                            )
-                        }
                         Text(
                             text = "$monthName $year",
                             color = DarkTeal,
                             style = MaterialTheme.typography.titleLarge
                         )
-                        IconButton(
-                            onClick = { onMonthOffsetChange(state.monthOffset + 1) },
-                            colors = IconButtonDefaults.iconButtonColors(
-                                contentColor = DarkTeal
-                            ),
-                            modifier = Modifier
-                                .size(20.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Default.ArrowForwardIos,
-                                contentDescription = "next month"
-                            )
-                        }
                     }
                 },
                 dayOfWeekLabel = { dayOfWeek ->

@@ -41,7 +41,7 @@ sealed class RouteTitle(
     )
 
     data object MyMedkitEdit: RouteTitle(
-        title = "Dodaj/edytuj dawkę"
+        title = "Dodaj lek"
     )
 
     data object MajkContainersState: RouteTitle(

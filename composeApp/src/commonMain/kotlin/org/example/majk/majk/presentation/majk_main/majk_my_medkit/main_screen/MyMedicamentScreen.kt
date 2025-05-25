@@ -10,33 +10,49 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.domain.MyMedicamentList
 import org.example.majk.majk.presentation.components.MajkButton
 import org.example.majk.majk.presentation.components.MajkAlertDialog
-import org.example.majk.majk.presentation.majk_main.majk_my_medkit.components.MedicamentList
+import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_screen.ContainerStateAction
+import org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.components.MedicamentList
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun MyMedicamentScreenRoot(
-    viewModel: MyMedicamentViewModel = koinViewModel()
+    viewModel: MyMedicamentViewModel = koinViewModel(),
+    onAddMedicamentClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val medicamentList by viewModel.myMedicamentList.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
+
+    LaunchedEffect(lifecycleState) {
+        println(lifecycleState.toString())
+        if (lifecycleState == Lifecycle.State.STARTED && state.initialLoadDone) {
+            viewModel.onAction(MyMedicamentAction.OnRefreshData)
+        }
+    }
 
     MyMedicamentScreen(
         state = state,
         medicamentList = medicamentList,
         onAction = { action ->
             when (action) {
-                is MyMedicamentAction.OnAddMedicamentClick -> {}
-                is MyMedicamentAction.OnMedicamentDetailsClick -> {}
+                is MyMedicamentAction.OnAddMedicamentClick -> {
+                    onAddMedicamentClick()
+                }
                 else -> {
                     viewModel.onAction(action)
                 }
@@ -63,7 +79,6 @@ fun MyMedicamentScreen(
                 dismissAction = { onAction(MyMedicamentAction.OnDismissDialog) }
             )
         }
-
 
         if (state.isLoading) {
             CircularProgressIndicator(

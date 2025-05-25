@@ -48,7 +48,7 @@ sealed interface Route {
     data object MajkMyMedkit: Route
 
     @Serializable
-    data class MyMedkitEdit(val medicineId: Long): Route
+    data object MyMedkitEdit: Route
 
     @Serializable
     data object MajkContainerGraph: Route
@@ -98,7 +98,7 @@ fun routeFromString(route: String): RouteTitle {
         Route.MajkScheduleDetailsByDate::class.qualifiedName.plus("/{date}") -> RouteTitle.MajkScheduleDetails
         Route.MajkHistory::class.qualifiedName -> RouteTitle.MajkHistory
         Route.MajkMyMedkit::class.qualifiedName -> RouteTitle.MajkMyMedkit
-        Route.MyMedkitEdit::class.qualifiedName.plus("/{medicamentId}") -> RouteTitle.MyMedkitEdit
+        Route.MyMedkitEdit::class.qualifiedName -> RouteTitle.MyMedkitEdit
         Route.MajkContainersState::class.qualifiedName -> RouteTitle.MajkContainersState
         Route.MajkContainerSettings::class.qualifiedName.plus("/{containerId}") -> RouteTitle.MajkContainerSettings
         Route.MajkManageFamily::class.qualifiedName -> RouteTitle.MajkManageFamily

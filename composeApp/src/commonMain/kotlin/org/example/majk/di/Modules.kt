@@ -14,6 +14,8 @@ import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_s
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen.ContainerSettingsViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsViewModel
+import org.example.majk.majk.presentation.majk_main.majk_my_medkit.SelectedAccountViewModel
+import org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.MyMedkitEditViewModel
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.MyMedicamentViewModel
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.main_screen.ScheduleViewModel
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_details_screen.DetailsViewModel
@@ -40,4 +42,6 @@ val sharedModule = module {
     viewModelOf(::DetailsViewModel)
     viewModelOf(::ContainerStateViewModel)
     viewModelOf(::ContainerSettingsViewModel)
+    viewModelOf(::MyMedkitEditViewModel)
+    viewModelOf(::SelectedAccountViewModel)
 }

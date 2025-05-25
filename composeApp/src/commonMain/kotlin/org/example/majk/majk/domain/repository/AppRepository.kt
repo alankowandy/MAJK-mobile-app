@@ -6,6 +6,7 @@ import org.example.majk.majk.data.dto.ContainerSettingsDto
 import org.example.majk.majk.data.dto.ContainerSettingsSearchQueryDto
 import org.example.majk.majk.data.dto.ContainerStateDto
 import org.example.majk.majk.data.dto.ManageFamilyDto
+import org.example.majk.majk.data.dto.MedicamentSearchDto
 import org.example.majk.majk.data.dto.MyMedicamentListDto
 import org.example.majk.majk.data.dto.UserSettingsDto
 import org.example.majk.majk.domain.MedicineEntry
@@ -23,5 +24,11 @@ interface AppRepository {
     suspend fun fetchScheduleForDate(date: LocalDate): Map<Int, List<MedicineEntry>>
     suspend fun fetchContainerState(deviceId: Long): List<ContainerStateDto>
     suspend fun fetchContainerSettings(containerId: Long): ContainerSettingsDto
+    suspend fun fetchMyMedicament(familyId: Long): List<ContainerSettingsSearchQueryDto>
     suspend fun searchMedicament(familyId: Long, partialName: String): List<ContainerSettingsSearchQueryDto>
+    suspend fun updateContainerMedicament(containerId: Long, medicamentId: Long)
+    suspend fun updateNumberOfPills(containerId: Long, numberOfPills: Double)
+    suspend fun searchMedicamentSet(partialName: String): List<MedicamentSearchDto>
+    suspend fun fetchInitialMedicamentSet(): List<MedicamentSearchDto>
+    suspend fun insertMedicament(medicamentId: Long, familyId: Long)
 }
