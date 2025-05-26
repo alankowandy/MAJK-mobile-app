@@ -65,6 +65,7 @@ class SharedViewModel(
             }.onSuccess {
                 currentFamilyId = _userInfo.value?.familyId!!
                 _userInfo.value?.familyId?.let { fetchFamilyUsers(it) }
+                println(_userInfo.value!!.accountId)
             }.onFailure { error ->
                 _state.update {
                     it.copy(

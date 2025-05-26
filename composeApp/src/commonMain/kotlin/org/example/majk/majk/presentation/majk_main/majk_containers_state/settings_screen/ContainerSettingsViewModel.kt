@@ -69,6 +69,12 @@ class ContainerSettingsViewModel(
                     it.copy(isSearchExpanded = action.isExpanded)
                 }
             }
+            is ContainerSettingsAction.OnEmptyContainerClick -> {
+                _state.update {
+                    it.copy(pillQuantityEntry = 0)
+                }
+
+            }
             is ContainerSettingsAction.OnConfirmClick -> {
                 if (_searchQuery.value != _state.value.initialSearchEntry
                     && _state.value.selectedMedicamentId != -1L) {

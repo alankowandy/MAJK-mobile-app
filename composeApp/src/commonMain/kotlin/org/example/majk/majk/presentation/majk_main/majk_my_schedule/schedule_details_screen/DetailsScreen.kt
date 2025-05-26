@@ -17,6 +17,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.example.majk.core.presentation.OffWhite
+import org.example.majk.majk.domain.ReleaseSchedule
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_details_screen.components.DayPicker
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_details_screen.components.HourlySchedule
 
@@ -26,9 +27,11 @@ fun DetailsScreenRoot(
     onBackClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val releaseSchedule by viewModel.releaseSchedule.collectAsStateWithLifecycle()
 
     DetailsScreen(
         state = state,
+        releaseSchedule = releaseSchedule,
         onAction = { action ->
             when (action) {
                 is DetailsAction.OnBackClick -> {
@@ -46,6 +49,7 @@ fun DetailsScreenRoot(
 @Composable
 fun DetailsScreen(
     state: DetailsState,
+    releaseSchedule: List<ReleaseSchedule>,
     onAction: (DetailsAction) -> Unit
 ) {
     Box(
@@ -68,7 +72,7 @@ fun DetailsScreen(
 
             HourlySchedule(
                 state = state,
-                schedule = state.schedule,
+                releaseSchedule = releaseSchedule,
                 onRefreshTime = {
                     onAction(DetailsAction.OnRefreshCurrentTime)
                 }

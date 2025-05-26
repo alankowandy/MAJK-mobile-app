@@ -8,6 +8,7 @@ import org.example.majk.majk.data.dto.ContainerStateDto
 import org.example.majk.majk.data.dto.ManageFamilyDto
 import org.example.majk.majk.data.dto.MedicamentSearchDto
 import org.example.majk.majk.data.dto.MyMedicamentListDto
+import org.example.majk.majk.data.dto.ReleaseScheduleDto
 import org.example.majk.majk.data.dto.UserSettingsDto
 import org.example.majk.majk.domain.MedicineEntry
 
@@ -21,7 +22,7 @@ interface AppRepository {
     suspend fun insertLimitedProfile(username: String, uuid: String, familyId: Long)
     suspend fun fetchMedicamentList(familyId: Long): List<MyMedicamentListDto>
     suspend fun deleteMedicament(medicamentId: Long)
-    suspend fun fetchScheduleForDate(date: LocalDate): Map<Int, List<MedicineEntry>>
+    suspend fun fetchReleaseSchedule(accountId: Long): List<ReleaseScheduleDto>
     suspend fun fetchContainerState(deviceId: Long): List<ContainerStateDto>
     suspend fun fetchContainerSettings(containerId: Long): ContainerSettingsDto
     suspend fun fetchMyMedicament(familyId: Long): List<ContainerSettingsSearchQueryDto>

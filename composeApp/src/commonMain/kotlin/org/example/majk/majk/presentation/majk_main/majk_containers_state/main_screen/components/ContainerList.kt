@@ -35,7 +35,7 @@ fun ContainerList(
             ContainerCard(
                 containerNumber = container.containerNumber,
                 medicamentName = container.medicamentName,
-                state = container.containerState,
+                containerState = container.containerState,
                 numberOfPills = container.pillQuantity,
                 onSettingsClick = { onSettingsClick(container.containerId) }
             )

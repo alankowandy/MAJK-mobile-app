@@ -14,16 +14,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.example.majk.majk.domain.MedicineEntry
+import org.example.majk.core.presentation.OffWhite
+import org.example.majk.majk.domain.ReleaseSchedule
 
 @Composable
-fun MedicineCard(medicine: MedicineEntry) {
+fun MedicineCard(
+    schedule: ReleaseSchedule
+) {
     Card(
         shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = OffWhite),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         modifier = Modifier
             .fillMaxWidth()
@@ -36,13 +38,24 @@ fun MedicineCard(medicine: MedicineEntry) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Pill icon (for example purposes, using emoji or a simple shape)
-            Text(text = "💊", fontSize = 18.sp, modifier = Modifier.padding(end = 8.dp))
+            Text(
+                text = "💊",
+                fontSize = 18.sp,
+                modifier = Modifier
+                    .padding(end = 8.dp)
+            )
             // Medicine name
-            Text(text = medicine.name, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+            Text(
+                text = "${schedule.medicamentName} x${schedule.pillAmount}",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier
+                    .weight(1f)
+            )
             // Status indicator (vertical line) on right: green if taken, red if not taken
-            Box(modifier = Modifier
+            Box(
+                modifier = Modifier
                 .size(width = 4.dp, height = 24.dp)
-                .background(if (medicine.taken) Color(0xFF4CAF50) else Color(0xFFE91E63))
+                //.background(if (medicine.taken) Color(0xFF4CAF50) else Color(0xFFE91E63))
             )
         }
     }

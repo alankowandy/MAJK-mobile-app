@@ -10,27 +10,38 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toLocalDateTime
 import org.example.majk.app.Route
+import org.example.majk.core.presentation.SharedViewModel
+import org.example.majk.majk.data.dto.ReleaseScheduleDto
 import org.example.majk.majk.domain.MedicineEntry
+import org.example.majk.majk.domain.ReleaseSchedule
 
 
 class DetailsViewModel(
     private val appRepository: AppRepository,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val sharedViewModel: SharedViewModel
 ): ViewModel() {
 
     val date =
         LocalDate.parse(savedStateHandle.toRoute<Route.MajkScheduleDetailsByDate>().date)
 
-    private val _state = MutableStateFlow(DetailsState(
-        selectedDate = date
-    ))
+    private val _state = MutableStateFlow(DetailsState(selectedDate = date))
     val state = _state.asStateFlow()
 
-    private val _medicines = MutableStateFlow<Map<Int, List<MedicineEntry>>>(emptyMap())
-    val medicines = _medicines.asStateFlow()
+    private val _releaseSchedule = MutableStateFlow<List<ReleaseSchedule>>(emptyList())
+    val releaseSchedule = _releaseSchedule.asStateFlow()
+
+    private var currentAccountId: Long = 0L
+
+    init {
+        fetchAccountId()
+        //onAction(DetailsAction.OnSelectDate(date))
+    }
 
     fun onAction(action: DetailsAction) {
         when (action) {
@@ -42,7 +53,7 @@ class DetailsViewModel(
                         schedule = emptyMap()
                     )
                 }
-                fetchScheduledMedicine()
+                //fetchScheduledMedicine(currentAccountId)
             }
             is DetailsAction.OnRefreshCurrentTime -> {
                 _state.update {
@@ -52,7 +63,6 @@ class DetailsViewModel(
                         currentMinute = Clock.System.now().toLocalDateTime(TimeZone.of("Europe/Warsaw")).minute
                     )
                 }
-                println("refreshed")
             }
             is DetailsAction.OnScheduledMedicineClick -> {
 
@@ -61,15 +71,45 @@ class DetailsViewModel(
         }
     }
 
-    private fun fetchScheduledMedicine() {
-        viewModelScope.launch {
-            runCatching {
-                _state.update {
-                    it.copy(
-                        schedule = appRepository.fetchScheduleForDate(_state.value.selectedDate)
-                    )
+    private fun fetchAccountId() {
+        sharedViewModel.userInfo
+            .filterNotNull()
+            .map { it.accountId }
+            .filter { it != 0L }
+            .distinctUntilChanged()
+            .onEach { accountId ->
+                if (accountId != null) {
+                    currentAccountId = 1L
+                    _state.update { it.copy(currentAccountId = accountId) }
+                    fetchScheduledMedicine(_state.value.currentAccountId)
                 }
             }
+            .launchIn(viewModelScope)
+    }
+
+    private fun fetchScheduledMedicine(accountId: Long) {
+        viewModelScope.launch {
+            runCatching {
+                val result = appRepository.fetchReleaseSchedule(accountId)
+                _releaseSchedule.emit(result.map { it.asDomainModel() })
+            }.onSuccess {
+
+            }.onFailure { error ->
+                println(error)
+            }
         }
+    }
+
+    private fun ReleaseScheduleDto.asDomainModel(): ReleaseSchedule {
+        return ReleaseSchedule(
+            releaseId = this.releaseId,
+            medicamentId = this.medicamentId,
+            medicamentName = this.medicamentName,
+            startDate = this.startDate,
+            endDate = this.endDate,
+            repeatingInterval = this.repeatingInterval,
+            pillAmount = this.pillAmount,
+            mealDependability = this.mealDependability
+        )
     }
 }

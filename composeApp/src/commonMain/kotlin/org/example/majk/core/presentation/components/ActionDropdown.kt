@@ -30,6 +30,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -112,7 +113,9 @@ fun ActionDropdown(
                 modifier = Modifier
                     .padding(top = 8.dp, bottom = 8.dp)
             )
-            familyUsers.forEach { user ->
+            familyUsers
+                .sortedBy { it.userId }
+                .forEach { user ->
                 DropdownMenuItem(
                     onClick = {
                         onUserClick()
@@ -141,8 +144,8 @@ fun ActionDropdown(
                     },
                     modifier = Modifier
                         .padding(horizontal = 12.dp, vertical = 4.dp)
+                        .shadow(elevation = 4.dp, shape = RoundedCornerShape(16.dp))
                         .background(color = Cyan, shape = RoundedCornerShape(16.dp))
-                        .border(width = 1.dp, color = DarkTeal, shape = RoundedCornerShape(16.dp))
                 )
             }
         }

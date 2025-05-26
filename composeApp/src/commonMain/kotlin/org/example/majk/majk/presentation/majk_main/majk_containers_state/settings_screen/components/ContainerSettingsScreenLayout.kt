@@ -10,9 +10,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -21,6 +25,7 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -73,105 +78,123 @@ fun ContainerSettingsScreenLayout(
             },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.height(16.dp))
+
         Text(
             text = "Dokonujesz zmiany dla Pojemnika ${containerSettings.containerNumber}",
             color = DarkTeal,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(vertical = 24.dp)
-        )
-        Text(
-            text = "Zastąp lekarstwo",
-            color = DarkTeal,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .padding(vertical = 24.dp)
+                .padding(vertical = 12.dp)
         )
 
-        SearchBar(
+        Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 60.dp),
+                .padding(16.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
             shape = RoundedCornerShape(16.dp),
-            colors = SearchBarDefaults.colors(
-                containerColor = LightGray
-            ),
-            inputField = {
-                SearchBarDefaults.InputField(
-                    query = searchQuery,
-                    onQueryChange = { onAction(ContainerSettingsAction.OnSearchQueryChange(
-                        medicamentSearch = it,
-                        medicamentId = -1
-                    )) },
-                    expanded = state.isSearchExpanded,
-                    onSearch = {},
-                    onExpandedChange = { onAction(ContainerSettingsAction.OnSearchExpandedChange(it)) },
-                    placeholder = { Text(text = "Wyszukaj lek") },
-                    leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = null) },
-                    trailingIcon = {
-                        if (searchQuery.isNotBlank()) {
-                            IconButton(
-                                onClick = {
-                                    onAction(ContainerSettingsAction.OnSearchQueryChange(
-                                        medicamentSearch = "",
-                                        medicamentId = -1
-                                    ))
+            colors = CardDefaults.cardColors(
+                containerColor = OffWhite
+            )
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "Zastąp lekarstwo",
+                    color = DarkTeal,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                )
+                CompositionLocalProvider(
+                    LocalTextSelectionColors provides TextSelectionColors(
+                        handleColor = DarkTeal,
+                        backgroundColor = DarkTeal.copy(alpha = 0.33F)
+                    )
+                ) {
+                    SearchBar(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = SearchBarDefaults.colors(
+                            containerColor = LightGray
+                        ),
+                        inputField = {
+                            SearchBarDefaults.InputField(
+                                query = searchQuery,
+                                onQueryChange = { onAction(ContainerSettingsAction.OnSearchQueryChange(
+                                    medicamentSearch = it,
+                                    medicamentId = -1
+                                )) },
+                                expanded = state.isSearchExpanded,
+                                onSearch = {},
+                                onExpandedChange = { onAction(ContainerSettingsAction.OnSearchExpandedChange(it)) },
+                                placeholder = { Text(text = "Wyszukaj lek") },
+                                leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = null) },
+                                trailingIcon = {
+                                    if (searchQuery.isNotBlank()) {
+                                        IconButton(
+                                            onClick = {
+                                                onAction(ContainerSettingsAction.OnSearchQueryChange(
+                                                    medicamentSearch = "",
+                                                    medicamentId = -1
+                                                ))
+                                            }
+                                        ) {
+                                            Icon(imageVector = Icons.Default.Close, contentDescription = null)
+                                        }
+                                    }
                                 }
-                            ) {
-                                Icon(imageVector = Icons.Default.Close, contentDescription = null)
+                            )
+                        },
+                        expanded = state.isSearchExpanded,
+                        onExpandedChange = { onAction(ContainerSettingsAction.OnSearchExpandedChange(it)) }
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                        ) {
+                            if (state.isSearching) {
+                                CircularProgressIndicator(
+                                    color = DarkTeal,
+                                    modifier = Modifier
+                                        .align(Alignment.Center)
+                                )
+                            } else {
+                                SearchQueryResultList(
+                                    searchResult = searchResult,
+                                    onAction = onAction
+                                )
                             }
                         }
                     }
-                )
-            },
-            expanded = state.isSearchExpanded,
-            onExpandedChange = { onAction(ContainerSettingsAction.OnSearchExpandedChange(it)) }
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                if (state.isSearching) {
-                    CircularProgressIndicator(
-                        color = DarkTeal,
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                    )
-                } else {
-                    SearchQueryResultList(
-                        searchResult = searchResult,
-                        onAction = onAction
-                    )
                 }
+
+                Text(
+                    text = "Liczba tabletek",
+                    color = DarkTeal,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(vertical = 12.dp)
+                )
+
+                PillQuantityField(
+                    state = state,
+                    onAction = onAction,
+                    focusRequester = pillQuantityFocusRequester,
+                    onNextFocus = {
+                        focusManager.clearFocus()
+                        keyboardController?.hide()
+                    },
+                    isError = false
+                )
             }
-
         }
-
-        Text(
-            text = "Liczba tabletek",
-            color = DarkTeal,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(vertical = 24.dp)
-        )
-
-        MajkTextField(
-            value = state.pillQuantityEntry.toString(),
-            onTextChange = { onAction(ContainerSettingsAction.OnPillQuantityChange(it.toInt())) },
-            placeholder = "Liczba tabletek",
-            isPassword = false,
-            keyboardType = KeyboardType.Number,
-            imeAction = ImeAction.Done,
-            focusRequester = pillQuantityFocusRequester,
-            onNextFocus = {
-                focusManager.clearFocus()
-                keyboardController?.hide()
-            },
-            isError = state.pillQuantityEntryError
-        )
 
         Spacer(modifier = Modifier.weight(1f))
 

@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -49,6 +50,7 @@ fun DayItem(
     Box(
         modifier = Modifier
             .padding(4.dp)
+            .size(width = 55.dp, height = 80.dp)
             .clip(RoundedCornerShape(8.dp))
             .border(width = 1.dp, color = DarkTeal, shape = RoundedCornerShape(8.dp))
             .background(backgroundColor)

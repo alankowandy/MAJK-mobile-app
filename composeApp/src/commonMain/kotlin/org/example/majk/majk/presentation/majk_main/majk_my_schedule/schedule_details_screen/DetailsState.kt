@@ -9,6 +9,7 @@ import kotlinx.datetime.toLocalDateTime
 import org.example.majk.majk.domain.MedicineEntry
 
 data class DetailsState(
+    val currentAccountId: Long = 0L,
     val selectedDate: LocalDate = LocalDate.today(),
     val currentDateTime: LocalDateTime =
         Clock.System.now().toLocalDateTime(TimeZone.of("Europe/Warsaw")),

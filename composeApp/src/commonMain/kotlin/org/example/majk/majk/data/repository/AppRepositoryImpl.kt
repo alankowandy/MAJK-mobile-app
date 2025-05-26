@@ -16,6 +16,7 @@ import org.example.majk.majk.data.dto.ContainerStateDto
 import org.example.majk.majk.data.dto.ManageFamilyDto
 import org.example.majk.majk.data.dto.MedicamentSearchDto
 import org.example.majk.majk.data.dto.MyMedicamentListDto
+import org.example.majk.majk.data.dto.ReleaseScheduleDto
 import org.example.majk.majk.data.dto.UserSettingsDto
 import org.example.majk.majk.domain.repository.AppRepository
 import org.example.majk.majk.domain.MedicineEntry
@@ -127,16 +128,16 @@ class AppRepositoryImpl(
         }
     }
 
-    override suspend fun fetchScheduleForDate(date: LocalDate): Map<Int, List<MedicineEntry>> {
-        return mapOf(
-            8  to listOf(MedicineEntry("Witamina C", taken = true)),
-            10 to listOf(MedicineEntry("Witamina D", taken = false),
-                MedicineEntry("Witamina B", taken = false)),
-            12 to listOf(MedicineEntry("Witamina A", taken = false),
-                MedicineEntry("Izotek", taken = false)),
-            13 to listOf(MedicineEntry("Witamina A", taken = false),
-                MedicineEntry("Izotek", taken = false))
-        )
+    override suspend fun fetchReleaseSchedule(accountId: Long): List<ReleaseScheduleDto> {
+        return withContext(Dispatchers.IO) {
+            val data = postgrest.rpc(
+                function = "get_pill_schedule_by_profile",
+                parameters = buildJsonObject {
+                    put("profile_id_input", accountId)
+                }
+            ).decodeList<ReleaseScheduleDto>()
+            data
+        }
     }
 
     override suspend fun fetchContainerState(deviceId: Long): List<ContainerStateDto> {

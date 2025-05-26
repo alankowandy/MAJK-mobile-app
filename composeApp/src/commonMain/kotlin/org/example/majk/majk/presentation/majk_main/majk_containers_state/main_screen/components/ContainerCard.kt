@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -45,7 +47,7 @@ import org.example.majk.majk.presentation.components.MajkButton
 fun ContainerCard(
     containerNumber: Long,
     medicamentName: String,
-    state: String,
+    containerState: String,
     numberOfPills: Double,
     onSettingsClick: () -> Unit
 ) {
@@ -65,15 +67,15 @@ fun ContainerCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.weight(1f))
-
             Text(
                 text = "Pojemnik $containerNumber",
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp,
-                color = DarkTeal
+                color = DarkTeal,
+                textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -87,7 +89,7 @@ fun ContainerCard(
                     .padding(horizontal = 10.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Outlined.Settings,
+                    imageVector = Icons.Outlined.Tune,
                     contentDescription = "settings"
                 )
             }
@@ -137,13 +139,13 @@ fun ContainerCard(
                 )
 
                 Text(
-                    text = state,
+                    text = containerState,
                     fontSize = 16.sp,
                     color = OffWhite,
                     modifier = Modifier
                         .padding(8.dp)
                         .background(
-                            color = when (state) {
+                            color = when (containerState) {
                                 "pełny" -> GoGreen
                                 "mało" -> WatchYellow
                                 else -> WarningRed
