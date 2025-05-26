@@ -10,18 +10,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
-import kotlinx.datetime.Clock
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import org.example.majk.majk.domain.MedicineEntry
+import org.example.majk.majk.domain.ReleaseSchedule
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_details_screen.DetailsState
 
 @Composable
 fun HourlySchedule(
     state: DetailsState,
-    schedule: Map<Int, List<MedicineEntry>>,
+    releaseSchedule: List<ReleaseSchedule>,
     onRefreshTime: () -> Unit
 ) {
     // Determine if the selected date (from currentDateTime) is today:
@@ -58,8 +54,9 @@ fun HourlySchedule(
     ) {
         items(24) { hour ->  // 0 through 23
             HourSlot(
+                state = state,
                 hour = hour,
-                medicines = schedule[hour].orEmpty(),
+                releaseSchedule = releaseSchedule,
                 showCurrentTimeLine = (state.currentDay == state.selectedDate && hour == state.currentHour),
                 currentMinute = state.currentMinute
             )

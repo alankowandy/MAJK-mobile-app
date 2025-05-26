@@ -20,27 +20,39 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.example.majk.majk.domain.MedicineEntry
 import kotlinx.datetime.*
+import org.example.majk.majk.domain.ReleaseSchedule
+import org.example.majk.majk.presentation.majk_main.majk_my_schedule.main_screen.ScheduleState
+import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_details_screen.DetailsState
 import org.koin.core.component.getScopeName
 import kotlin.time.Duration.Companion.hours
 
 @Composable
 fun HourSlot(
+    state: DetailsState,
     hour: Int,
-    medicines: List<MedicineEntry>,
+    releaseSchedule: List<ReleaseSchedule>,
     showCurrentTimeLine: Boolean,
     currentMinute: Int
 ) {
     // Format hour as "8:00", "13:00", etc.
-    val hourLabel = hour.let {
-        "$it:00"
+    val hourLabel = "$hour:00"
+
+    val medsThisHour = releaseSchedule.filter { schedule ->
+        displayMedicineCalc(
+            schedule = schedule,
+            selectedDay = state.selectedDate,
+            hour = hour
+        )
     }
+
     //val hourLabel = "%02d:00"
     // Each hour slot is a row with the time on the left and any medicine cards on the right
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .height(IntrinsicSize.Min)
-        .background(Color.LightGray.copy(alpha = 0.3f))
-        .padding(horizontal = 16.dp, vertical = 8.dp)
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min)
+            .background(Color.LightGray.copy(alpha = 0.3f))
+            .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         // Hour text at the start (left)
         Text(
@@ -49,13 +61,14 @@ fun HourSlot(
             modifier = Modifier.align(Alignment.TopStart)
         )
         // If any medicines scheduled this hour, display them as cards
-        if (medicines.isNotEmpty()) {
-            Column(modifier = Modifier
-                .padding(start = 64.dp)  // add left padding so cards don't overlap the hour label
-                .fillMaxWidth()
+        if (medsThisHour.isNotEmpty()) {
+            Column(
+                modifier = Modifier
+                    .padding(start = 64.dp)  // add left padding so cards don't overlap the hour label
+                    .fillMaxWidth()
             ) {
-                medicines.forEach { med ->
-                    MedicineCard(medicine = med)
+                medsThisHour.forEach { med ->
+                    MedicineCard(schedule = med)
                 }
             }
         }
@@ -80,4 +93,29 @@ fun HourSlot(
     }
     // Divider line below each hour row (optional, to separate hours)
     Divider(color = Color.Gray.copy(alpha = 0.5f), thickness = 1.dp)
+}
+
+private fun displayMedicineCalc(
+    schedule: ReleaseSchedule,
+    selectedDay: LocalDate,
+    hour: Int
+): Boolean {
+    return try {
+        val startDateTime = LocalDateTime.parse(schedule.startDate)
+        val endDateTime = LocalDateTime.parse(schedule.endDate)
+
+        val startDate = startDateTime.date
+        val endDate = endDateTime.date
+        val doseHour = startDateTime.time.hour
+
+        if (selectedDay < startDate || selectedDay > endDate) return false
+
+        val daysBetween = startDate.daysUntil(selectedDay)
+        if (daysBetween % schedule.repeatingInterval != 0L) return false
+
+        return hour == doseHour
+    } catch (e: Exception) {
+        println(e)
+        false
+    }
 }
