@@ -11,5 +11,6 @@ import org.example.majk.majk.domain.MedicineEntry
 data class ScheduleState(
     val selectedDate: LocalDate = LocalDate.today(),
     val currentDateTime: LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.of("Europe/Warsaw")),
-    val monthOffset: Int = 0
+    val monthOffset: Int = 0,
+    val currentAccountId: Long = 0L,
 )

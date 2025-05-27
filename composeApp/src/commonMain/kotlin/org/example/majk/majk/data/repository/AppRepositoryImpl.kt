@@ -15,6 +15,7 @@ import org.example.majk.majk.data.dto.ContainerSettingsSearchQueryDto
 import org.example.majk.majk.data.dto.ContainerStateDto
 import org.example.majk.majk.data.dto.ManageFamilyDto
 import org.example.majk.majk.data.dto.MedicamentSearchDto
+import org.example.majk.majk.data.dto.MedicineEntryDto
 import org.example.majk.majk.data.dto.MyMedicamentListDto
 import org.example.majk.majk.data.dto.ReleaseScheduleDto
 import org.example.majk.majk.data.dto.UserSettingsDto
@@ -241,6 +242,41 @@ class AppRepositoryImpl(
                 parameters = buildJsonObject {
                     put("medicament_set_id_input", medicamentId)
                     put("family_id_input", familyId)
+                }
+            )
+        }
+    }
+
+    override suspend fun fetchMedicamentEntries(accountId: Long): List<MedicineEntryDto> {
+        return withContext(Dispatchers.IO) {
+            val data = postgrest.rpc(
+                function = "get_full_pill_schedule_by_profile",
+                parameters = buildJsonObject {
+                    put("profile_id_input", accountId)
+                }
+            ).decodeList<MedicineEntryDto>()
+            data
+        }
+    }
+
+    override suspend fun deleteScheduledMedicine(releaseId: Long) {
+        return withContext(Dispatchers.IO) {
+            postgrest.rpc(
+                function = "delete_pill_release_by_id",
+                parameters = buildJsonObject {
+                    put("pill_release_id_input", releaseId)
+                }
+            )
+        }
+    }
+
+    override suspend fun updateNote(releaseId: Long, note: String) {
+        return withContext(Dispatchers.IO) {
+            postgrest.rpc(
+                function = "update_pill_release_note",
+                parameters = buildJsonObject {
+                    put("pill_release_id_input", releaseId)
+                    put("note_input", note)
                 }
             )
         }

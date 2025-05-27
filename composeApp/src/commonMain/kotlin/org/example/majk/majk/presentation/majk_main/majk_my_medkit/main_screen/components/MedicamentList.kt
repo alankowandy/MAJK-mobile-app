@@ -9,10 +9,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Description
-import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -27,13 +25,12 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.example.majk.core.presentation.Cyan
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.domain.MyMedicamentList
+import org.example.majk.majk.presentation.majk_main.components.ActionIcon
+import org.example.majk.majk.presentation.majk_main.components.SwipeableIconWithActions
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.MyMedicamentAction
-import org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.MyMedicamentState
-import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun MedicamentList(

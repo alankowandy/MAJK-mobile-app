@@ -15,6 +15,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -79,16 +80,13 @@ fun PillQuantityField(
                 lineHeight = 14.sp
             ),
             isError = isError,
-            colors = OutlinedTextFieldDefaults.colors(
+            colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = LightGray,
                 focusedContainerColor = LightGray,
                 focusedTextColor = DarkTeal,
                 unfocusedTextColor = DarkTeal,
-                focusedBorderColor = if (isError) Color.Red else DarkTeal,
-                unfocusedBorderColor = if (isError) Color.Red else DarkTeal,
-                errorPlaceholderColor = DarkTeal,
-                errorTextColor = DarkTeal,
-                errorContainerColor = LightGray,
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
                 cursorColor = DarkTeal
             ),
             modifier = Modifier

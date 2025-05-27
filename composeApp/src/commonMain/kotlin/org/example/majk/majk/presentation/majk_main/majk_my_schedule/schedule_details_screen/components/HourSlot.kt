@@ -31,10 +31,9 @@ fun HourSlot(
     state: DetailsState,
     hour: Int,
     releaseSchedule: List<ReleaseSchedule>,
-    showCurrentTimeLine: Boolean,
-    currentMinute: Int
+    showCurrentTimeLine: Boolean
 ) {
-    // Format hour as "8:00", "13:00", etc.
+
     val hourLabel = "$hour:00"
 
     val medsThisHour = releaseSchedule.filter { schedule ->
@@ -45,43 +44,19 @@ fun HourSlot(
         )
     }
 
-    //val hourLabel = "%02d:00"
-    // Each hour slot is a row with the time on the left and any medicine cards on the right
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
-            .background(Color.LightGray.copy(alpha = 0.3f))
-            .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
-        // Hour text at the start (left)
-        Text(
-            text = hourLabel,
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.align(Alignment.TopStart)
-        )
-        // If any medicines scheduled this hour, display them as cards
-        if (medsThisHour.isNotEmpty()) {
-            Column(
-                modifier = Modifier
-                    .padding(start = 64.dp)  // add left padding so cards don't overlap the hour label
-                    .fillMaxWidth()
-            ) {
-                medsThisHour.forEach { med ->
-                    MedicineCard(schedule = med)
-                }
-            }
-        }
-        // Draw a red line for current time within this hour, if applicable
         if (showCurrentTimeLine) {
             // Position the line relative to currentMinute within this hour slot.
             // We draw a line across the full width at a vertical offset proportional to minutes.
             Canvas(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(IntrinsicSize.Min)
+                    .matchParentSize()
             ) {
-                val yOffset = size.height * (currentMinute / 60f)
+                val yOffset = size.height * (state.currentMinute / 60f)
                 drawLine(
                     color = Color.Red,
                     start = Offset(0f, yOffset),
@@ -90,7 +65,34 @@ fun HourSlot(
                 )
             }
         }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min)
+                .background(Color.LightGray.copy(alpha = 0.3f))
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        ) {
+            Text(
+                text = hourLabel,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.align(Alignment.TopStart)
+            )
+
+            if (medsThisHour.isNotEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .padding(start = 64.dp)
+                        .fillMaxWidth()
+                ) {
+                    medsThisHour.forEach { med ->
+                        MedicineCard(schedule = med)
+                    }
+                }
+            }
+        }
     }
+
     // Divider line below each hour row (optional, to separate hours)
     Divider(color = Color.Gray.copy(alpha = 0.5f), thickness = 1.dp)
 }

@@ -6,4 +6,5 @@ interface ScheduleAction {
     data class OnSelectDate(val date: LocalDate) : ScheduleAction
     data object OnRefreshCurrentTime: ScheduleAction
     data class OnMonthOffsetChange(val offset: Int): ScheduleAction
+    data class OnMedicineListClick(val accountId: Long): ScheduleAction
 }

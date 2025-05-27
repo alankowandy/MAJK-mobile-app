@@ -20,18 +20,12 @@ fun HourlySchedule(
     releaseSchedule: List<ReleaseSchedule>,
     onRefreshTime: () -> Unit
 ) {
-    // Determine if the selected date (from currentDateTime) is today:
 
-    val currentHour = state.currentDateTime.hour
-    val currentMinute = state.currentDateTime.minute
-
-    // Remember a LazyListState to control scrolling
     val listState = rememberLazyListState()
 
     // Side-effect to auto-scroll to current hour on first composition
-    LaunchedEffect(Unit) {
+    LaunchedEffect(state.selectedDate, state.currentHour) {
         if (state.currentDay == state.selectedDate) {
-            // Scroll so that the current hour item is near top (index = currentHour)
             listState.animateScrollToItem(index = state.currentHour)
         }
     }
@@ -57,8 +51,7 @@ fun HourlySchedule(
                 state = state,
                 hour = hour,
                 releaseSchedule = releaseSchedule,
-                showCurrentTimeLine = (state.currentDay == state.selectedDate && hour == state.currentHour),
-                currentMinute = state.currentMinute
+                showCurrentTimeLine = (state.currentDay == state.selectedDate && hour == state.currentHour)
             )
         }
     }

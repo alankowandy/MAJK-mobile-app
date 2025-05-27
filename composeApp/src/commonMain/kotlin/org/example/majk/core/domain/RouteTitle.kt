@@ -32,6 +32,10 @@ sealed class RouteTitle(
         title = "Szczegóły"
     )
 
+    data object MajkScheduleMedicineList: RouteTitle(
+        title = "Lista dawek"
+    )
+
     data object MajkHistory: RouteTitle(
         title = "Historia wydania"
     )

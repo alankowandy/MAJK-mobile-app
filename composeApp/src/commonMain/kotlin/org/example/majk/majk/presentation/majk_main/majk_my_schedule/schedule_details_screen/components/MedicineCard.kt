@@ -11,11 +11,15 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.example.majk.core.presentation.DarkTeal
+import org.example.majk.core.presentation.GoGreen
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.domain.ReleaseSchedule
 
@@ -23,6 +27,13 @@ import org.example.majk.majk.domain.ReleaseSchedule
 fun MedicineCard(
     schedule: ReleaseSchedule
 ) {
+    val (mealEmoji, mealLabel) = when (schedule.mealDependability) {
+        "before" -> "🍽️" to "Przed posiłkiem"
+        "during" -> "🥣" to "Podczas posiłku"
+        "after"  -> "☕" to "Po posiłku"
+        else     -> ""   to ""
+    }
+
     Card(
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = OffWhite),
@@ -37,7 +48,6 @@ fun MedicineCard(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Pill icon (for example purposes, using emoji or a simple shape)
             Text(
                 text = "💊",
                 fontSize = 18.sp,
@@ -48,6 +58,24 @@ fun MedicineCard(
             Text(
                 text = "${schedule.medicamentName} x${schedule.pillAmount}",
                 style = MaterialTheme.typography.bodyMedium,
+                color = DarkTeal,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .weight(1f)
+            )
+
+            if (mealEmoji.isNotBlank()) {
+                Text(
+                    text = mealEmoji,
+                    fontSize = 18.sp,
+                    modifier = Modifier
+                        .padding(end = 4.dp)
+                )
+            }
+            Text(
+                text = mealLabel,
+                style = MaterialTheme.typography.bodyMedium,
+                color = DarkTeal,
                 modifier = Modifier
                     .weight(1f)
             )
@@ -55,7 +83,7 @@ fun MedicineCard(
             Box(
                 modifier = Modifier
                 .size(width = 4.dp, height = 24.dp)
-                //.background(if (medicine.taken) Color(0xFF4CAF50) else Color(0xFFE91E63))
+                .background(GoGreen)
             )
         }
     }

@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.isoDayNumber
 import org.example.majk.core.presentation.Cyan
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.LightGray
@@ -30,17 +31,16 @@ fun DayItem(
     onClick: () -> Unit
 ) {
 
-    val polishWeekdays = listOf("Pn", "Wt", "Śr", "Cz", "Pt", "Sb", "Nd")
+    val polishWeekdays = listOf("Pn", "Wt", "Śr", "Cz", "Pt", "Sb", "N")
     val polishMonths   = listOf(
         "Sty","Lut","Mar","Kwi","Maj","Cze",
         "Lip","Sie","Wrz","Paź","Lis","Gru"
     )
 
-    val dowIndex = (date.dayOfWeek.ordinal + 6) % 7  // kotlinx-datetime: Monday=1,…Sunday=7 but ordinal=0..6?
+    val dowIndex = date.dayOfWeek.isoDayNumber - 1
     val dayLabel    = polishWeekdays.getOrNull(dowIndex) ?: date.dayOfWeek.name.take(2)
-    val monthLabel  = polishMonths.getOrNull(date.monthNumber - 1) ?: date.monthNumber.toString()
     val dayNumber   = date.dayOfMonth.toString()
-
+    val monthLabel  = polishMonths.getOrNull(date.monthNumber - 1) ?: date.monthNumber.toString()
 
     val backgroundColor = if (selected) Cyan else LightGray
     val borderColor = if (selected) Color.White else DarkTeal

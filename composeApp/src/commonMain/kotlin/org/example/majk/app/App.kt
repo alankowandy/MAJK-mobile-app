@@ -67,6 +67,8 @@ import org.example.majk.majk.presentation.majk_main.majk_my_schedule.main_screen
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.main_screen.ScheduleViewModel
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_details_screen.DetailsScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_details_screen.DetailsViewModel
+import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_medicine_list.ScheduledMedicineListScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_medicine_list.ScheduledMedicineListViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -386,6 +388,11 @@ fun App() {
                                     navController.navigate(
                                         Route.MajkScheduleDetailsByDate(date)
                                     )
+                                },
+                                onMedicineListClick = { accountId ->
+                                    navController.navigate(
+                                        Route.MajkScheduleMedicineList(accountId)
+                                    )
                                 }
                             )
                         }
@@ -400,6 +407,24 @@ fun App() {
                             val viewModel = koinViewModel<DetailsViewModel>()
 
                             DetailsScreenRoot(
+                                viewModel = viewModel,
+                                onBackClick = {
+                                    navController.navigateUp()
+                                }
+                            )
+                        }
+
+                        composable<Route.MajkScheduleMedicineList>(
+                            enterTransition = { slideInHorizontally { initialOffset ->
+                                initialOffset
+                            } },
+                            exitTransition = { slideOutHorizontally { initialOffset ->
+                                initialOffset
+                            } }
+                        ) {
+                            val viewModel = koinViewModel<ScheduledMedicineListViewModel>()
+
+                            ScheduledMedicineListScreenRoot(
                                 viewModel = viewModel,
                                 onBackClick = {
                                     navController.navigateUp()

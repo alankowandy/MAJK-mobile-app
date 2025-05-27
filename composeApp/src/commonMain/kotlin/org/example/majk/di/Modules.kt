@@ -19,6 +19,7 @@ import org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.M
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.MyMedicamentViewModel
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.main_screen.ScheduleViewModel
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_details_screen.DetailsViewModel
+import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_medicine_list.ScheduledMedicineListViewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
@@ -44,4 +45,5 @@ val sharedModule = module {
     viewModelOf(::ContainerSettingsViewModel)
     viewModelOf(::MyMedkitEditViewModel)
     viewModelOf(::SelectedAccountViewModel)
+    viewModelOf(::ScheduledMedicineListViewModel)
 }

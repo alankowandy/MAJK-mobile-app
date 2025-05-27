@@ -14,6 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.datetime.LocalDate
 import org.example.majk.core.presentation.Cyan
 import org.example.majk.core.presentation.DarkTeal
+import org.example.majk.core.presentation.LightGray
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.presentation.components.MajkButton
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.main_screen.components.PolishMonthCalendar
@@ -21,7 +22,8 @@ import org.example.majk.majk.presentation.majk_main.majk_my_schedule.main_screen
 @Composable
 fun ScheduleScreenRoot(
     viewModel: ScheduleViewModel,
-    onDateClick: (String) -> Unit
+    onDateClick: (String) -> Unit,
+    onMedicineListClick: (Long) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -31,6 +33,9 @@ fun ScheduleScreenRoot(
             when (action) {
                 is ScheduleAction.OnSelectDate -> {
                     onDateClick(action.date.toString())
+                }
+                is ScheduleAction.OnMedicineListClick -> {
+                    onMedicineListClick(action.accountId)
                 }
                 else -> {
                     viewModel.onAction(action)
@@ -69,6 +74,17 @@ fun ScheduleScreen(
             },
             boldText = true,
             containerColor = Cyan,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 70.dp)
+                .padding(bottom = 5.dp)
+        )
+
+        MajkButton(
+            text = "Lista dawek",
+            onAction = { onAction(ScheduleAction.OnMedicineListClick(state.currentAccountId)) },
+            boldText = true,
+            containerColor = LightGray,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 70.dp)

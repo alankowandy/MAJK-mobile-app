@@ -1,7 +1,6 @@
-package org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.components
+package org.example.majk.majk.presentation.majk_main.components
 
 import androidx.compose.animation.core.Animatable
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -25,7 +24,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntOffset
 import kotlinx.coroutines.launch
-import org.example.majk.core.presentation.OffWhite
 import kotlin.math.roundToInt
 
 @Composable

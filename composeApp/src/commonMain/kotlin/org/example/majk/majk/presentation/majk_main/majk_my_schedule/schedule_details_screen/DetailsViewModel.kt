@@ -10,14 +10,11 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toLocalDateTime
 import org.example.majk.app.Route
 import org.example.majk.core.presentation.SharedViewModel
 import org.example.majk.majk.data.dto.ReleaseScheduleDto
-import org.example.majk.majk.domain.MedicineEntry
 import org.example.majk.majk.domain.ReleaseSchedule
 
 
@@ -40,7 +37,6 @@ class DetailsViewModel(
 
     init {
         fetchAccountId()
-        //onAction(DetailsAction.OnSelectDate(date))
     }
 
     fun onAction(action: DetailsAction) {
@@ -53,7 +49,6 @@ class DetailsViewModel(
                         schedule = emptyMap()
                     )
                 }
-                //fetchScheduledMedicine(currentAccountId)
             }
             is DetailsAction.OnRefreshCurrentTime -> {
                 _state.update {
