@@ -4,6 +4,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -220,46 +221,64 @@ fun MedicineList(
                             horizontalArrangement = Arrangement.End,
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .padding(end = 16.dp)
                         ) {
-                            Crossfade(targetState = saveStatus) { status ->
-                                when (status) {
-                                    SaveStatus.Idle -> {
-                                        IconButton(
-                                            onClick = { onAction(ScheduledMedicineListAction.OnSaveNoteClick(
-                                                releaseId = medicament.releaseId,
-                                                note = medicament.note ?: ""
-                                            )) }
-                                        ) {
-                                            Icon(
-                                                imageVector = Icons.Outlined.CheckCircle,
-                                                contentDescription = "save",
-                                                tint = DarkTeal
-                                            )
-                                        }
-                                    }
-                                    SaveStatus.Saving -> {
-                                        CircularProgressIndicator(
-                                            modifier = Modifier
-                                                .size(24.dp),
-                                            strokeWidth = 2.dp,
-                                            color = DarkTeal
-                                        )
-                                    }
-                                    SaveStatus.Success -> {
-                                        Icon(
-                                            imageVector = Icons.Default.Check,
-                                            contentDescription = "saved",
-                                            tint = GoGreen,
-                                            modifier = Modifier
-                                                .size(24.dp)
-                                        )
-                                    }
+                            SaveButton(
+                                saveStatus = saveStatus,
+                                onSave = {
+                                    onAction(ScheduledMedicineListAction.OnSaveNoteClick(
+                                        releaseId = medicament.releaseId,
+                                        note = medicament.note ?: ""
+                                    ))
                                 }
-                            }
+                            )
                         }
                     }
                 }
 
+            }
+        }
+    }
+}
+
+@Composable
+private fun SaveButton(
+    saveStatus: SaveStatus,
+    onSave: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .size(48.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Crossfade(targetState = saveStatus) { status ->
+            when (status) {
+                SaveStatus.Idle -> {
+                    IconButton(onClick = { onSave() }) {
+                        Icon(
+                            imageVector = Icons.Outlined.CheckCircle,
+                            contentDescription = "save",
+                            tint = DarkTeal
+                        )
+                    }
+                }
+                SaveStatus.Saving -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(24.dp),
+                        strokeWidth = 2.dp,
+                        color = DarkTeal
+                    )
+                }
+                SaveStatus.Success -> {
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = "saved",
+                        tint = GoGreen,
+                        modifier = Modifier
+                            .size(24.dp)
+                    )
+                }
             }
         }
     }
