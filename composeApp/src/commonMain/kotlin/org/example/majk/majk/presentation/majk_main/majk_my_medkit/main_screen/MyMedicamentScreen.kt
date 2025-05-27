@@ -103,7 +103,6 @@ fun MyMedicamentScreen(
                     modifier = Modifier
                         .padding(horizontal = 70.dp, vertical = 20.dp)
                         .fillMaxWidth()
-                        .height(50.dp)
                 )
             }
         }

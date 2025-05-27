@@ -103,9 +103,8 @@ fun ManageFamilySettingsLayout(
             onAction = { onAction(SettingsAction.OnConfirmClick) },
             boldText = true,
             modifier = Modifier
-                .padding(start = 70.dp, end = 70.dp, bottom = 8.dp)
+                .padding(start = 70.dp, end = 70.dp, bottom = 5.dp)
                 .fillMaxWidth()
-                .height(45.dp)
         )
 
         MajkButton(
@@ -113,9 +112,8 @@ fun ManageFamilySettingsLayout(
             onAction = { onAction(SettingsAction.OnBackClick) },
             boldText = true,
             modifier = Modifier
-                .padding(start = 70.dp, end = 70.dp, bottom = 8.dp)
+                .padding(start = 70.dp, end = 70.dp, bottom = 5.dp)
                 .fillMaxWidth()
-                .height(45.dp)
         )
 
         MajkButton(
@@ -129,9 +127,8 @@ fun ManageFamilySettingsLayout(
             boldText = true,
             containerColor = WarningRed,
             modifier = Modifier
-                .padding(start = 70.dp, end = 70.dp, bottom = 8.dp)
+                .padding(start = 70.dp, end = 70.dp, bottom = 5.dp)
                 .fillMaxWidth()
-                .height(45.dp)
         )
     }
 }

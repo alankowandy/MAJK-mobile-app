@@ -88,7 +88,7 @@ fun ScheduleScreen(
             text = "Lista dawek",
             onAction = { onAction(ScheduleAction.OnMedicineListClick(state.currentAccountId)) },
             boldText = true,
-            containerColor = LightGray,
+            containerColor = DarkTeal,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 70.dp)

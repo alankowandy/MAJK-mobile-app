@@ -132,7 +132,7 @@ fun MyMedkitEditLayout(
             boldText = true,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 60.dp, vertical = 5.dp)
+                .padding(horizontal = 70.dp, vertical = 5.dp)
         )
 
         MajkButton(
@@ -143,7 +143,7 @@ fun MyMedkitEditLayout(
             boldText = true,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 60.dp, vertical = 5.dp)
+                .padding(horizontal = 70.dp, vertical = 5.dp)
         )
     }
 }

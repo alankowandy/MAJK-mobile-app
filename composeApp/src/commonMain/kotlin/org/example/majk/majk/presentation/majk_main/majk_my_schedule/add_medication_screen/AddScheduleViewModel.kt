@@ -53,6 +53,9 @@ class AddScheduleViewModel(
                     val startDate = LocalDateTime.parse(_state.value.medicine!!.startDate).date
                     val endDate = LocalDateTime.parse(_state.value.medicine!!.endDate).date
                     val time = LocalDateTime.parse(_state.value.medicine!!.startDate).time
+                    val beforeMeal = _state.value.medicine!!.mealDependability == "before"
+                    val duringMeal = _state.value.medicine!!.mealDependability == "during"
+                    val afterMeal = _state.value.medicine!!.mealDependability == "after"
                     _searchQuery.value = _state.value.medicine!!.medicamentName
                     _state.update {
                         it.copy(
@@ -61,7 +64,11 @@ class AddScheduleViewModel(
                             endDateValue = endDate,
                             time = time,
                             intervalDays = _state.value.medicine!!.repeatingInterval.toInt(),
-                            pillAmount = _state.value.medicine!!.pillAmount.toInt()
+                            pillAmount = _state.value.medicine!!.pillAmount.toInt(),
+                            beforeMeal = beforeMeal,
+                            duringMeal = duringMeal,
+                            afterMeal = afterMeal,
+                            note = _state.value.medicine!!.note ?: ""
                         )
                     }
                 }
@@ -108,6 +115,18 @@ class AddScheduleViewModel(
             }
             is AddScheduleAction.OnPillAmountChange -> {
                 _state.update { it.copy(pillAmount = action.pillQuantity) }
+            }
+            is AddScheduleAction.OnToggleBeforeMeal -> {
+                _state.update { it.copy(beforeMeal = !it.beforeMeal) }
+            }
+            is AddScheduleAction.OnToggleDuringMeal -> {
+                _state.update { it.copy(duringMeal = !it.duringMeal) }
+            }
+            is AddScheduleAction.OnToggleAfterMeal -> {
+                _state.update { it.copy(afterMeal = !it.afterMeal) }
+            }
+            is AddScheduleAction.OnNoteChange -> {
+                _state.update { it.copy(note = action.text) }
             }
         }
     }

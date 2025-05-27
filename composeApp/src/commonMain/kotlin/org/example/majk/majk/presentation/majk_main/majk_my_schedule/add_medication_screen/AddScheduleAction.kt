@@ -20,9 +20,9 @@ interface AddScheduleAction {
     data class OnTakingIntervalChange(val days: Int): AddScheduleAction
     data object OnPillAmountClick: AddScheduleAction
     data class OnPillAmountChange(val pillQuantity: Int): AddScheduleAction
-    data class OnToggleBeforeMeal(val value: Boolean): AddScheduleAction
-    data class OnToggleDuringMeal(val value: Boolean): AddScheduleAction
-    data class OnToggleAfterMeal(val value: Boolean): AddScheduleAction
+    data object OnToggleBeforeMeal: AddScheduleAction
+    data object OnToggleDuringMeal: AddScheduleAction
+    data object OnToggleAfterMeal: AddScheduleAction
     data class OnNoteChange(val text: String): AddScheduleAction
     data class OnSelectedMedicineChange(val medicine: MedicineEntry): AddScheduleAction
     data object OnSaveClick: AddScheduleAction

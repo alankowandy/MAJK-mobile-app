@@ -36,7 +36,7 @@ fun SelectedTimeBox(
             .border(width = 1.dp, color = DarkTeal, shape = RoundedCornerShape(8.dp))
             .background(Cyan)
             .clickable { onClick() }
-            .size(width = 75.dp, height = 25.dp),
+            .size(width = 80.dp, height = 40.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
