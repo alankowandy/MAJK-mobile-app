@@ -36,6 +36,10 @@ sealed class RouteTitle(
         title = "Lista dawek"
     )
 
+    data object MajkAddSchedule: RouteTitle(
+        title = "Dodaj/edytuj dawkę"
+    )
+
     data object MajkHistory: RouteTitle(
         title = "Historia wydania"
     )

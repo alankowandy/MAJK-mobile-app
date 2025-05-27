@@ -63,6 +63,10 @@ import org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.M
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.MyMedkitEditViewModel
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.MyMedicamentScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.MyMedicamentViewModel
+import org.example.majk.majk.presentation.majk_main.majk_my_schedule.SelectedMedicineViewModel
+import org.example.majk.majk.presentation.majk_main.majk_my_schedule.add_medication_screen.AddScheduleAction
+import org.example.majk.majk.presentation.majk_main.majk_my_schedule.add_medication_screen.AddScheduleScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_my_schedule.add_medication_screen.AddScheduleViewModel
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.main_screen.ScheduleScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.main_screen.ScheduleViewModel
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_details_screen.DetailsScreenRoot
@@ -393,6 +397,11 @@ fun App() {
                                     navController.navigate(
                                         Route.MajkScheduleMedicineList(accountId)
                                     )
+                                },
+                                onAddScheduleClick = { accountId ->
+                                    navController.navigate(
+                                        Route.MajkAddSchedule(accountId)
+                                    )
                                 }
                             )
                         }
@@ -423,14 +432,54 @@ fun App() {
                             } }
                         ) {
                             val viewModel = koinViewModel<ScheduledMedicineListViewModel>()
+                            val selectedMedicineViewModel =
+                                it.sharedKoinViewModel<SelectedMedicineViewModel>(navController)
+
+                            LaunchedEffect(true) {
+                                selectedMedicineViewModel.onSelectMedicine(null)
+                            }
 
                             ScheduledMedicineListScreenRoot(
+                                viewModel = viewModel,
+                                onMedicineDetailsClick = { medicineEntry ->
+                                    selectedMedicineViewModel.onSelectMedicine(medicineEntry)
+                                    navController.navigate(
+                                        Route.MajkAddSchedule(medicineEntry.accountIdForEdit)
+                                    )
+                                },
+                                onBackClick = {
+                                    navController.navigateUp()
+                                }
+                            )
+                        }
+
+                        composable<Route.MajkAddSchedule>(
+                            enterTransition = { slideInHorizontally { initialOffset ->
+                                initialOffset
+                            } },
+                            exitTransition = { slideOutHorizontally { initialOffset ->
+                                initialOffset
+                            } }
+                        ) {
+                            val viewModel = koinViewModel<AddScheduleViewModel>()
+                            val selectedMedicineViewModel =
+                                it.sharedKoinViewModel<SelectedMedicineViewModel>(navController)
+                            val selectedMedicine by selectedMedicineViewModel.selectedMedicine.collectAsStateWithLifecycle()
+
+                            LaunchedEffect(selectedMedicine) {
+                                selectedMedicine?.let { medicine ->
+                                    viewModel.onAction(AddScheduleAction.OnSelectedMedicineChange(medicine))
+                                }
+                            }
+
+                            AddScheduleScreenRoot(
                                 viewModel = viewModel,
                                 onBackClick = {
                                     navController.navigateUp()
                                 }
                             )
                         }
+
                     }
 
 

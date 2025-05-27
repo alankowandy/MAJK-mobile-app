@@ -34,8 +34,8 @@ class SharedViewModel(
     private val _familyUsers = MutableStateFlow<List<FamilyUsers>>(emptyList())
     val familyUsers = _familyUsers.asStateFlow()
 
-    private var id: String = ""
-    private var email: String = ""
+    private var id: String? = ""
+    private var email: String? = ""
     private var currentFamilyId: Long = 0
 
     init {
@@ -46,14 +46,27 @@ class SharedViewModel(
         viewModelScope.launch {
             sessionStatus
                 .filterIsInstance<SessionStatus.Authenticated>()
-                .collect { auth ->
-                    id = auth.session.user?.id ?: return@collect
-                    email = auth.session.user?.email ?: return@collect
-                    fetchUserInfo(
-                        email = email,
-                        authId = id
-                    )
+                .map { status ->
+                    id = status.session.user?.id ?: return@map null
+                    email = status.session.user?.email ?: return@map null
+                    id to email
                 }
+                .filterNotNull()
+                .distinctUntilChanged()
+                .onEach { (id, email) ->
+                    if (email != null && id != null) {
+                        fetchUserInfo(email = email, authId = id)
+                    }
+                }
+                .launchIn(viewModelScope)
+//                .collect { auth ->
+//                    id = auth.session.user?.id ?: return@collect
+//                    email = auth.session.user?.email ?: return@collect
+//                    fetchUserInfo(
+//                        email = email,
+//                        authId = id
+//                    )
+//                }
         }
     }
 

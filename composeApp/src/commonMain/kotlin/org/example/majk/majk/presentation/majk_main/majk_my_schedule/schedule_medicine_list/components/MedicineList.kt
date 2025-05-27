@@ -97,7 +97,7 @@ fun MedicineList(
                     actions = {
                         ActionIcon(
                             onClick = {
-
+                                onAction(ScheduledMedicineListAction.OnNoteDetailsClick(medicament))
                             },
                             backgroundColor = Cyan,
                             icon = Icons.Default.MoreVert,

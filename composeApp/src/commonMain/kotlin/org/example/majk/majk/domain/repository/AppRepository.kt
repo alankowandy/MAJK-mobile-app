@@ -5,6 +5,7 @@ import org.example.majk.majk.data.dto.AdminAuthDto
 import org.example.majk.majk.data.dto.ContainerSettingsDto
 import org.example.majk.majk.data.dto.ContainerSettingsSearchQueryDto
 import org.example.majk.majk.data.dto.ContainerStateDto
+import org.example.majk.majk.data.dto.FetchFamilyIdDto
 import org.example.majk.majk.data.dto.ManageFamilyDto
 import org.example.majk.majk.data.dto.MedicamentSearchDto
 import org.example.majk.majk.data.dto.MedicineEntryDto
@@ -36,4 +37,5 @@ interface AppRepository {
     suspend fun fetchMedicamentEntries(accountId: Long): List<MedicineEntryDto>
     suspend fun deleteScheduledMedicine(releaseId: Long)
     suspend fun updateNote(releaseId: Long, note: String)
+    suspend fun fetchFamilyId(accountId: Long): FetchFamilyIdDto
 }

@@ -23,7 +23,8 @@ import org.example.majk.majk.presentation.majk_main.majk_my_schedule.main_screen
 fun ScheduleScreenRoot(
     viewModel: ScheduleViewModel,
     onDateClick: (String) -> Unit,
-    onMedicineListClick: (Long) -> Unit
+    onMedicineListClick: (Long) -> Unit,
+    onAddScheduleClick: (Long) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -36,6 +37,9 @@ fun ScheduleScreenRoot(
                 }
                 is ScheduleAction.OnMedicineListClick -> {
                     onMedicineListClick(action.accountId)
+                }
+                is ScheduleAction.OnAddScheduleClick -> {
+                    onAddScheduleClick(action.accountId)
                 }
                 else -> {
                     viewModel.onAction(action)
@@ -93,7 +97,7 @@ fun ScheduleScreen(
 
         MajkButton(
             text = "Dodaj dawkę",
-            onAction = {},
+            onAction = { onAction(ScheduleAction.OnAddScheduleClick(state.currentAccountId)) },
             boldText = true,
             containerColor = DarkTeal,
             modifier = Modifier

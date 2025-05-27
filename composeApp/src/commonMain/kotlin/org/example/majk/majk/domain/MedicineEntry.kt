@@ -12,5 +12,6 @@ data class MedicineEntry(
     val note: String?,
     val leafletUrl: String,
     val isOptionsRevealed: Boolean = false,
-    val isTextEditorVisible: Boolean = false
+    val isTextEditorVisible: Boolean = false,
+    val accountIdForEdit: Long = 0L
 )

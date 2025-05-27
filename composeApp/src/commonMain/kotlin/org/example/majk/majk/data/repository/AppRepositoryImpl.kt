@@ -13,6 +13,7 @@ import org.example.majk.majk.data.dto.AdminAuthDto
 import org.example.majk.majk.data.dto.ContainerSettingsDto
 import org.example.majk.majk.data.dto.ContainerSettingsSearchQueryDto
 import org.example.majk.majk.data.dto.ContainerStateDto
+import org.example.majk.majk.data.dto.FetchFamilyIdDto
 import org.example.majk.majk.data.dto.ManageFamilyDto
 import org.example.majk.majk.data.dto.MedicamentSearchDto
 import org.example.majk.majk.data.dto.MedicineEntryDto
@@ -279,6 +280,18 @@ class AppRepositoryImpl(
                     put("note_input", note)
                 }
             )
+        }
+    }
+
+    override suspend fun fetchFamilyId(accountId: Long): FetchFamilyIdDto {
+        return withContext(Dispatchers.IO) {
+            val data = postgrest.rpc(
+                function = "get_family_id_by_profile_id",
+                parameters = buildJsonObject {
+                    put("profile_id_input", accountId)
+                }
+            ).decodeList<FetchFamilyIdDto>()
+            data[0]
         }
     }
 }

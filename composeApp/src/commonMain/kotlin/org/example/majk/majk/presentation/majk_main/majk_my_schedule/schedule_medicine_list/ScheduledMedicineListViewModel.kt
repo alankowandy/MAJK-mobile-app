@@ -41,7 +41,7 @@ class ScheduledMedicineListViewModel(
             is ScheduledMedicineListAction.OnBackClick -> {
 
             }
-            is ScheduledMedicineListAction.OnNoteClick -> {
+            is ScheduledMedicineListAction.OnNoteDetailsClick -> {
 
             }
             is ScheduledMedicineListAction.OnDeleteClick -> {
@@ -153,7 +153,8 @@ class ScheduledMedicineListViewModel(
             pillAmount = this.pillAmount,
             mealDependability = this.mealDependability,
             note = this.note,
-            leafletUrl = this.leafletUrl
+            leafletUrl = this.leafletUrl,
+            accountIdForEdit = accountId
         )
     }
 }

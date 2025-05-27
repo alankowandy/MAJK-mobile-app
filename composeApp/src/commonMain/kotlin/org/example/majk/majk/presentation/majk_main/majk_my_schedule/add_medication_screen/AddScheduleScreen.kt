@@ -1,4 +1,4 @@
-package org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_medicine_list
+package org.example.majk.majk.presentation.majk_main.majk_my_schedule.add_medication_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -8,31 +8,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
-import org.example.majk.majk.domain.MedicineEntry
-import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_medicine_list.components.MedicineList
+import org.example.majk.majk.presentation.majk_main.majk_my_schedule.add_medication_screen.components.AddScheduleScreenLayout
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun ScheduledMedicineListScreenRoot(
-    viewModel: ScheduledMedicineListViewModel = koinViewModel(),
-    onMedicineDetailsClick: (MedicineEntry) -> Unit,
+fun AddScheduleScreenRoot(
+    viewModel: AddScheduleViewModel = koinViewModel(),
     onBackClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val medicineList by viewModel.medicineList.collectAsStateWithLifecycle()
+    val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
 
-    ScheduledMedicineListScreen(
+    AddScheduleScreen(
         state = state,
-        medicineList = medicineList,
+        searchQuery = searchQuery,
         onAction = { action ->
             when (action) {
-                is ScheduledMedicineListAction.OnNoteDetailsClick -> {
-                    onMedicineDetailsClick(action.medicine)
-                }
-                is ScheduledMedicineListAction.OnBackClick -> {
+                is AddScheduleAction.OnBackClick -> {
                     onBackClick()
                 }
                 else -> {
@@ -44,10 +40,10 @@ fun ScheduledMedicineListScreenRoot(
 }
 
 @Composable
-fun ScheduledMedicineListScreen(
-    state: ScheduledMedicineListState,
-    onAction: (ScheduledMedicineListAction) -> Unit,
-    medicineList: List<MedicineEntry>
+fun AddScheduleScreen(
+    state: AddScheduleState,
+    onAction: (AddScheduleAction) -> Unit,
+    searchQuery: String
 ) {
     Box(
         modifier = Modifier
@@ -61,10 +57,10 @@ fun ScheduledMedicineListScreen(
                     .align(Alignment.Center)
             )
         } else {
-            MedicineList(
+            AddScheduleScreenLayout(
                 state = state,
                 onAction = onAction,
-                medicineList = medicineList
+                searchQuery = searchQuery
             )
         }
     }
