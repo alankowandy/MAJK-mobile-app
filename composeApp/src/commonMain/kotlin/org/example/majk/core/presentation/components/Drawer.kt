@@ -23,7 +23,7 @@ import org.example.majk.core.data.itemsInDrawer
 import org.example.majk.core.domain.RouteTitle
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
-import org.example.majk.core.presentation.SharedState
+import org.example.majk.core.domain.SharedState
 import org.example.majk.majk.presentation.components.MajkButton
 import org.example.majk.majk.presentation.components.MajkLogo
 import org.jetbrains.compose.resources.stringResource

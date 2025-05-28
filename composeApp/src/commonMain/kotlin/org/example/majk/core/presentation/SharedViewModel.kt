@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterIsInstance
 import org.example.majk.core.data.dto.FamilyUsersDto
 import org.example.majk.core.domain.FamilyUsers
+import org.example.majk.core.domain.SharedState
 
 class SharedViewModel(
     private val authRepository: AuthRepository
@@ -123,7 +124,8 @@ class SharedViewModel(
             username = this.username,
             familyId = this.familyId,
             deviceId = this.deviceId,
-            permission = this.permission
+            permission = this.permission,
+            email = email
         )
     }
 

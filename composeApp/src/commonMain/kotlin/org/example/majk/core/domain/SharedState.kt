@@ -1,4 +1,4 @@
-package org.example.majk.core.presentation
+package org.example.majk.core.domain
 
 data class SharedState(
     val uuid: String? = null,
@@ -7,6 +7,7 @@ data class SharedState(
     val familyId: Long? = null,
     val deviceId: Long? = null,
     val permission: String? = null,
+    val email: String? = null,
     val isActionExpanded: Boolean = false,
     val errorMessage: String? = null,
     val actionErrorMessage: String? = null

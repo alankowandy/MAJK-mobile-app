@@ -173,11 +173,6 @@ fun AddScheduleScreenLayout(
             onAction = onAction
         )
 
-//        NoteBox(
-//            noteText = state.note,
-//            onAction = onAction
-//        )
-
         Spacer(modifier = Modifier.weight(1f))
 
         MajkButton(

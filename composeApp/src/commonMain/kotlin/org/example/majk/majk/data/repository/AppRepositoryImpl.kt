@@ -94,7 +94,7 @@ class AppRepositoryImpl(
         }
     }
 
-    override suspend fun insertLimitedProfile(username: String, uuid: String, familyId: Long) {
+    override suspend fun insertLimitedProfile(username: String, uuid: String, familyId: Long, email: String) {
         return withContext(Dispatchers.IO) {
             postgrest.rpc(
                 function = "insert_limited_profile",
@@ -102,6 +102,7 @@ class AppRepositoryImpl(
                     put("name", username)
                     put("account_id", uuid)
                     put("family_id", familyId)
+                    put("email_input", email)
                 }
             )
         }

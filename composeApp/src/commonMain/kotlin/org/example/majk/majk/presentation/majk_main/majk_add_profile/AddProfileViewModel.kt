@@ -24,6 +24,7 @@ class AddProfileViewModel(
 
     private var userFamilyId: Long = 0L
     private var userUuid: String = ""
+    private var adminEmail: String = ""
 
     init {
         sharedViewModel.userInfo
@@ -32,6 +33,7 @@ class AddProfileViewModel(
             .onEach { userInfo ->
                 userFamilyId = userInfo?.familyId ?: 0L
                 userUuid = userInfo?.uuid ?: ""
+                adminEmail = userInfo?.email ?: ""
             }
             .launchIn(viewModelScope)
     }
@@ -48,7 +50,8 @@ class AddProfileViewModel(
                 insertLimitedProfile(
                     username = username,
                     uuid = userUuid,
-                    familyId = userFamilyId
+                    familyId = userFamilyId,
+                    email = adminEmail
                 )
                 _state.update {
                     it.copy(
@@ -71,7 +74,8 @@ class AddProfileViewModel(
     private fun insertLimitedProfile(
         username: String,
         uuid: String,
-        familyId: Long
+        familyId: Long,
+        email: String
     ) {
         viewModelScope.launch {
             if (username.isBlank()) {
@@ -83,7 +87,7 @@ class AddProfileViewModel(
                 }
             } else {
                 kotlin.runCatching {
-                    appRepository.insertLimitedProfile(username, uuid, familyId)
+                    appRepository.insertLimitedProfile(username, uuid, familyId, email)
                 }.onSuccess {
                     _state.update {
                         it.copy(

@@ -21,7 +21,7 @@ interface AppRepository {
     suspend fun fetchUserSettings(userId: Long): UserSettingsDto
     suspend fun updateUserSettings(id: Long, username: String, permission: String)
     suspend fun deleteUserProfile(userId: Long, username: String)
-    suspend fun insertLimitedProfile(username: String, uuid: String, familyId: Long)
+    suspend fun insertLimitedProfile(username: String, uuid: String, familyId: Long, email: String)
     suspend fun fetchMedicamentList(familyId: Long): List<MyMedicamentListDto>
     suspend fun deleteMedicament(medicamentId: Long)
     suspend fun fetchReleaseSchedule(accountId: Long): List<ReleaseScheduleDto>
