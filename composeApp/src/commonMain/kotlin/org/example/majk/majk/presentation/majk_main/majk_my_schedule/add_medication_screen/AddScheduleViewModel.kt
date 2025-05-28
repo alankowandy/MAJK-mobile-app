@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.example.majk.app.Route
@@ -128,6 +129,44 @@ class AddScheduleViewModel(
             is AddScheduleAction.OnNoteChange -> {
                 _state.update { it.copy(note = action.text) }
             }
+            is AddScheduleAction.OnSaveClick -> {
+                if (_state.value.selectedMedicamentId != 0L &&
+                    _state.value.startDateValue != null &&
+                    _state.value.endDateValue != null &&
+                    _state.value.time != null
+                ) {
+                    val startDate = formatLocalDateTime(_state.value.startDateValue!!, _state.value.time!!)
+                    val endDate = formatLocalDateTime(_state.value.endDateValue!!, _state.value.time!!)
+                    val consumption = if (_state.value.beforeMeal) "before"
+                        else if (_state.value.duringMeal) "during"
+                        else "after"
+                    if (_state.value.medicine == null) {
+                        insertNewSchedule(
+                            medicamentId = _state.value.selectedMedicamentId,
+                            accountId = accountId,
+                            startDate = startDate,
+                            endDate = endDate,
+                            dayInterval = _state.value.intervalDays.toLong(),
+                            pillAmount = _state.value.pillAmount.toLong(),
+                            consumption = consumption,
+                            note = _state.value.note
+                        )
+                    } else {
+                        updateSchedule(
+                            releaseId = _state.value.medicine!!.releaseId,
+                            medicamentId = _state.value.selectedMedicamentId,
+                            startDate = startDate,
+                            endDate = endDate,
+                            dayInterval = _state.value.intervalDays.toLong(),
+                            pillAmount = _state.value.pillAmount.toLong(),
+                            consumption = consumption,
+                            note = _state.value.note
+                        )
+                    }
+                } else {
+                    _state.update { it.copy(errorMessage = "Nie wszystkie dane zostały poprawnie podane!") }
+                }
+            }
         }
     }
 
@@ -201,6 +240,55 @@ class AddScheduleViewModel(
                 }
             }
         }
+    }
+
+    private fun insertNewSchedule(
+        medicamentId: Long,
+        accountId: Long,
+        startDate: String,
+        endDate: String,
+        dayInterval: Long,
+        pillAmount: Long,
+        consumption: String,
+        note: String
+    ) {
+        viewModelScope.launch {
+            runCatching {
+                appRepository.insertNewSchedule(medicamentId, accountId, startDate, endDate, dayInterval, pillAmount, consumption, note)
+            }.onSuccess {
+
+            }.onFailure { error ->
+                println(error)
+            }
+        }
+    }
+
+    private fun updateSchedule(
+        releaseId: Long,
+        medicamentId: Long,
+        startDate: String,
+        endDate: String,
+        dayInterval: Long,
+        pillAmount: Long,
+        consumption: String,
+        note: String
+    ) {
+        viewModelScope.launch {
+            runCatching {
+                appRepository.updateSchedule(releaseId, medicamentId, startDate, endDate, dayInterval, pillAmount, consumption, note)
+            }.onSuccess {
+
+            }.onFailure { error ->
+                println(error)
+            }
+        }
+    }
+
+    private fun formatLocalDateTime(
+        date: LocalDate,
+        time: LocalTime
+    ): String {
+       return LocalDateTime(date, time).toString()
     }
 
     private fun longToLocalDate(date: Long?): LocalDate? {

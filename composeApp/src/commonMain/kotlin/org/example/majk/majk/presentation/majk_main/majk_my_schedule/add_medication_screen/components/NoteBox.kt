@@ -2,7 +2,6 @@ package org.example.majk.majk.presentation.majk_main.majk_my_schedule.add_medica
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -44,7 +43,7 @@ fun NoteBox(
                 text = "Notatka:",
                 color = DarkTeal,
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(start = 16.dp, top = 16.dp)
             )
 
             CompositionLocalProvider(

@@ -13,12 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.domain.AdminAuthUsers
+import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthAction
 
 @Composable
 fun AdminAuthUserList(
     users: List<AdminAuthUsers>,
-    onRfidClick: () -> Unit,
-    onNfcClick: () -> Unit,
+    onAction: (AdminAuthAction) -> Unit,
     scrollState: LazyListState = rememberLazyListState()
 ) {
     LazyColumn(
@@ -34,10 +34,9 @@ fun AdminAuthUserList(
             key = { it.id }
         ) { user ->
             AdminAuthUserTile(
-                username = user.username,
+                user = user,
                 userColor = OffWhite,
-                onRfidClick = { onRfidClick() },
-                onNfcClick = { onNfcClick() }
+                onAction = onAction
             )
         }
     }

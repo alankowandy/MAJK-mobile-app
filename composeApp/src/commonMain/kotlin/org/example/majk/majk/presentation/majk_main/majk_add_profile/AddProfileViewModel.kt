@@ -55,6 +55,7 @@ class AddProfileViewModel(
                         usernameEntry = ""
                     )
                 }
+                sharedViewModel.onAction(SharedAction.OnRefreshActionData)
             }
             is AddProfileAction.OnDialogClear -> {
                 _state.update {
@@ -84,7 +85,6 @@ class AddProfileViewModel(
                 kotlin.runCatching {
                     appRepository.insertLimitedProfile(username, uuid, familyId)
                 }.onSuccess {
-                    sharedViewModel.onAction(SharedAction.OnRefreshActionData)
                     _state.update {
                         it.copy(
                             usernameError = false,

@@ -138,8 +138,9 @@ class SettingsViewModel(
         viewModelScope.launch {
             runCatching {
                 appRepository.updateUserSettings(userId, username, permission)
-            }.onSuccess {
                 sharedViewModel.onAction(SharedAction.OnRefreshActionData)
+            }.onSuccess {
+
             }.onFailure {
                 _state.update {
                     it.copy(

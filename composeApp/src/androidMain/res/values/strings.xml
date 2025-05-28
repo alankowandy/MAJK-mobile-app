@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MAJK</string>
+    <string name="nfc_service_descr">Majk virtual card service</string>
+    <string name="nfc_aid_descr">Majk virtual card AID</string>
 </resources>

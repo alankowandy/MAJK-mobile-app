@@ -28,14 +28,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.LightGray
+import org.example.majk.majk.domain.AdminAuthUsers
 import org.example.majk.majk.presentation.components.MajkButton
+import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthAction
 
 @Composable
 fun AdminAuthUserTile(
-    username: String,
+    user: AdminAuthUsers,
     userColor: Color,
-    onRfidClick: () -> Unit,
-    onNfcClick: () -> Unit
+    onAction: (AdminAuthAction) -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -57,7 +58,7 @@ fun AdminAuthUserTile(
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                text = username,
+                text = user.username,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
@@ -71,8 +72,8 @@ fun AdminAuthUserTile(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .size(100.dp)
+                    .padding(horizontal = 16.dp, vertical = 16.dp)
+                    .size(70.dp)
                     .background(
                         color = DarkTeal,
                         shape = RoundedCornerShape(100)
@@ -82,7 +83,7 @@ fun AdminAuthUserTile(
                     imageVector = Icons.Outlined.Person,
                     contentDescription = "user",
                     modifier = Modifier
-                        .size(90.dp),
+                        .size(60.dp),
                     tint = userColor
                 )
             }
@@ -91,28 +92,20 @@ fun AdminAuthUserTile(
 
             Column(
                 modifier = Modifier
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = 16.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 MajkButton(
-                    text = "RFID",
-                    onAction = { onRfidClick() },
-                    boldText = false,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(55.dp)
-                        .padding(top = 16.dp)
-                )
-
-                MajkButton(
                     text = "NFC",
-                    onAction = { onNfcClick() },
+                    onAction = { onAction(AdminAuthAction.OnNfcClick(
+                        accountId = user.id,
+                        username = user.username
+                    )) },
                     boldText = false,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(55.dp)
-                        .padding(bottom = 16.dp)
+                        .height(60.dp)
                 )
             }
 

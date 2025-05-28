@@ -38,4 +38,8 @@ interface AppRepository {
     suspend fun deleteScheduledMedicine(releaseId: Long)
     suspend fun updateNote(releaseId: Long, note: String)
     suspend fun fetchFamilyId(accountId: Long): FetchFamilyIdDto
+    suspend fun insertNewSchedule(medicamentId: Long, accountId: Long, startDate: String, endDate: String,
+                                  dayInterval: Long, pillAmount: Long, consumption: String, note: String)
+    suspend fun updateSchedule(releaseId: Long, medicamentId: Long, startDate: String, endDate: String,
+                               dayInterval: Long, pillAmount: Long, consumption: String, note: String)
 }

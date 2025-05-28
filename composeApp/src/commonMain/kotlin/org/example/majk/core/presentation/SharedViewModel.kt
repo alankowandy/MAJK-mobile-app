@@ -42,6 +42,20 @@ class SharedViewModel(
         filterSessionStatus()
     }
 
+    fun onAction(action: SharedAction) {
+        when (action) {
+            is SharedAction.OnExpandAction -> {
+                _state.update {
+                    it.copy(isActionExpanded = action.isExpanded)
+                }
+            }
+            is SharedAction.OnRefreshActionData -> {
+                fetchFamilyUsers(currentFamilyId)
+                println("executed fetch")
+            }
+        }
+    }
+
     private fun filterSessionStatus() {
         viewModelScope.launch {
             sessionStatus
@@ -59,14 +73,6 @@ class SharedViewModel(
                     }
                 }
                 .launchIn(viewModelScope)
-//                .collect { auth ->
-//                    id = auth.session.user?.id ?: return@collect
-//                    email = auth.session.user?.email ?: return@collect
-//                    fetchUserInfo(
-//                        email = email,
-//                        authId = id
-//                    )
-//                }
         }
     }
 
@@ -102,20 +108,6 @@ class SharedViewModel(
                     )
                 }
                 println(error)
-            }
-        }
-    }
-
-    fun onAction(action: SharedAction) {
-        when (action) {
-            is SharedAction.OnExpandAction -> {
-                _state.update {
-                    it.copy(isActionExpanded = action.isExpanded)
-                }
-            }
-            is SharedAction.OnRefreshActionData -> {
-                fetchFamilyUsers(currentFamilyId)
-                println("executed fetch")
             }
         }
     }

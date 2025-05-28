@@ -294,4 +294,58 @@ class AppRepositoryImpl(
             data[0]
         }
     }
+
+    override suspend fun insertNewSchedule(
+        medicamentId: Long,
+        accountId: Long,
+        startDate: String,
+        endDate: String,
+        dayInterval: Long,
+        pillAmount: Long,
+        consumption: String,
+        note: String
+    ) {
+        return withContext(Dispatchers.IO) {
+            postgrest.rpc(
+                function = "insert_pill_release",
+                parameters = buildJsonObject {
+                    put("medicament_id_input", medicamentId)
+                    put("profile_id_input", accountId)
+                    put("start_date_input", startDate)
+                    put("end_date_input", endDate)
+                    put("repeat_days_input", dayInterval)
+                    put("pill_amount_input", pillAmount)
+                    put("taking_with_meal_input", consumption)
+                    put("note_input", note)
+                }
+            )
+        }
+    }
+
+    override suspend fun updateSchedule(
+        releaseId: Long,
+        medicamentId: Long,
+        startDate: String,
+        endDate: String,
+        dayInterval: Long,
+        pillAmount: Long,
+        consumption: String,
+        note: String
+    ) {
+        return withContext(Dispatchers.IO) {
+            postgrest.rpc(
+                function = "update_pill_release_by_id",
+                parameters = buildJsonObject {
+                    put("pill_release_id_input", releaseId)
+                    put("medicament_id_input", medicamentId)
+                    put("start_date_input", startDate)
+                    put("end_date_input", endDate)
+                    put("repeat_days_input", dayInterval)
+                    put("pill_amount_input", pillAmount)
+                    put("taking_with_meal_input", consumption)
+                    put("note_input", note)
+                }
+            )
+        }
+    }
 }

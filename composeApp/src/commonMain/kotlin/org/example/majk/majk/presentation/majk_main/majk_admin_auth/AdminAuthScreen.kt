@@ -15,6 +15,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.domain.AdminAuthUsers
+import org.example.majk.majk.presentation.components.MajkAlertDialog
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.components.AdminAuthUserList
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -29,10 +30,7 @@ fun AdminAuthScreenRoot(
         users = users,
         state = state,
         onAction = { action ->
-            when (action) {
-                is AdminAuthAction.OnRfidClick -> {}
-                is AdminAuthAction.OnNfcClick -> {}
-            }
+            viewModel.onAction(action)
         }
     )
 }
@@ -43,6 +41,14 @@ fun AdminAuthScreen(
     state: AdminAuthState,
     onAction: (AdminAuthAction) -> Unit
 ) {
+    if (state.errorMessage != null) {
+        MajkAlertDialog(
+            title = ":(",
+            error = state.errorMessage,
+            dismissAction = { onAction(AdminAuthAction.OnDismissError) }
+        )
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -56,12 +62,7 @@ fun AdminAuthScreen(
         } else {
             AdminAuthUserList(
                 users = users,
-                onRfidClick = {
-                    onAction(AdminAuthAction.OnRfidClick)
-                },
-                onNfcClick = {
-                    onAction(AdminAuthAction.OnNfcClick)
-                }
+                onAction = onAction
             )
         }
     }

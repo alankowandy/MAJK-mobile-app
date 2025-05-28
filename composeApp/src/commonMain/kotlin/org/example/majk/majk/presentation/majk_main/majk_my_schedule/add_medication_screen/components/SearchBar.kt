@@ -3,6 +3,8 @@ package org.example.majk.majk.presentation.majk_main.majk_my_schedule.add_medica
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
@@ -21,6 +23,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.LightGray
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.add_medication_screen.AddScheduleAction
@@ -85,23 +88,36 @@ fun SearchBar(
             expanded = state.isSearchExpanded,
             onExpandedChange = { onAction(AddScheduleAction.OnSearchExpandedChange(it)) }
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                if (state.isSearching) {
-                    CircularProgressIndicator(
-                        color = DarkTeal,
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                    )
-                } else {
-                    SearchQueryResult(
-                        searchResults = state.searchResult,
-                        onAction = onAction
-                    )
-                }
+            if (state.isSearching) {
+                CircularProgressIndicator(
+                    color = DarkTeal,
+                    modifier = Modifier
+                        .heightIn(max = 500.dp)
+                        .align(Alignment.CenterHorizontally)
+                )
+            } else {
+                SearchQueryResult(
+                    searchResults = state.searchResult,
+                    onAction = onAction
+                )
             }
+//            Box(
+//                modifier = Modifier
+//                    .height(500.dp)
+//            ) {
+//                if (state.isSearching) {
+//                    CircularProgressIndicator(
+//                        color = DarkTeal,
+//                        modifier = Modifier
+//                            .align(Alignment.Center)
+//                    )
+//                } else {
+//                    SearchQueryResult(
+//                        searchResults = state.searchResult,
+//                        onAction = onAction
+//                    )
+//                }
+//            }
         }
     }
 }

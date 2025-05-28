@@ -8,6 +8,7 @@ class MajkApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
+        org.example.majk.platform.NfcCapability.init(this)
         initKoin {
             androidContext(this@MajkApplication)
         }

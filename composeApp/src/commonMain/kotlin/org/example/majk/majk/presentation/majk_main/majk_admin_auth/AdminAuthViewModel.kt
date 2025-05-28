@@ -16,12 +16,16 @@ import org.example.majk.majk.data.dto.AdminAuthDto
 import org.example.majk.majk.domain.AdminAuthUsers
 import org.example.majk.majk.domain.repository.AppRepository
 
+
 class AdminAuthViewModel(
     private val appRepository: AppRepository,
     private val sharedViewModel: SharedViewModel
 ): ViewModel() {
 
-    private val _state = MutableStateFlow(AdminAuthState())
+    private val _state = MutableStateFlow(AdminAuthState(
+        isHostCardEmulationAvailable = org.example.majk.platform.NfcCapability
+            .isHostCardEmulationAvailable
+    ))
     val state = _state.asStateFlow()
 
     private val _users = MutableStateFlow<List<AdminAuthUsers>>(listOf())
@@ -42,8 +46,19 @@ class AdminAuthViewModel(
 
     fun onAction(action: AdminAuthAction) {
         when (action) {
-            is AdminAuthAction.OnRfidClick -> {}
-            is AdminAuthAction.OnNfcClick -> {}
+            is AdminAuthAction.OnNfcClick -> {
+                if (_state.value.isHostCardEmulationAvailable) {
+                    println(_state.value.isHostCardEmulationAvailable.toString())
+                } else {
+                    _state.update { it.copy(
+                        errorMessage = "Funkcja dostępna tylko na Androidzie. " +
+                                "Twoje urządzenie nie obsługuje emulacji karty NFC."
+                    ) }
+                }
+            }
+            is AdminAuthAction.OnDismissError -> {
+                _state.update { it.copy(errorMessage = null) }
+            }
         }
     }
 

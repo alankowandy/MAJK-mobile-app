@@ -1,6 +1,5 @@
 package org.example.majk.majk.presentation.majk_main.majk_my_schedule.add_medication_screen
 
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import org.example.majk.majk.domain.MedicineEntry
 
