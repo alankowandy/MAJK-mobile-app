@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.jetbrains.kotlin.serialization)
+    //id("com.google.gms.google-services")
 }
 
 kotlin {
@@ -42,8 +43,8 @@ kotlin {
 
             implementation(libs.ktor.client.okhttp)
 
-            // Calendar
-            //implementation("io.github.wojciechosak:calendar:1.7.0")
+//            implementation(project.dependencies.platform(libs.firebase.dom))
+//            implementation(libs.firebase.messaging)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -75,11 +76,11 @@ kotlin {
             // Icons
             implementation(compose.materialIconsExtended)
 
-            // Pull to refresh
-            //implementation(libs.androidx.material.pullrefresh)
-
             // Calendar
             implementation(libs.compose.multiplatform.calendar)
+
+            // Notifications
+            //implementation(libs.kmp.notifier)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

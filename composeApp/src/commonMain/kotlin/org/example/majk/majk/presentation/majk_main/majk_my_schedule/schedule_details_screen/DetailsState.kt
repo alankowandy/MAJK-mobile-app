@@ -13,7 +13,6 @@ data class DetailsState(
     val selectedDate: LocalDate = LocalDate.today(),
     val currentDateTime: LocalDateTime =
         Clock.System.now().toLocalDateTime(TimeZone.of("Europe/Warsaw")),
-    val schedule: Map<Int, List<MedicineEntry>> = emptyMap(),
     val currentDay: LocalDate = LocalDate.today(),
     val currentHour: Int =
         Clock.System.now().toLocalDateTime(TimeZone.of("Europe/Warsaw")).hour,

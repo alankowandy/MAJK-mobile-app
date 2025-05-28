@@ -43,12 +43,7 @@ class DetailsViewModel(
         when (action) {
             is DetailsAction.OnSelectDate -> {
                 val newDate = action.date
-                _state.update{
-                    it.copy(
-                        selectedDate = newDate,
-                        schedule = emptyMap()
-                    )
-                }
+                _state.update{ it.copy(selectedDate = newDate) }
             }
             is DetailsAction.OnRefreshCurrentTime -> {
                 _state.update {

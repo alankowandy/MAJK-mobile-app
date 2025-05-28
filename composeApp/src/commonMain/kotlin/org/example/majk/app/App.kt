@@ -405,6 +405,33 @@ fun App() {
                                 }
                             )
                         }
+                        composable<Route.MajkScheduleByUser>(
+                            exitTransition = { slideOutHorizontally() },
+                            popEnterTransition = { slideInHorizontally() },
+                            enterTransition = { slideInHorizontally { initialOffset ->
+                                initialOffset
+                            } }
+                        ) {
+                            val viewModel = koinViewModel<ScheduleViewModel>()
+                            ScheduleScreenRoot(
+                                viewModel = viewModel,
+                                onDateClick = { date ->
+                                    navController.navigate(
+                                        Route.MajkScheduleDetailsByDate(date)
+                                    )
+                                },
+                                onMedicineListClick = { accountId ->
+                                    navController.navigate(
+                                        Route.MajkScheduleMedicineList(accountId)
+                                    )
+                                },
+                                onAddScheduleClick = { accountId ->
+                                    navController.navigate(
+                                        Route.MajkAddSchedule(accountId)
+                                    )
+                                }
+                            )
+                        }
                         composable<Route.MajkScheduleDetailsByDate>(
                             enterTransition = { slideInHorizontally { initialOffset ->
                                 initialOffset

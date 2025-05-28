@@ -18,26 +18,42 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.majk.core.data.DrawerData
+import org.example.majk.core.domain.SharedState
 import org.example.majk.core.presentation.Cyan
 import org.example.majk.core.presentation.DarkTeal
+import org.example.majk.core.presentation.LightGray
 
 @Composable
 fun DrawerItem(
     item: DrawerData,
+    userInfo: SharedState?,
     selected: Boolean,
     modifier: Modifier,
     onDrawerItemClick: () -> Unit
 ) {
     val itemSelected: FontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
 
+    val isEnabled: Boolean =
+        if (userInfo?.permission == "admin") {
+            true
+        } else {
+            item !in listOf(
+                DrawerData.ContainerState,
+                DrawerData.ManageFamily,
+                DrawerData.AddProfile,
+                DrawerData.AdminAuth
+            )
+        }
+
     Button(
         onClick = { onDrawerItemClick() },
+        enabled = isEnabled,
         shape = RoundedCornerShape(24.dp),
         colors = ButtonColors(
             containerColor = Cyan,
             contentColor = DarkTeal,
-            disabledContainerColor = Cyan,
-            disabledContentColor = DarkTeal
+            disabledContainerColor = LightGray,
+            disabledContentColor = DarkTeal.copy(alpha = 0.5f)
         ),
         border = BorderStroke(
             width = 1.dp,

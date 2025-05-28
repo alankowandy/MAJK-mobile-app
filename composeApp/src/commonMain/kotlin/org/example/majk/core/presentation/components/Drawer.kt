@@ -58,6 +58,7 @@ fun Drawer(
         itemsInDrawer.forEach { item ->
             DrawerItem(
                 item = item,
+                userInfo = userInfo,
                 selected = currentRouteTitle.title == item.title,
                 modifier = Modifier.padding(horizontal = 40.dp),
                 onDrawerItemClick = { onItemClick(item.route) }
