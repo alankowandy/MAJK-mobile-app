@@ -88,36 +88,23 @@ fun SearchBar(
             expanded = state.isSearchExpanded,
             onExpandedChange = { onAction(AddScheduleAction.OnSearchExpandedChange(it)) }
         ) {
-            if (state.isSearching) {
-                CircularProgressIndicator(
-                    color = DarkTeal,
-                    modifier = Modifier
-                        .heightIn(max = 500.dp)
-                        .align(Alignment.CenterHorizontally)
-                )
-            } else {
-                SearchQueryResult(
-                    searchResults = state.searchResult,
-                    onAction = onAction
-                )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                if (state.isSearching) {
+                    CircularProgressIndicator(
+                        color = DarkTeal,
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                    )
+                } else {
+                    SearchQueryResult(
+                        searchResults = state.searchResult,
+                        onAction = onAction
+                    )
+                }
             }
-//            Box(
-//                modifier = Modifier
-//                    .height(500.dp)
-//            ) {
-//                if (state.isSearching) {
-//                    CircularProgressIndicator(
-//                        color = DarkTeal,
-//                        modifier = Modifier
-//                            .align(Alignment.Center)
-//                    )
-//                } else {
-//                    SearchQueryResult(
-//                        searchResults = state.searchResult,
-//                        onAction = onAction
-//                    )
-//                }
-//            }
         }
     }
 }

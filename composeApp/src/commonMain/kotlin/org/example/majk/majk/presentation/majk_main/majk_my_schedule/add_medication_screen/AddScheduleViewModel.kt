@@ -118,13 +118,49 @@ class AddScheduleViewModel(
                 _state.update { it.copy(pillAmount = action.pillQuantity) }
             }
             is AddScheduleAction.OnToggleBeforeMeal -> {
-                _state.update { it.copy(beforeMeal = !it.beforeMeal) }
+                if (_state.value.duringMeal) {
+                    _state.update { it.copy(
+                        beforeMeal = !it.beforeMeal,
+                        duringMeal = !it.duringMeal
+                    ) }
+                } else if (_state.value.afterMeal) {
+                    _state.update { it.copy(
+                        beforeMeal = !it.beforeMeal,
+                        afterMeal = !it.afterMeal
+                    ) }
+                } else {
+                    _state.update { it.copy(beforeMeal = !it.beforeMeal) }
+                }
             }
             is AddScheduleAction.OnToggleDuringMeal -> {
-                _state.update { it.copy(duringMeal = !it.duringMeal) }
+                if (_state.value.beforeMeal) {
+                    _state.update { it.copy(
+                        beforeMeal = !it.beforeMeal,
+                        duringMeal = !it.duringMeal
+                    ) }
+                } else if (_state.value.afterMeal) {
+                    _state.update { it.copy(
+                        duringMeal = !it.duringMeal,
+                        afterMeal = !it.afterMeal
+                    ) }
+                } else {
+                    _state.update { it.copy(duringMeal = !it.duringMeal) }
+                }
             }
             is AddScheduleAction.OnToggleAfterMeal -> {
-                _state.update { it.copy(afterMeal = !it.afterMeal) }
+                if (_state.value.beforeMeal) {
+                    _state.update { it.copy(
+                        beforeMeal = !it.beforeMeal,
+                        afterMeal = !it.afterMeal
+                    ) }
+                } else if (_state.value.duringMeal) {
+                    _state.update { it.copy(
+                        duringMeal = !it.duringMeal,
+                        afterMeal = !it.afterMeal
+                    ) }
+                } else {
+                    _state.update { it.copy(afterMeal = !it.afterMeal) }
+                }
             }
             is AddScheduleAction.OnNoteChange -> {
                 _state.update { it.copy(note = action.text) }

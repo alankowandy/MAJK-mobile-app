@@ -24,10 +24,7 @@ fun SearchQueryResult(
     searchResults: List<ContainerSettingsSearchQuery>,
     onAction: (AddScheduleAction) -> Unit
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .height(500.dp)
-    ) {
+    LazyColumn {
         items(
             items = searchResults,
             key = { it.medicamentId }
