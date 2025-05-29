@@ -60,7 +60,7 @@ fun HistoryTile(
 
     val (statusColor, statusText) = when {
         diff <= 1.hours -> GoGreen to "Przyjęto według harmonogramu"
-        diff <= 6.hours -> WatchYellow to "Przyjęto w innym terminie"
+        diff <= 23.hours -> WatchYellow to "Przyjęto w innym terminie"
         else -> WarningRed to "Dawka pominięta"
     }
 

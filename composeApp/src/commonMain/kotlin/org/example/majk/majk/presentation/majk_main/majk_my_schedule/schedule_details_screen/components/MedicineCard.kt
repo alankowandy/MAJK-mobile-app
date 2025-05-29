@@ -140,7 +140,7 @@ private fun checkStatus(
 
         return when {
             diff <= 1.hours -> GoGreen
-            diff <= 6.hours -> WatchYellow
+            diff <= 23.hours -> WatchYellow
             else -> WarningRed
         }
     } else return WarningRed
