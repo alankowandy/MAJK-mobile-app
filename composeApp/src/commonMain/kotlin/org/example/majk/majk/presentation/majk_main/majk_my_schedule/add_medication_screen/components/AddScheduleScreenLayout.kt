@@ -27,6 +27,12 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import majk.composeapp.generated.resources.Res
 import majk.composeapp.generated.resources.back
+import majk.composeapp.generated.resources.day_interval
+import majk.composeapp.generated.resources.end_date
+import majk.composeapp.generated.resources.pill_amount
+import majk.composeapp.generated.resources.save
+import majk.composeapp.generated.resources.start_date
+import majk.composeapp.generated.resources.take_time
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.majk.presentation.components.MajkButton
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.add_medication_screen.AddScheduleAction
@@ -60,7 +66,7 @@ fun AddScheduleScreenLayout(
         )
 
         AddScheduleBox(
-            text = "Data początkowa:",
+            text = stringResource(Res.string.start_date),
             onClick = {
                 onAction(AddScheduleAction.OnStartDateClick)
             },
@@ -89,7 +95,7 @@ fun AddScheduleScreenLayout(
         }
 
         AddScheduleBox(
-            text = "Data końcowa:",
+            text = stringResource(Res.string.end_date),
             onClick = {
                 onAction(AddScheduleAction.OnEndDateClick)
             },
@@ -119,7 +125,7 @@ fun AddScheduleScreenLayout(
         }
 
         AddScheduleBox(
-            text = "Godzina przyjęcia:",
+            text = stringResource(Res.string.take_time),
             modifier = Modifier
                 .padding(horizontal = 24.dp),
             onClick = { onAction(AddScheduleAction.OnTimePickClick) }
@@ -143,7 +149,7 @@ fun AddScheduleScreenLayout(
         }
 
         AddScheduleBox(
-            text = "Co ile dni:",
+            text = stringResource(Res.string.day_interval),
             modifier = Modifier
                 .padding(horizontal = 24.dp)
         ) {
@@ -155,7 +161,7 @@ fun AddScheduleScreenLayout(
         }
 
         AddScheduleBox(
-            text = "Ilość:",
+            text = stringResource(Res.string.pill_amount),
             modifier = Modifier
                 .padding(horizontal = 24.dp)
         ) {
@@ -176,7 +182,7 @@ fun AddScheduleScreenLayout(
         Spacer(modifier = Modifier.weight(1f))
 
         MajkButton(
-            text = "Zapisz",
+            text = stringResource(Res.string.save),
             onAction = {
                 onAction(AddScheduleAction.OnSaveClick)
                 onAction(AddScheduleAction.OnBackClick)

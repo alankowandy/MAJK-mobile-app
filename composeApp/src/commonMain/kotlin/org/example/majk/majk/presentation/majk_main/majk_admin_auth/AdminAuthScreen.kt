@@ -16,6 +16,7 @@ import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.domain.AdminAuthUsers
 import org.example.majk.majk.presentation.components.MajkAlertDialog
+import org.example.majk.majk.presentation.majk_main.components.EmptyListText
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.components.AdminAuthUserList
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -24,10 +25,8 @@ fun AdminAuthScreenRoot(
     viewModel: AdminAuthViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val users by viewModel.users.collectAsStateWithLifecycle()
 
     AdminAuthScreen(
-        users = users,
         state = state,
         onAction = { action ->
             viewModel.onAction(action)
@@ -37,7 +36,6 @@ fun AdminAuthScreenRoot(
 
 @Composable
 fun AdminAuthScreen(
-    users: List<AdminAuthUsers>,
     state: AdminAuthState,
     onAction: (AdminAuthAction) -> Unit
 ) {
@@ -59,9 +57,11 @@ fun AdminAuthScreen(
             CircularProgressIndicator(
                 color = DarkTeal
             )
+        } else if (state.users.isEmpty()) {
+            EmptyListText()
         } else {
             AdminAuthUserList(
-                users = users,
+                users = state.users,
                 onAction = onAction
             )
         }

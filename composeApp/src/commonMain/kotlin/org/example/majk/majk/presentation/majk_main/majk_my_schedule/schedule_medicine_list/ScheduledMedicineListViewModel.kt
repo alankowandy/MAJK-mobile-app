@@ -30,7 +30,6 @@ class ScheduledMedicineListViewModel(
     val state = _state.asStateFlow()
 
     private val _medicineList = MutableStateFlow<List<MedicineEntry>>(emptyList())
-    val medicineList = _medicineList.asStateFlow()
 
     init {
         fetchScheduledMedicine(accountId)
@@ -57,6 +56,7 @@ class ScheduledMedicineListViewModel(
                         }
                     }
                 }
+                _state.update { it.copy(medicineList = _medicineList.value) }
             }
             is ScheduledMedicineListAction.OnNoteChange -> {
                 _medicineList.update { list ->
@@ -68,12 +68,16 @@ class ScheduledMedicineListViewModel(
                         }
                     }
                 }
+                _state.update { it.copy(medicineList = _medicineList.value) }
             }
             is ScheduledMedicineListAction.OnSaveNoteClick -> {
                 saveNote(
                     releaseId = action.releaseId,
                     note = action.note
                 )
+            }
+            is ScheduledMedicineListAction.OnDismissDialog -> {
+                _state.update { it.copy(errorMessage = null) }
             }
         }
     }
@@ -83,9 +87,16 @@ class ScheduledMedicineListViewModel(
         viewModelScope.launch {
             runCatching {
                 val result = appRepository.fetchMedicamentEntries(accountId)
-                _medicineList.emit(result.map { it.asDomainModel() })
+                    .map { it.asDomainModel() }
+                    .sortedBy { it.releaseId }
+                _medicineList.emit(result)
             }.onSuccess {
-                _state.update { it.copy(isLoading = false) }
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        medicineList = _medicineList.value
+                    )
+                }
             }.onFailure { error ->
                 _state.update {
                     it.copy(

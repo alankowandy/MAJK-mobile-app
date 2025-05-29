@@ -9,4 +9,5 @@ interface ScheduledMedicineListAction {
     data class OnToggleNoteEditor(val releaseId: Long): ScheduledMedicineListAction
     data class OnNoteChange(val releaseId: Long, val note: String): ScheduledMedicineListAction
     data class OnSaveNoteClick(val releaseId: Long, val note: String): ScheduledMedicineListAction
+    data object OnDismissDialog: ScheduledMedicineListAction
 }

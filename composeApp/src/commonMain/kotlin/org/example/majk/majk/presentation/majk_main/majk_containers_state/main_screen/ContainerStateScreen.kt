@@ -20,6 +20,7 @@ import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.domain.ContainerState
 import org.example.majk.majk.presentation.components.MajkAlertDialog
+import org.example.majk.majk.presentation.majk_main.components.EmptyListText
 import org.example.majk.majk.presentation.majk_main.majk_add_profile.AddProfileAction
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_screen.components.ContainerCard
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_screen.components.ContainerList
@@ -31,7 +32,6 @@ fun ContainerStateScreenRoot(
     onSettingsClick: (Long) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val containersList by viewModel.containersList.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
 
@@ -44,7 +44,6 @@ fun ContainerStateScreenRoot(
 
     ContainerScreen(
         state = state,
-        containersList = containersList,
         onAction = { action ->
             when (action) {
                 is ContainerStateAction.OnSettingsClick -> {
@@ -61,15 +60,12 @@ fun ContainerStateScreenRoot(
 @Composable
 fun ContainerScreen(
     state: ContainerScreenState,
-    containersList: List<ContainerState>,
     onAction: (ContainerStateAction) -> Unit
 ) {
     if (state.errorMessage != null) {
         MajkAlertDialog(
             error = state.errorMessage,
-            dismissAction = {
-                onAction(ContainerStateAction.OnDialogClear)
-            }
+            dismissAction = { onAction(ContainerStateAction.OnDialogClear) }
         )
     }
 
@@ -84,9 +80,11 @@ fun ContainerScreen(
             CircularProgressIndicator(
                 color = DarkTeal
             )
+        } else if (state.containersList.isEmpty()) {
+            EmptyListText()
         } else {
             ContainerList(
-                containers = containersList,
+                containers = state.containersList,
                 onSettingsClick = { onAction(ContainerStateAction.OnSettingsClick(it)) }
             )
         }

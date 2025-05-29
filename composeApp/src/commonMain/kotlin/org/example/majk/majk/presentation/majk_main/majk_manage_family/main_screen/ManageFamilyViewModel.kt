@@ -24,8 +24,7 @@ class ManageFamilyViewModel(
     private val _state = MutableStateFlow(ManageFamilyState())
     val state = _state.asStateFlow()
 
-    private val _users = MutableStateFlow<List<ManageFamily>>(listOf())
-    val users = _users.asStateFlow()
+    private val _users = MutableStateFlow<List<ManageFamily>>(emptyList())
 
     private var currentFamilyId: Long? = null
 
@@ -45,26 +44,21 @@ class ManageFamilyViewModel(
 
     fun onAction(action: ManageFamilyAction) {
         when (action) {
-            is ManageFamilyAction.OnScheduleClick -> {
-
-            }
-            is ManageFamilyAction.OnSettingsClick -> {
-
-            }
+            is ManageFamilyAction.OnScheduleClick -> {}
+            is ManageFamilyAction.OnSettingsClick -> {}
             is ManageFamilyAction.OnRefreshData -> {
                 _state.update { it.copy(isLoading = true) }
                 currentFamilyId?.let { collectUsers(it) }
+            }
+            is ManageFamilyAction.OnDismissDialog -> {
+                _state.update { it.copy(errorMessage = null) }
             }
         }
     }
 
     private fun collectUsers(familyId: Long) {
         viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    isLoading = true
-                )
-            }
+            _state.update { it.copy(isLoading = true) }
             runCatching {
                 val result = appRepository.collectUsers(familyId)
                     .map { it.asDomainModel() }
@@ -74,7 +68,8 @@ class ManageFamilyViewModel(
                 _state.update {
                     it.copy(
                         isLoading = false,
-                        initialLoadDone = true
+                        initialLoadDone = true,
+                        users = _users.value
                     )
                 }
             }.onFailure {

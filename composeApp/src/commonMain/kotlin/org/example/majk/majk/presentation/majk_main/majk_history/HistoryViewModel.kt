@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import org.example.majk.majk.domain.repository.AppRepository
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.datetime.LocalDateTime
 import org.example.majk.core.presentation.SharedViewModel
 import org.example.majk.majk.data.dto.ReleaseHistoryDto
 import org.example.majk.majk.domain.ReleaseHistory
@@ -65,6 +64,10 @@ class HistoryViewModel(
                 println(error)
             }
         }
+    }
+
+    private fun formatAndInterpretData() {
+
     }
 
     private fun ReleaseHistoryDto.asDomainModel(): ReleaseHistory {

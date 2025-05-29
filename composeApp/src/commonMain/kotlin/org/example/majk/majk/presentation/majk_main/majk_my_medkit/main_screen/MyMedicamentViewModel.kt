@@ -25,8 +25,7 @@ class MyMedicamentViewModel(
     private val _state = MutableStateFlow(MyMedicamentState())
     val state = _state.asStateFlow()
 
-    private val _myMedicamentList = MutableStateFlow<List<MyMedicamentList>>(listOf())
-    val myMedicamentList = _myMedicamentList.asStateFlow()
+    private val _myMedicamentList = MutableStateFlow<List<MyMedicamentList>>(emptyList())
 
     init {
         fetchAccountDetails()
@@ -80,7 +79,12 @@ class MyMedicamentViewModel(
                     .sortedBy { it.medicamentId }
                 _myMedicamentList.emit(result)
             }.onSuccess {
-                _state.update { it.copy(isLoading = false) }
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        myMedicamentList = _myMedicamentList.value
+                    )
+                }
             }.onFailure {
                 _state.update {
                     it.copy(

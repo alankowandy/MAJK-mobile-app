@@ -26,7 +26,6 @@ class ContainerStateViewModel(
     val state = _state.asStateFlow()
 
     private val _containersList = MutableStateFlow<List<ContainerState>>(emptyList())
-    val containersList = _containersList.asStateFlow()
 
     private var currentDeviceId: Long? = null
 
@@ -74,7 +73,8 @@ class ContainerStateViewModel(
                 _state.update {
                     it.copy(
                         isLoading = false,
-                        initialLoadDone = true
+                        initialLoadDone = true,
+                        containersList = _containersList.value
                     )
                 }
             }.onFailure { error ->

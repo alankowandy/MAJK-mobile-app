@@ -4,21 +4,29 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.map
+import majk.composeapp.generated.resources.Res
+import majk.composeapp.generated.resources.empty_list
+import majk.composeapp.generated.resources.error_unknown
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.core.presentation.SharedViewModel
 import org.example.majk.majk.domain.ManageFamily
-import org.example.majk.majk.presentation.majk_main.majk_manage_family.components.UserList
+import org.example.majk.majk.presentation.components.MajkAlertDialog
+import org.example.majk.majk.presentation.majk_main.components.EmptyListText
+import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.components.UserList
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -28,7 +36,6 @@ fun ManageFamilyScreenRoot(
     onSettingsClick: (Long) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val users by viewModel.users.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
 
@@ -39,8 +46,14 @@ fun ManageFamilyScreenRoot(
         }
     }
 
+    if (state.errorMessage != null) {
+        MajkAlertDialog(
+            error = state.errorMessage ?: stringResource(Res.string.error_unknown),
+            dismissAction = { viewModel.onAction(ManageFamilyAction.OnDismissDialog) }
+        )
+    }
+
     ManageFamilyScreen(
-        users = users,
         state = state,
         onAction = { action ->
             when (action) {
@@ -54,7 +67,6 @@ fun ManageFamilyScreenRoot(
 
 @Composable
 fun ManageFamilyScreen(
-    users: List<ManageFamily>,
     state: ManageFamilyState,
     onAction: (ManageFamilyAction) -> Unit
 ) {
@@ -68,9 +80,11 @@ fun ManageFamilyScreen(
             CircularProgressIndicator(
                 color = DarkTeal
             )
+        } else if (state.users.isEmpty()) {
+            EmptyListText()
         } else {
             UserList(
-                users = users,
+                users = state.users,
                 onScheduleClick = {
                     onAction(ManageFamilyAction.OnScheduleClick(it))
                 },

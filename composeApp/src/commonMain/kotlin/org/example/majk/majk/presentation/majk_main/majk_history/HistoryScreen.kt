@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
+import org.example.majk.majk.presentation.majk_main.components.EmptyListText
 import org.example.majk.majk.presentation.majk_main.majk_history.components.HistoryList
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -50,6 +51,8 @@ fun HistoryScreen(
                 modifier = Modifier
                     .align(Alignment.Center)
             )
+        } else if (state.releaseHistory.isEmpty()) {
+            EmptyListText(modifier = Modifier.align(Alignment.Center))
         } else {
             HistoryList(
                 state = state,

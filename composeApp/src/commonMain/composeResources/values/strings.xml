@@ -10,10 +10,27 @@
     <string name="family_code">Kod rodziny</string>
     <string name="device_code">Kod urządzenia</string>
     <string name="log_out">Wyloguj się</string>
+    <string name="save">Zapisz</string>
+    <string name="empty_list">Pusto :(</string>
+
+    <!--Schedule screen-->
+    <string name="details">Szczegóły</string>
+    <string name="dose_list">Lista dawek</string>
+    <string name="add_dose">Dodaj dawkę</string>
+
+    <string name="start_date">Data początkowa:</string>
+    <string name="end_date">Data końcowa:</string>
+    <string name="take_time">Godzina przyjęcia:</string>
+    <string name="day_interval">Co ile dni:</string>
+    <string name="pill_amount">Ilość</string>
+    <string name="before_meal">Przed posiłkiem</string>
+    <string name="during_meal">W trakcie posiłku</string>
+    <string name="after_meal">Po posiłku</string>
+
 
     <!--Error strings-->
     <string name="error_disk_full">Oops, it seems like your disk is full.</string>
-    <string name="error_unknown">Oops, something went wrong.</string>
+    <string name="error_unknown">Błąd w komunikacji z serwerem. Spróbuj ponownie.</string>
     <string name="error_request_timeout">The request timed out.</string>
     <string name="error_no_internet">Couldn't reach server, please check your internet connection.</string>
     <string name="error_too_many_requests">Your quota seems to be exceeded.</string>

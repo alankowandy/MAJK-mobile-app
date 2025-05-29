@@ -28,8 +28,7 @@ class AdminAuthViewModel(
     ))
     val state = _state.asStateFlow()
 
-    private val _users = MutableStateFlow<List<AdminAuthUsers>>(listOf())
-    val users = _users.asStateFlow()
+    private val _users = MutableStateFlow<List<AdminAuthUsers>>(emptyList())
 
     init {
         sharedViewModel.userInfo
@@ -64,11 +63,7 @@ class AdminAuthViewModel(
 
     private fun collectUsers(familyId: Long) {
         viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    isLoading = true
-                )
-            }
+            _state.update { it.copy(isLoading = true) }
             runCatching {
                 val result = appRepository.collectUsersAdminAuth(familyId)
                     .map { it.asDomainModel() }
@@ -76,7 +71,10 @@ class AdminAuthViewModel(
                 _users.emit(result)
             }.onSuccess {
                 _state.update {
-                    it.copy(isLoading = false)
+                    it.copy(
+                        isLoading = false,
+                        users = _users.value
+                    )
                 }
             }.onFailure {
                 _state.update {

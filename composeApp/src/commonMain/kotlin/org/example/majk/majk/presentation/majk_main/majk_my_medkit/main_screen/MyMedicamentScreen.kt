@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -24,8 +25,10 @@ import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.domain.MyMedicamentList
 import org.example.majk.majk.presentation.components.MajkButton
 import org.example.majk.majk.presentation.components.MajkAlertDialog
+import org.example.majk.majk.presentation.majk_main.components.EmptyListText
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_screen.ContainerStateAction
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.components.MedicamentList
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -34,7 +37,6 @@ fun MyMedicamentScreenRoot(
     onAddMedicamentClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val medicamentList by viewModel.myMedicamentList.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
 
@@ -47,7 +49,6 @@ fun MyMedicamentScreenRoot(
 
     MyMedicamentScreen(
         state = state,
-        medicamentList = medicamentList,
         onAction = { action ->
             when (action) {
                 is MyMedicamentAction.OnAddMedicamentClick -> {
@@ -64,7 +65,6 @@ fun MyMedicamentScreenRoot(
 @Composable
 fun MyMedicamentScreen(
     state: MyMedicamentState,
-    medicamentList: List<MyMedicamentList>,
     onAction: (MyMedicamentAction) -> Unit
 ) {
     Box(
@@ -84,13 +84,15 @@ fun MyMedicamentScreen(
             CircularProgressIndicator(
                 color = DarkTeal
             )
+        } else if (state.myMedicamentList.isEmpty()) {
+            EmptyListText()
         } else {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
                 MedicamentList(
-                    medicamentList = medicamentList,
+                    medicamentList = state.myMedicamentList,
                     onAction = onAction
                 )
 

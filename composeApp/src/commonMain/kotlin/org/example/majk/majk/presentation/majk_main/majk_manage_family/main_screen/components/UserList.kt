@@ -1,4 +1,4 @@
-package org.example.majk.majk.presentation.majk_main.majk_manage_family.components
+package org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

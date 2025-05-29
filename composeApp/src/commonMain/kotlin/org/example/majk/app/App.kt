@@ -58,7 +58,6 @@ import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_scre
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsViewModel
-import org.example.majk.majk.presentation.majk_main.majk_my_medkit.SelectedAccountViewModel
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.MyMedkitEditAction
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.MyMedkitEditScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.MyMedkitEditViewModel
