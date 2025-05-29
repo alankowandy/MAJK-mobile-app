@@ -85,6 +85,7 @@ fun HourSlot(
                 ) {
                     medsThisHour.forEach { med ->
                         MedicineCard(
+                            state = state,
                             schedule = med,
                             selectedDate = state.selectedDate
                         )

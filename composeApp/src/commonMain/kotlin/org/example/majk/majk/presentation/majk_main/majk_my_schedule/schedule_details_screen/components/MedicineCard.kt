@@ -27,18 +27,21 @@ import majk.composeapp.generated.resources.Res
 import majk.composeapp.generated.resources.after_meal
 import majk.composeapp.generated.resources.before_meal
 import majk.composeapp.generated.resources.during_meal
+import org.example.majk.core.domain.DataError
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.GoGreen
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.core.presentation.WarningRed
 import org.example.majk.core.presentation.WatchYellow
 import org.example.majk.majk.domain.ReleaseSchedule
+import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_details_screen.DetailsState
 import org.jetbrains.compose.resources.stringResource
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.hours
 
 @Composable
 fun MedicineCard(
+    state: DetailsState,
     schedule: ReleaseSchedule,
     selectedDate: LocalDate
 ) {
@@ -49,7 +52,9 @@ fun MedicineCard(
         else     -> ""   to ""
     }
 
-    val statusColor = checkStatus(schedule, selectedDate)
+    val currentDayTime = state.currentDateTime
+
+    val statusColor = checkStatus(schedule, selectedDate, currentDayTime)
 
     Card(
         shape = RoundedCornerShape(12.dp),
@@ -108,11 +113,17 @@ fun MedicineCard(
 
 private fun checkStatus(
     schedule: ReleaseSchedule,
-    selectedDate: LocalDate
+    selectedDate: LocalDate,
+    currentDayTime: LocalDateTime
 ): Color {
     val startDateTime = LocalDateTime.parse(schedule.startDate)
     val takingDateTime = schedule.releaseDateTime?.let { LocalDateTime.parse(it) }
     val takingDate = takingDateTime?.date
+
+    if (selectedDate > currentDayTime.date ||
+        (currentDayTime.date == selectedDate && currentDayTime.time < startDateTime.time)) {
+        return GoGreen
+    }
 
     if (takingDate == selectedDate) {
         val scheduledAt = LocalDateTime(
