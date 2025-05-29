@@ -50,8 +50,6 @@ fun HourSlot(
             .height(IntrinsicSize.Min)
     ) {
         if (showCurrentTimeLine) {
-            // Position the line relative to currentMinute within this hour slot.
-            // We draw a line across the full width at a vertical offset proportional to minutes.
             Canvas(
                 modifier = Modifier
                     .matchParentSize()

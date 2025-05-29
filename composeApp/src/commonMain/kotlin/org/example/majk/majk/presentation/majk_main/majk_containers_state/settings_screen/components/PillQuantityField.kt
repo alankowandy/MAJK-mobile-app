@@ -83,8 +83,6 @@ fun PillQuantityField(
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = LightGray,
                 focusedContainerColor = LightGray,
-                focusedTextColor = DarkTeal,
-                unfocusedTextColor = DarkTeal,
                 unfocusedIndicatorColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
                 cursorColor = DarkTeal

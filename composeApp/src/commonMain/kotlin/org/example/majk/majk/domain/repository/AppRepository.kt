@@ -10,6 +10,7 @@ import org.example.majk.majk.data.dto.ManageFamilyDto
 import org.example.majk.majk.data.dto.MedicamentSearchDto
 import org.example.majk.majk.data.dto.MedicineEntryDto
 import org.example.majk.majk.data.dto.MyMedicamentListDto
+import org.example.majk.majk.data.dto.ReleaseHistoryDto
 import org.example.majk.majk.data.dto.ReleaseScheduleDto
 import org.example.majk.majk.data.dto.UserSettingsDto
 import org.example.majk.majk.domain.MedicineEntry
@@ -42,4 +43,5 @@ interface AppRepository {
                                   dayInterval: Long, pillAmount: Long, consumption: String, note: String)
     suspend fun updateSchedule(releaseId: Long, medicamentId: Long, startDate: String, endDate: String,
                                dayInterval: Long, pillAmount: Long, consumption: String, note: String)
+    suspend fun fetchReleaseHistory(accountId: Long): List<ReleaseHistoryDto>
 }

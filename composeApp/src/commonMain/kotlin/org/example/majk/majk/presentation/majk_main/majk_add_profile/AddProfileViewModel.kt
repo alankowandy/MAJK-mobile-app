@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -28,12 +29,12 @@ class AddProfileViewModel(
 
     init {
         sharedViewModel.userInfo
-            .filter { it != null }
+            .filterNotNull()
             .distinctUntilChanged()
             .onEach { userInfo ->
-                userFamilyId = userInfo?.familyId ?: 0L
-                userUuid = userInfo?.uuid ?: ""
-                adminEmail = userInfo?.email ?: ""
+                userFamilyId = userInfo.familyId ?: 0L
+                userUuid = userInfo.uuid ?: ""
+                adminEmail = userInfo.email ?: ""
             }
             .launchIn(viewModelScope)
     }

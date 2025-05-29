@@ -18,6 +18,7 @@ import org.example.majk.majk.data.dto.ManageFamilyDto
 import org.example.majk.majk.data.dto.MedicamentSearchDto
 import org.example.majk.majk.data.dto.MedicineEntryDto
 import org.example.majk.majk.data.dto.MyMedicamentListDto
+import org.example.majk.majk.data.dto.ReleaseHistoryDto
 import org.example.majk.majk.data.dto.ReleaseScheduleDto
 import org.example.majk.majk.data.dto.UserSettingsDto
 import org.example.majk.majk.domain.repository.AppRepository
@@ -347,6 +348,18 @@ class AppRepositoryImpl(
                     put("note_input", note)
                 }
             )
+        }
+    }
+
+    override suspend fun fetchReleaseHistory(accountId: Long): List<ReleaseHistoryDto> {
+        return withContext(Dispatchers.IO) {
+            val data = postgrest.rpc(
+                function = "get_pill_release_with_history",
+                parameters = buildJsonObject {
+                    put("profile_id_input", accountId)
+                }
+            ).decodeList<ReleaseHistoryDto>()
+            data
         }
     }
 }

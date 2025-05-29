@@ -53,6 +53,7 @@ import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthVie
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_screen.ContainerStateViewModel
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen.ContainerSettingsScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen.ContainerSettingsViewModel
+import org.example.majk.majk.presentation.majk_main.majk_history.HistoryViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsScreenRoot
@@ -73,6 +74,7 @@ import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_de
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_details_screen.DetailsViewModel
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_medicine_list.ScheduledMedicineListScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_medicine_list.ScheduledMedicineListViewModel
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -83,7 +85,7 @@ fun App() {
         val scope = rememberCoroutineScope()
         val scaffoldState = rememberScaffoldState()
 
-        val sharedViewModel = koinViewModel<SharedViewModel>()
+        val sharedViewModel = koinInject<SharedViewModel>()
         val sessionStatus by sharedViewModel.sessionStatus.collectAsState()
         val userInfo by sharedViewModel.userInfo.collectAsStateWithLifecycle()
         val familyUsers by sharedViewModel.familyUsers.collectAsStateWithLifecycle()
@@ -372,6 +374,8 @@ fun App() {
                             initialOffset
                         } }
                     ) {
+
+
                         HomeScreenRoot()
                     }
 
@@ -518,7 +522,11 @@ fun App() {
                             initialOffset
                         } }
                     ) {
-                        HistoryScreenRoot()
+                        val viewModel = koinViewModel<HistoryViewModel>()
+
+                        HistoryScreenRoot(
+                            viewModel = viewModel
+                        )
                     }
 
                     navigation<Route.MyMedkitGraph>(

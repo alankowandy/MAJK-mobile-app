@@ -26,7 +26,7 @@ fun ScheduledMedicineListScreenRoot(
 
     ScheduledMedicineListScreen(
         state = state,
-        medicineList = medicineList,
+        medicineList = medicineList.sortedBy { it.releaseId },
         onAction = { action ->
             when (action) {
                 is ScheduledMedicineListAction.OnNoteDetailsClick -> {
