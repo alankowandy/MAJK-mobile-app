@@ -8,5 +8,7 @@ data class ReleaseSchedule(
     val endDate: String,
     val repeatingInterval: Long,
     val pillAmount: Long,
-    val mealDependability: String
+    val mealDependability: String,
+    val releaseHistoryId: Long? = null,
+    val releaseDateTime: String? = null
 )

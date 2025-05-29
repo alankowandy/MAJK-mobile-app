@@ -66,10 +66,6 @@ class HistoryViewModel(
         }
     }
 
-    private fun formatAndInterpretData() {
-
-    }
-
     private fun ReleaseHistoryDto.asDomainModel(): ReleaseHistory {
         return ReleaseHistory(
             releaseId = this.releaseId,

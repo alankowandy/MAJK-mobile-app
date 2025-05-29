@@ -41,7 +41,6 @@ import kotlin.time.Duration.Companion.hours
 
 @Composable
 fun HistoryTile(
-    state: HistoryState,
     entry: ReleaseHistory
 ) {
     val startDateTime = LocalDateTime.parse(entry.startDate)

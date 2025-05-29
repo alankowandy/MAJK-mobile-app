@@ -135,7 +135,7 @@ class AppRepositoryImpl(
     override suspend fun fetchReleaseSchedule(accountId: Long): List<ReleaseScheduleDto> {
         return withContext(Dispatchers.IO) {
             val data = postgrest.rpc(
-                function = "get_pill_schedule_by_profile",
+                function = "fetch_pill_release_with_history",
                 parameters = buildJsonObject {
                     put("profile_id_input", accountId)
                 }

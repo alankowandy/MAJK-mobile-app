@@ -77,6 +77,7 @@ fun MedicineList(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     LazyColumn(
+        state = scrollState,
         modifier = Modifier
             .fillMaxSize()
             .background(OffWhite)

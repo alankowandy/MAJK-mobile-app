@@ -37,12 +37,8 @@ class ScheduledMedicineListViewModel(
 
     fun onAction(action: ScheduledMedicineListAction) {
         when (action) {
-            is ScheduledMedicineListAction.OnBackClick -> {
-
-            }
-            is ScheduledMedicineListAction.OnNoteDetailsClick -> {
-
-            }
+            is ScheduledMedicineListAction.OnBackClick -> {}
+            is ScheduledMedicineListAction.OnNoteDetailsClick -> {}
             is ScheduledMedicineListAction.OnDeleteClick -> {
                 deleteScheduledMedicine(action.scheduleId)
             }

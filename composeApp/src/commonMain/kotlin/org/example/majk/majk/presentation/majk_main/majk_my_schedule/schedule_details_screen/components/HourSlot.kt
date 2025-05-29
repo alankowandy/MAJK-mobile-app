@@ -84,14 +84,16 @@ fun HourSlot(
                         .fillMaxWidth()
                 ) {
                     medsThisHour.forEach { med ->
-                        MedicineCard(schedule = med)
+                        MedicineCard(
+                            schedule = med,
+                            selectedDate = state.selectedDate
+                        )
                     }
                 }
             }
         }
     }
 
-    // Divider line below each hour row (optional, to separate hours)
     Divider(color = Color.Gray.copy(alpha = 0.5f), thickness = 1.dp)
 }
 

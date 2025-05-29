@@ -34,7 +34,6 @@ fun HistoryList(
             key = { it.releaseHistoryId }
         ) { entry ->
             HistoryTile(
-                state = state,
                 entry = entry
             )
         }

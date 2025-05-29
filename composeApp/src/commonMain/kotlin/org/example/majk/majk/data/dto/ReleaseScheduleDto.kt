@@ -27,5 +27,11 @@ data class ReleaseScheduleDto(
     val pillAmount: Long,
 
     @SerialName("takingWithMeal")
-    val mealDependability: String
+    val mealDependability: String,
+
+    @SerialName("history_id")
+    val releaseHistoryId: Long?,
+
+    @SerialName("takingTime")
+    val releaseDateTime: String?
 )

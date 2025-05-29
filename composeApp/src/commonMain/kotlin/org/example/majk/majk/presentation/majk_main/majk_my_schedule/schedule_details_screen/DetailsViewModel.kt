@@ -99,7 +99,9 @@ class DetailsViewModel(
             endDate = this.endDate,
             repeatingInterval = this.repeatingInterval,
             pillAmount = this.pillAmount,
-            mealDependability = this.mealDependability
+            mealDependability = this.mealDependability,
+            releaseHistoryId = this.releaseHistoryId,
+            releaseDateTime = this.releaseDateTime
         )
     }
 }
