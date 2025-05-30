@@ -1,5 +1,7 @@
 package org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen
 
+import org.example.majk.majk.domain.ContainerSettings
+
 data class ContainerSettingsState(
     val isLoading: Boolean = true,
     val errorMessage: String? = null,
@@ -9,8 +11,10 @@ data class ContainerSettingsState(
     val searchError: String? = null,
     val isSearchExpanded: Boolean = false,
     val isEmptied: Boolean = false,
-    val initialPillQuantity: Int = 0,
-    val pillQuantityEntry: Int = 0,
+    val initialPillQuantity: Long = 0,
+    val pillQuantity: String = "0",
+    val pillQuantityEntry: String = "0",
     val pillQuantityEntryError: Boolean = false,
-    val isSearching: Boolean = false
+    val isSearching: Boolean = false,
+    val containerSettings: ContainerSettings = ContainerSettings()
 )

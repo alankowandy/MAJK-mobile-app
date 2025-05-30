@@ -12,6 +12,7 @@ import org.example.majk.core.data.dto.SharedStateDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.withTimeout
 import org.example.majk.core.data.dto.FamilyUsersDto
 import org.example.majk.core.domain.FamilyUsers
 import org.example.majk.core.domain.SharedState
@@ -79,21 +80,23 @@ class SharedViewModel(
 
     private fun fetchUserInfo(email: String, authId: String) {
         viewModelScope.launch {
-            runCatching {
-                val result = authRepository.fetchProfileDetails(email = email, authId = authId)
-                _userInfo.emit(result.asDomainModel())
-            }.onSuccess {
-                currentFamilyId = _userInfo.value?.familyId!!
-                _userInfo.value?.familyId?.let { fetchFamilyUsers(it) }
-                println(_userInfo.value!!.accountId)
-            }.onFailure { error ->
-                _state.update {
-                    it.copy(
-                        errorMessage = "Błąd przy pobieraniu danych"
-                    )
+            repeat(2) {
+                runCatching {
+                    withTimeout(9_999L) {
+                        val result = authRepository.fetchProfileDetails(email = email, authId = authId)
+                        _userInfo.emit(result.asDomainModel())
+                    }
+                }.onSuccess {
+                    currentFamilyId = _userInfo.value?.familyId!!
+                    _userInfo.value?.familyId?.let { fetchFamilyUsers(it) }
+                    return@launch
+                }.onFailure { error ->
+                    _state.update { it.copy(errorMessage = "Błąd przy pobieraniu danych") }
+                    println(error.message)
                 }
-                println(error.message)
             }
+
+            signOut()
         }
     }
 

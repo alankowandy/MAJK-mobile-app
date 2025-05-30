@@ -12,6 +12,8 @@
     <string name="log_out">Wyloguj się</string>
     <string name="save">Zapisz</string>
     <string name="empty_list">Pusto :(</string>
+    <string name="confirm">Zatwierdź</string>
+    <string name="cancel">Anuluj</string>
 
     <!--Schedule screen-->
     <string name="details">Szczegóły</string>
@@ -27,6 +29,18 @@
     <string name="during_meal">W trakcie posiłku</string>
     <string name="after_meal">Po posiłku</string>
 
+    <!--My Medicament Screen-->
+    <string name="my_medicament_confirm_title">Uwaga!</string>
+    <string name="my_medicament_confirm_text">Czy na pewno chcesz usunąć lek </string>
+    <!-- my_medicament_confirm_text + medicament name +  my_medicament_confirm_text2-->
+    <string name="my_medicament_confirm_text2"> ze swojej apteczki?</string>
+
+    <!--Containers Screen-->
+    <string name="no_medicine">Brak leku</string>
+    <string name="container_state">Stan pojemnika</string>
+    <string name="container_empty">pusty</string>
+    <string name="container_few">mało</string>
+    <string name="container_full">pełny</string>
 
     <!--Error strings-->
     <string name="error_disk_full">Oops, it seems like your disk is full.</string>

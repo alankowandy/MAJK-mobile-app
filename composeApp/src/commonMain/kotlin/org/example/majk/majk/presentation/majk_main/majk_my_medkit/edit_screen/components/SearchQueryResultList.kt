@@ -1,5 +1,6 @@
 package org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.components
 
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.majk.domain.MedicamentSearch
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.MyMedkitEditAction
@@ -35,14 +37,22 @@ fun SearchQueryResultList(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
+                    .wrapContentWidth(Alignment.Start)
             ) {
                 Text(
                     text = medicament.medicamentName,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentWidth(Alignment.Start),
                     color = DarkTeal,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Text(
+                    text = medicament.medicamentType,
+                    fontWeight = FontWeight.Normal,
+                    color = DarkTeal,
+                    fontSize = 12.sp
                 )
             }
         }

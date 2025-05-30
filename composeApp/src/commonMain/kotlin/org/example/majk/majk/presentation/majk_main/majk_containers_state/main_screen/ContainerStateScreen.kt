@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import majk.composeapp.generated.resources.Res
+import majk.composeapp.generated.resources.error_unknown
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.domain.ContainerState
@@ -25,6 +27,7 @@ import org.example.majk.majk.presentation.majk_main.majk_add_profile.AddProfileA
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_screen.components.ContainerCard
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_screen.components.ContainerList
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyAction
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ContainerStateScreenRoot(
@@ -36,7 +39,6 @@ fun ContainerStateScreenRoot(
     val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
 
     LaunchedEffect(lifecycleState) {
-        println(lifecycleState.toString())
         if (lifecycleState == Lifecycle.State.STARTED && state.initialLoadDone) {
             viewModel.onAction(ContainerStateAction.OnRefreshData)
         }
@@ -64,7 +66,7 @@ fun ContainerScreen(
 ) {
     if (state.errorMessage != null) {
         MajkAlertDialog(
-            error = state.errorMessage,
+            error = stringResource(Res.string.error_unknown),
             dismissAction = { onAction(ContainerStateAction.OnDialogClear) }
         )
     }
@@ -72,8 +74,7 @@ fun ContainerScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(OffWhite)
-            .padding(vertical = 5.dp),
+            .background(OffWhite),
         contentAlignment = Alignment.Center
     ) {
         if (state.isLoading) {

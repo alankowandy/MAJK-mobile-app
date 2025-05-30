@@ -35,7 +35,6 @@ class ContainerSettingsViewModel(
     val state = _state.asStateFlow()
 
     private val _containerSettings = MutableStateFlow(ContainerSettings())
-    val containerSettings = _containerSettings.asStateFlow()
 
     private val _searchResult = MutableStateFlow<List<ContainerSettingsSearchQuery>>(emptyList())
     val searchResult = _searchResult.asStateFlow()
@@ -60,19 +59,19 @@ class ContainerSettingsViewModel(
                 }
             }
             is ContainerSettingsAction.OnPillQuantityChange -> {
-                _state.update {
-                    it.copy(pillQuantityEntry = action.pillQuantity)
+                if (action.pillQuantity.isBlank()) {
+                    _state.update { it.copy(pillQuantityEntry = "0") }
+                } else if (action.pillQuantity.toInt() > 60) {
+                    _state.update { it.copy(pillQuantityEntry = "60") }
+                } else {
+                    _state.update { it.copy(pillQuantityEntry = action.pillQuantity) }
                 }
             }
             is ContainerSettingsAction.OnSearchExpandedChange -> {
-                _state.update {
-                    it.copy(isSearchExpanded = action.isExpanded)
-                }
+                _state.update { it.copy(isSearchExpanded = action.isExpanded) }
             }
             is ContainerSettingsAction.OnEmptyContainerClick -> {
-                _state.update {
-                    it.copy(pillQuantityEntry = 0)
-                }
+                _state.update { it.copy(pillQuantityEntry = "0") }
 
             }
             is ContainerSettingsAction.OnConfirmClick -> {
@@ -83,16 +82,27 @@ class ContainerSettingsViewModel(
                         medicamentId = _state.value.selectedMedicamentId
                     )
                 } else {
-                    _state.update {
-                        it.copy(searchError = "Wybrany lek jest niepoprawny.")
-                    }
+                    _state.update { it.copy(searchError = "Wybrany lek jest niepoprawny.") }
                 }
 
-                if (_state.value.pillQuantityEntry != _state.value.initialPillQuantity) {
+                if (_state.value.pillQuantityEntry.toInt() != 0 &&
+                    (_state.value.pillQuantityEntry.toLong() + _state.value.initialPillQuantity) < 60) {
                     updateNumberOfPills(
                         containerId = container,
-                        pillQuantity = _state.value.pillQuantityEntry.toDouble()
+                        pillQuantity = _state.value.pillQuantityEntry.toLong()
                     )
+                } else {
+                    _state.update { it.copy(pillQuantityEntryError = true) }
+                }
+            }
+            is ContainerSettingsAction.OnAddPillsClick -> {
+                if (_state.value.pillQuantityEntry.toInt() < 60) {
+                    _state.update { it.copy(pillQuantityEntry = (it.pillQuantityEntry.toInt() + 1).toString()) }
+                }
+            }
+            is ContainerSettingsAction.OnSubtractPillsClick -> {
+                if (_state.value.pillQuantityEntry.toInt() > 0) {
+                    _state.update { it.copy(pillQuantityEntry = (it.pillQuantityEntry.toInt() - 1).toString()) }
                 }
             }
         }
@@ -132,22 +142,26 @@ class ContainerSettingsViewModel(
     private fun fetchContainerSettings(containerId: Long) {
         viewModelScope.launch {
             runCatching {
+                println(containerId.toString())
                 val result = appRepository.fetchContainerSettings(containerId)
                 _containerSettings.emit(result.asDomainModel())
             }.onSuccess {
                 _state.update { it.copy(
+                    containerSettings = _containerSettings.value,
                     isLoading = false,
                     initialSearchEntry = _containerSettings.value.medicamentName,
-                    pillQuantityEntry = _containerSettings.value.pillQuantity.toInt()
+                    initialPillQuantity = _containerSettings.value.pillQuantity,
+                    pillQuantity = _containerSettings.value.pillQuantity.toString()
                 ) }
                 _searchQuery.value = _containerSettings.value.medicamentName
-            }.onFailure {
+            }.onFailure { error ->
                 _state.update {
                     it.copy(
                         isLoading = false,
                         errorMessage = "Błąd w komunikacji z serwerem."
                     )
                 }
+                println(error)
             }
         }
     }
@@ -203,7 +217,7 @@ class ContainerSettingsViewModel(
         }
     }
 
-    private fun updateNumberOfPills(containerId: Long, pillQuantity: Double) {
+    private fun updateNumberOfPills(containerId: Long, pillQuantity: Long) {
         viewModelScope.launch {
             runCatching {
                 appRepository.updateNumberOfPills(containerId, pillQuantity)
@@ -221,6 +235,8 @@ class ContainerSettingsViewModel(
 
     private fun ContainerSettingsDto.asDomainModel(): ContainerSettings {
         return ContainerSettings(
+            containerId = this.containerId,
+            containerState = this.containerState,
             medicamentName = this.medicamentName,
             containerNumber = this.containerNumber,
             pillQuantity = this.pillQuantity

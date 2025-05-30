@@ -5,12 +5,18 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ContainerSettingsDto(
-    @SerialName("medicamentName")
+    @SerialName("id")
+    val containerId: Long,
+
+    @SerialName("state")
+    val containerState: String,
+
+    @SerialName("medicament_name")
     val medicamentName: String,
 
     @SerialName("number")
     val containerNumber: Long,
 
-    @SerialName("numberOfPills")
-    val pillQuantity: Double
+    @SerialName("container_pill_quantity")
+    val pillQuantity: Long
 )

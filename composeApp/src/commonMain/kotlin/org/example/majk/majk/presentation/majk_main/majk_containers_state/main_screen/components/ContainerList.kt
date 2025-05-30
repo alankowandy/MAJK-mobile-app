@@ -3,6 +3,7 @@ package org.example.majk.majk.presentation.majk_main.majk_containers_state.main_
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -34,7 +35,7 @@ fun ContainerList(
         ) { container ->
             ContainerCard(
                 containerNumber = container.containerNumber,
-                medicamentName = container.medicamentName,
+                medicamentName = container.medicamentName ?: "",
                 containerState = container.containerState,
                 numberOfPills = container.pillQuantity,
                 onSettingsClick = { onSettingsClick(container.containerId) }

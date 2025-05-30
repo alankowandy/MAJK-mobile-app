@@ -54,6 +54,7 @@ import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_s
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen.ContainerSettingsScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen.ContainerSettingsViewModel
 import org.example.majk.majk.presentation.majk_main.majk_history.HistoryViewModel
+import org.example.majk.majk.presentation.majk_main.majk_home.HomeViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsScreenRoot
@@ -373,9 +374,11 @@ fun App() {
                             initialOffset
                         } }
                     ) {
+                        val viewModel = koinViewModel<HomeViewModel>()
 
-
-                        HomeScreenRoot()
+                        HomeScreenRoot(
+                            viewModel = viewModel
+                        )
                     }
 
                     navigation<Route.MajkScheduleGraph>(

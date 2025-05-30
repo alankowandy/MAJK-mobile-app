@@ -36,14 +36,21 @@ class MyMedicamentViewModel(
             is MyMedicamentAction.OnDeleteMedicamentClick -> {
                 deleteMedicament(action.medicamentId)
             }
-            is MyMedicamentAction.OnSortMedicamentClick -> {
-                TODO()
-            }
             is MyMedicamentAction.OnAddMedicamentClick -> {
                 /** Navigate to add medicament screen. Done in screen root **/
             }
-            is MyMedicamentAction.OnDismissDialog -> {
+            is MyMedicamentAction.OnShowConfirmDialog -> {
+                _state.update { it.copy(
+                    deleteMedicamentId = action.medicamentId,
+                    deleteMedicamentName = action.medicamentName,
+                    isConfirmDialogVisible = true
+                ) }
+            }
+            is MyMedicamentAction.OnDismissErrorDialog -> {
                 _state.update { it.copy(errorMessage = null) }
+            }
+            is MyMedicamentAction.OnDismissConfirmDialog -> {
+                _state.update { it.copy(isConfirmDialogVisible = false) }
             }
             is MyMedicamentAction.OnRefreshData -> {
                 _state.update { it.copy(isLoading = true) }
@@ -127,6 +134,7 @@ class MyMedicamentViewModel(
         return MyMedicamentList(
             medicamentId = this.medicamentId,
             medicamentName = this.medicamentName,
+            medicamentType = this.medicamentType,
             leafletUrl = this.leafletUrl
         )
     }

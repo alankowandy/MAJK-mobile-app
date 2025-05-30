@@ -112,7 +112,7 @@ class AppRepositoryImpl(
     override suspend fun fetchMedicamentList(familyId: Long): List<MyMedicamentListDto> {
         return withContext(Dispatchers.IO) {
             val data = postgrest.rpc(
-                function = "fetch_medicament_list",
+                function = "fetch_my_medicament_list",
                 parameters = buildJsonObject {
                     put("family_id", familyId)
                 }
@@ -149,7 +149,7 @@ class AppRepositoryImpl(
             val data = postgrest.rpc(
                 function = "get_containers_with_medicament_names",
                 parameters = buildJsonObject {
-                    put("deviceid_input", deviceId)
+                    put("device_id_input", deviceId)
                 }
             ).decodeList<ContainerStateDto>()
             data
@@ -205,13 +205,13 @@ class AppRepositoryImpl(
         }
     }
 
-    override suspend fun updateNumberOfPills(containerId: Long, numberOfPills: Double) {
+    override suspend fun updateNumberOfPills(containerId: Long, numberOfPills: Long) {
         return withContext(Dispatchers.IO) {
             postgrest.rpc(
                 function = "update_number_of_pills",
                 parameters = buildJsonObject {
                     put("container_id_input", containerId)
-                    put("number_of_pills_input", numberOfPills)
+                    put("new_pill_count", numberOfPills)
                 }
             )
         }

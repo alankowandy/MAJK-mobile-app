@@ -1,12 +1,17 @@
 package org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
@@ -35,11 +40,13 @@ import org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.M
 @Composable
 fun MedicamentList(
     medicamentList: List<MyMedicamentList>,
-    onAction: (MyMedicamentAction) -> Unit
+    onAction: (MyMedicamentAction) -> Unit,
+    scrollState: LazyListState = rememberLazyListState()
 ) {
     val uriHandler = LocalUriHandler.current
 
     LazyColumn(
+        state = scrollState,
         modifier = Modifier
             .fillMaxWidth()
             .background(OffWhite)
@@ -54,11 +61,10 @@ fun MedicamentList(
                     ActionIcon(
                         onClick = {
                             //medicamentList[index] = medicament.copy(isOptionsRevealed = false)
-                            onAction(
-                                MyMedicamentAction.OnDeleteMedicamentClick(
-                                medicamentId = medicament.medicamentId
+                            onAction(MyMedicamentAction.OnShowConfirmDialog(
+                                medicamentId = medicament.medicamentId,
+                                medicamentName = medicament.medicamentName
                             ))
-                            onAction(MyMedicamentAction.OnRefreshData)
                         },
                         backgroundColor = Color.Red,
                         icon = Icons.Outlined.Delete,
@@ -81,15 +87,31 @@ fun MedicamentList(
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 8.dp)
                     ) {
-                        Text(
-                            text = medicament.medicamentName,
-                            color = DarkTeal,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp,
-                            modifier = Modifier
-                                .background(OffWhite)
-                                .weight(1f)
-                        )
+                        Column(
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = medicament.medicamentName,
+                                color = DarkTeal,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 18.sp,
+                                modifier = Modifier
+                                    .background(OffWhite)
+                                    .weight(1f)
+                            )
+
+                            Text(
+                                text = "Typ: ${medicament.medicamentType}",
+                                color = DarkTeal,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 12.sp,
+                                modifier = Modifier
+                                    .background(OffWhite)
+                                    .weight(1f)
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.weight(1f))
 
                         IconButton(
                             onClick = {

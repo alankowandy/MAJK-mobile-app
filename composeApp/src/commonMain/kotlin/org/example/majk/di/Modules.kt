@@ -13,6 +13,7 @@ import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthVie
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_screen.ContainerStateViewModel
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen.ContainerSettingsViewModel
 import org.example.majk.majk.presentation.majk_main.majk_history.HistoryViewModel
+import org.example.majk.majk.presentation.majk_main.majk_home.HomeViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsViewModel
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.MyMedkitEditViewModel
@@ -49,4 +50,5 @@ val sharedModule = module {
     viewModelOf(::AddScheduleViewModel)
     viewModelOf(::SelectedMedicineViewModel)
     viewModelOf(::HistoryViewModel)
+    viewModelOf(::HomeViewModel)
 }

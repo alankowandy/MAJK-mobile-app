@@ -21,13 +21,11 @@ fun ContainerSettingsScreenRoot(
     onBackClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val containerSettings by viewModel.containerSettings.collectAsStateWithLifecycle()
     val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
     val searchResult by viewModel.searchResult.collectAsStateWithLifecycle()
 
     ContainerSettingsScreen(
         state = state,
-        containerSettings = containerSettings,
         searchQuery = searchQuery,
         searchResult = searchResult,
         onAction = { action ->
@@ -44,7 +42,6 @@ fun ContainerSettingsScreenRoot(
 @Composable
 fun ContainerSettingsScreen(
     state: ContainerSettingsState,
-    containerSettings: ContainerSettings,
     searchQuery: String,
     searchResult: List<ContainerSettingsSearchQuery>,
     onAction: (ContainerSettingsAction) -> Unit
@@ -62,7 +59,6 @@ fun ContainerSettingsScreen(
         } else {
             ContainerSettingsScreenLayout(
                 state = state,
-                containerSettings = containerSettings,
                 searchQuery = searchQuery,
                 searchResult = searchResult,
                 onAction = onAction

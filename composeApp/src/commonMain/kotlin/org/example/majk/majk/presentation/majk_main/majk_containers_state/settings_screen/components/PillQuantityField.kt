@@ -48,12 +48,12 @@ fun PillQuantityField(
         )
     ) {
         TextField(
-            value = state.pillQuantityEntry.toString(),
-            onValueChange = { onAction(ContainerSettingsAction.OnPillQuantityChange(it.toInt())) },
+            value = state.pillQuantityEntry,
+            onValueChange = { onAction(ContainerSettingsAction.OnPillQuantityChange(it)) },
             shape = RoundedCornerShape(16.dp),
             singleLine = true,
             trailingIcon = {
-                if (state.pillQuantityEntry.toString().isNotBlank()) {
+                if (state.pillQuantityEntry.isNotBlank()) {
                     IconButton(
                         onClick = {
                             onAction(ContainerSettingsAction.OnEmptyContainerClick)
@@ -89,8 +89,7 @@ fun PillQuantityField(
             ),
             modifier = Modifier
                 .focusRequester(focusRequester)
-                .padding(vertical = 5.dp)
-                .size(width = 100.dp, height = 60.dp)
+                .size(width = 120.dp, height = 60.dp)
         )
     }
 }

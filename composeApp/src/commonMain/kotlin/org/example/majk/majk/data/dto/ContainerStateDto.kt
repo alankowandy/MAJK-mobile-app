@@ -12,11 +12,11 @@ data class ContainerStateDto(
     val containerState: String,
 
     @SerialName("numberOfPills")
-    val pillQuantity: Double,
+    val pillQuantity: Long,
 
     @SerialName("number")
     val containerNumber: Long,
 
-    @SerialName("medicamentName")
-    val medicamentName: String
+    @SerialName("nameOfMedicament")
+    val medicamentName: String?
 )

@@ -49,15 +49,9 @@ class ContainerStateViewModel(
                 _state.update { it.copy(isLoading = true) }
                 currentDeviceId?.let { fetchContainers(it) }
             }
-            is ContainerStateAction.OnSettingsClick -> {
-
-            }
+            is ContainerStateAction.OnSettingsClick -> {}
             is ContainerStateAction.OnDialogClear -> {
-                _state.update {
-                    it.copy(
-                        errorMessage = null
-                    )
-                }
+                _state.update { it.copy(errorMessage = null) }
             }
         }
     }

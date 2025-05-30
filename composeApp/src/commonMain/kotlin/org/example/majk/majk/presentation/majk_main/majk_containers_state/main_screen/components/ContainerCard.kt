@@ -12,12 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Medication
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -28,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -35,20 +33,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import majk.composeapp.generated.resources.Res
+import majk.composeapp.generated.resources.container_state
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.GoGreen
 import org.example.majk.core.presentation.LightGray
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.core.presentation.WarningRed
 import org.example.majk.core.presentation.WatchYellow
-import org.example.majk.majk.presentation.components.MajkButton
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ContainerCard(
     containerNumber: Long,
     medicamentName: String,
     containerState: String,
-    numberOfPills: Double,
+    numberOfPills: Long,
     onSettingsClick: () -> Unit
 ) {
     Card(
@@ -63,19 +63,23 @@ fun ContainerCard(
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
     ) {
+        Spacer(modifier = Modifier.height(8.dp))
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
                 text = "Pojemnik $containerNumber",
                 fontWeight = FontWeight.Bold,
-                fontSize = 24.sp,
+                fontSize = 22.sp,
                 color = DarkTeal,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(start = 4.dp)
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -95,25 +99,45 @@ fun ContainerCard(
             }
         }
 
-        Text(
-            text = medicamentName,
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
-            color = OffWhite,
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp)
-                .background(
-                    color = DarkTeal,
-                    shape = RoundedCornerShape(16.dp)
+                .padding(horizontal = 16.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(color = DarkTeal, shape = RoundedCornerShape(16.dp))
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(12.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Medication,
+                    contentDescription = null,
+                    tint = OffWhite,
+                    modifier = Modifier
+                        .padding(end = 8.dp)
                 )
-                .padding(horizontal = 12.dp, vertical = 12.dp)
-        )
+
+                Text(
+                    text = medicamentName,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    color = OffWhite,
+                    modifier = Modifier
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 12.dp)
+                .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
                 .background(
                     color = LightGray,
                     shape = RoundedCornerShape(16.dp)
@@ -130,8 +154,8 @@ fun ContainerCard(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Stan pojemnika",
-                    fontSize = 18.sp,
+                    text = stringResource(Res.string.container_state),
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = DarkTeal,
                     modifier = Modifier
@@ -140,10 +164,11 @@ fun ContainerCard(
 
                 Text(
                     text = containerState,
-                    fontSize = 16.sp,
+                    fontSize = 14.sp,
                     color = OffWhite,
+                    fontWeight = FontWeight.SemiBold,
                     modifier = Modifier
-                        .padding(8.dp)
+                        .padding(6.dp)
                         .background(
                             color = when (containerState) {
                                 "pełny" -> GoGreen
@@ -152,7 +177,7 @@ fun ContainerCard(
                             },
                             shape = RoundedCornerShape(16.dp)
                         )
-                        .padding(horizontal = 20.dp, vertical = 2.dp)
+                        .padding(horizontal = 30.dp, vertical = 2.dp)
                 )
             }
 
@@ -181,7 +206,8 @@ fun ContainerCard(
                                 fontWeight = FontWeight.Bold
                             )
                         ) {
-                            append("${numberOfPills.toInt()}")
+                            val pillAmount = (numberOfPills.toString().padStart(2, ' '))
+                            append(pillAmount)
                         }
                         append("\n")
                         withStyle(
@@ -189,7 +215,7 @@ fun ContainerCard(
                                 fontSize = 12.sp
                             )
                         ) {
-                            append("\t\tszt.")
+                            append("szt.")
                         }
                     },
                     fontSize = 10.sp,

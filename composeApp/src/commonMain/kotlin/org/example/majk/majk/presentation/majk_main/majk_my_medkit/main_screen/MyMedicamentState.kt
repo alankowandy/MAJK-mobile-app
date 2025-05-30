@@ -7,5 +7,8 @@ data class MyMedicamentState(
     val errorMessage: String? = null,
     val initialLoadDone: Boolean = false,
     val currentFamilyId: Long = 0L,
-    val myMedicamentList: List<MyMedicamentList> = emptyList()
+    val myMedicamentList: List<MyMedicamentList> = emptyList(),
+    val isConfirmDialogVisible: Boolean = false,
+    val deleteMedicamentId: Long = 0L,
+    val deleteMedicamentName: String = ""
 )

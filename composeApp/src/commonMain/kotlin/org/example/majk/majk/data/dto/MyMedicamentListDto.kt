@@ -8,8 +8,11 @@ data class MyMedicamentListDto(
     @SerialName("id")
     val medicamentId: Long,
 
-    @SerialName("nameOfMedicament")
+    @SerialName("medicament_name")
     val medicamentName: String,
+
+    @SerialName("type")
+    val medicamentType: String,
 
     @SerialName("leaflet")
     val leafletUrl: String

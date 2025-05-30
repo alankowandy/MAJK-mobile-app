@@ -16,15 +16,21 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import majk.composeapp.generated.resources.Res
+import majk.composeapp.generated.resources.my_medicament_confirm_text
+import majk.composeapp.generated.resources.my_medicament_confirm_text2
+import majk.composeapp.generated.resources.my_medicament_confirm_title
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.domain.MyMedicamentList
 import org.example.majk.majk.presentation.components.MajkButton
 import org.example.majk.majk.presentation.components.MajkAlertDialog
+import org.example.majk.majk.presentation.majk_main.components.ConfirmDialog
 import org.example.majk.majk.presentation.majk_main.components.EmptyListText
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_screen.ContainerStateAction
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.components.MedicamentList
@@ -41,7 +47,6 @@ fun MyMedicamentScreenRoot(
     val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
 
     LaunchedEffect(lifecycleState) {
-        println(lifecycleState.toString())
         if (lifecycleState == Lifecycle.State.STARTED && state.initialLoadDone) {
             viewModel.onAction(MyMedicamentAction.OnRefreshData)
         }
@@ -76,7 +81,24 @@ fun MyMedicamentScreen(
         if (state.errorMessage != null) {
             MajkAlertDialog(
                 error = state.errorMessage,
-                dismissAction = { onAction(MyMedicamentAction.OnDismissDialog) }
+                dismissAction = { onAction(MyMedicamentAction.OnDismissErrorDialog) }
+            )
+        }
+
+        if (state.isConfirmDialogVisible) {
+            ConfirmDialog(
+                title = stringResource(Res.string.my_medicament_confirm_title),
+                text = buildString {
+                    append(stringResource(Res.string.my_medicament_confirm_text))
+                    append(state.deleteMedicamentName)
+                    append(Res.string.my_medicament_confirm_text2)
+                },
+                onConfirm = {
+                    onAction(MyMedicamentAction.OnDeleteMedicamentClick(state.deleteMedicamentId))
+                    onAction(MyMedicamentAction.OnRefreshData)
+                    onAction(MyMedicamentAction.OnDismissConfirmDialog)
+                },
+                onDismissDialog = { onAction(MyMedicamentAction.OnDismissConfirmDialog) }
             )
         }
 
