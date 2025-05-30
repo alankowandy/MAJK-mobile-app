@@ -59,20 +59,13 @@ class ContainerSettingsViewModel(
                 }
             }
             is ContainerSettingsAction.OnPillQuantityChange -> {
-                if (action.pillQuantity.isBlank()) {
-                    _state.update { it.copy(pillQuantityEntry = "0") }
-                } else if (action.pillQuantity.toInt() > 60) {
-                    _state.update { it.copy(pillQuantityEntry = "60") }
-                } else {
-                    _state.update { it.copy(pillQuantityEntry = action.pillQuantity) }
-                }
+                _state.update { it.copy(pillQuantityEntry = action.pillQuantity) }
             }
             is ContainerSettingsAction.OnSearchExpandedChange -> {
                 _state.update { it.copy(isSearchExpanded = action.isExpanded) }
             }
-            is ContainerSettingsAction.OnEmptyContainerClick -> {
+            is ContainerSettingsAction.OnEmptyPillEntryClick -> {
                 _state.update { it.copy(pillQuantityEntry = "0") }
-
             }
             is ContainerSettingsAction.OnConfirmClick -> {
                 if (_searchQuery.value != _state.value.initialSearchEntry
@@ -85,15 +78,43 @@ class ContainerSettingsViewModel(
                     _state.update { it.copy(searchError = "Wybrany lek jest niepoprawny.") }
                 }
 
-                if (_state.value.pillQuantityEntry.toInt() != 0 &&
-                    (_state.value.pillQuantityEntry.toLong() + _state.value.initialPillQuantity) < 60) {
-                    updateNumberOfPills(
-                        containerId = container,
-                        pillQuantity = _state.value.pillQuantityEntry.toLong()
-                    )
-                } else {
-                    _state.update { it.copy(pillQuantityEntryError = true) }
+                if (_state.value.pillQuantityEntry.isBlank()) {
+                    _state.update { it.copy(pillQuantityEntry = "0") }
                 }
+
+                if (_state.value.pillQuantityEntry.toInt() > 0) {
+                    val diff = _state.value.pillQuantityEntry.toLong() + _state.value.initialPillQuantity
+                    val fewCond = 60 * 0.2
+                    if (diff < 60) {
+                        if (diff > fewCond.toLong()) {
+                            updateNumberOfPills(
+                                containerId = container,
+                                pillQuantity = diff,
+                                state = "dużo"
+                            )
+                        } else {
+                            updateNumberOfPills(
+                                containerId = container,
+                                pillQuantity = diff,
+                                state = "mało"
+                            )
+                        }
+
+                    } else if (diff > 60) {
+                        val subDiff = 60 - _state.value.initialPillQuantity
+                        _state.update { it.copy(pillQuantityEntry = "$diff") }
+
+                        updateNumberOfPills(
+                            containerId = container,
+                            pillQuantity = subDiff,
+                            state = "dużo"
+                        )
+                    } else {
+                        _state.update { it.copy(pillQuantityEntryError = true) }
+                    }
+
+                }
+
             }
             is ContainerSettingsAction.OnAddPillsClick -> {
                 if (_state.value.pillQuantityEntry.toInt() < 60) {
@@ -104,6 +125,22 @@ class ContainerSettingsViewModel(
                 if (_state.value.pillQuantityEntry.toInt() > 0) {
                     _state.update { it.copy(pillQuantityEntry = (it.pillQuantityEntry.toInt() - 1).toString()) }
                 }
+            }
+            is ContainerSettingsAction.OnConfirmEmptyClick -> {
+                emptyContainer(container)
+                _state.update { it.copy(
+                    pillQuantityEntry = "0",
+                    isEmptyContainerDialogVisible = false
+                ) }
+            }
+            is ContainerSettingsAction.OnEmptyContainerClick -> {
+                _state.update { it.copy(isEmptyContainerDialogVisible = true) }
+            }
+            is ContainerSettingsAction.OnDismissDialog -> {
+                _state.update { it.copy(
+                    errorMessage = null,
+                    isEmptyContainerDialogVisible = false
+                ) }
             }
         }
     }
@@ -142,7 +179,6 @@ class ContainerSettingsViewModel(
     private fun fetchContainerSettings(containerId: Long) {
         viewModelScope.launch {
             runCatching {
-                println(containerId.toString())
                 val result = appRepository.fetchContainerSettings(containerId)
                 _containerSettings.emit(result.asDomainModel())
             }.onSuccess {
@@ -206,29 +242,35 @@ class ContainerSettingsViewModel(
             runCatching {
                 appRepository.updateContainerMedicament(containerId, medicamentId)
             }.onSuccess {
-                _state.update {
-                    it.copy(successMessage = "Pomyślnie zaktualizowano!")
-                }
+                fetchContainerSettings(container)
+                _state.update { it.copy(successMessage = "Pomyślnie zaktualizowano!") }
             }.onFailure {
-                _state.update {
-                    it.copy(errorMessage = "Błąd w komunikacji z serwerem.")
-                }
+                _state.update { it.copy(errorMessage = "Błąd w komunikacji z serwerem.") }
             }
         }
     }
 
-    private fun updateNumberOfPills(containerId: Long, pillQuantity: Long) {
+    private fun updateNumberOfPills(containerId: Long, pillQuantity: Long, state: String) {
         viewModelScope.launch {
             runCatching {
-                appRepository.updateNumberOfPills(containerId, pillQuantity)
+                appRepository.updateNumberOfPills(containerId, pillQuantity, state)
             }.onSuccess {
-                _state.update {
-                    it.copy(successMessage = "Pomyślnie zaktualizowano!")
-                }
+                fetchContainerSettings(container)
+                _state.update { it.copy(successMessage = "Pomyślnie zaktualizowano!") }
             }.onFailure {
-                _state.update {
-                    it.copy(errorMessage = "Błąd w komunikacji z serwerem.")
-                }
+                _state.update { it.copy(errorMessage = "Błąd w komunikacji z serwerem.") }
+            }
+        }
+    }
+
+    private fun emptyContainer(containerId: Long) {
+        viewModelScope.launch {
+            runCatching {
+                appRepository.emptyContainer(containerId)
+            }.onSuccess {
+                fetchContainerSettings(container)
+            }.onFailure { error ->
+                println(error)
             }
         }
     }

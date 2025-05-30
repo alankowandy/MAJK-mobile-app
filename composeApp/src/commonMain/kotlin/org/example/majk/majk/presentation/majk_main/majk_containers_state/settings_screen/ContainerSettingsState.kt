@@ -16,5 +16,6 @@ data class ContainerSettingsState(
     val pillQuantityEntry: String = "0",
     val pillQuantityEntryError: Boolean = false,
     val isSearching: Boolean = false,
-    val containerSettings: ContainerSettings = ContainerSettings()
+    val containerSettings: ContainerSettings = ContainerSettings(),
+    val isEmptyContainerDialogVisible: Boolean = false
 )

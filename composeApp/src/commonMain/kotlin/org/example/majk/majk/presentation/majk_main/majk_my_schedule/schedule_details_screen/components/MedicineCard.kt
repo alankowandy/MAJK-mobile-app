@@ -30,6 +30,7 @@ import majk.composeapp.generated.resources.during_meal
 import org.example.majk.core.domain.DataError
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.GoGreen
+import org.example.majk.core.presentation.LightGray
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.core.presentation.WarningRed
 import org.example.majk.core.presentation.WatchYellow
@@ -122,7 +123,7 @@ private fun checkStatus(
 
     if (selectedDate > currentDayTime.date ||
         (currentDayTime.date == selectedDate && currentDayTime.time < startDateTime.time)) {
-        return GoGreen
+        return LightGray
     }
 
     if (takingDate == selectedDate) {

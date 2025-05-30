@@ -56,7 +56,7 @@ fun PillQuantityField(
                 if (state.pillQuantityEntry.isNotBlank()) {
                     IconButton(
                         onClick = {
-                            onAction(ContainerSettingsAction.OnEmptyContainerClick)
+                            onAction(ContainerSettingsAction.OnEmptyPillEntryClick)
                         }
                     ) {
                         Icon(

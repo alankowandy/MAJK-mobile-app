@@ -6,9 +6,10 @@ interface ContainerSettingsAction {
     data class OnSearchExpandedChange(val isExpanded: Boolean): ContainerSettingsAction
     data object OnEmptyContainerClick: ContainerSettingsAction
     data object OnConfirmClick: ContainerSettingsAction
-    data object OnDismissClick: ContainerSettingsAction
     data object OnDismissDialog: ContainerSettingsAction
     data object OnBackClick: ContainerSettingsAction
     data object OnAddPillsClick: ContainerSettingsAction
     data object OnSubtractPillsClick: ContainerSettingsAction
+    data object OnEmptyPillEntryClick: ContainerSettingsAction
+    data object OnConfirmEmptyClick: ContainerSettingsAction
 }

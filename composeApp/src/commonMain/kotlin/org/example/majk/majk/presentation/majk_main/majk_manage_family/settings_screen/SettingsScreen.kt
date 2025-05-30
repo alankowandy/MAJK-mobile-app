@@ -9,11 +9,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import majk.composeapp.generated.resources.Res
+import majk.composeapp.generated.resources.delete_confirm_text1
+import majk.composeapp.generated.resources.delete_confirm_text2
+import majk.composeapp.generated.resources.delete_confirm_title
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.domain.UserSettings
 import org.example.majk.majk.presentation.components.MajkAlertDialog
+import org.example.majk.majk.presentation.majk_main.components.ConfirmDialog
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.components.ManageFamilySettingsLayout
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -55,6 +61,24 @@ fun SettingsScreen(
         )
     }
 
+    if (state.isDeleteConfirmVisible) {
+        ConfirmDialog(
+            title = stringResource(Res.string.delete_confirm_title),
+            text = buildString {
+                append(stringResource(Res.string.delete_confirm_text1))
+                append(state.initialUsernameEntry)
+                append(stringResource(Res.string.delete_confirm_text2))
+            },
+            onConfirm = {
+                onAction(SettingsAction.OnDeleteConfirm)
+                if (state.errorMessage == null) {
+                    onBackClick()
+                }
+            },
+            onDismissDialog = { onAction(SettingsAction.OnDismissClick) }
+        )
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -67,7 +91,6 @@ fun SettingsScreen(
             ManageFamilySettingsLayout(
                 state = state,
                 userSettings = userSettings,
-                onBackClick = onBackClick,
                 onAction = onAction
             )
         }

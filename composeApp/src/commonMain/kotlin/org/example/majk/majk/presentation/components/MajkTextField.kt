@@ -36,7 +36,8 @@ fun MajkTextField(
     imeAction: ImeAction = ImeAction.Next,
     focusRequester: FocusRequester,
     onNextFocus: () -> Unit,
-    isError: Boolean = false
+    isError: Boolean = false,
+    modifier: Modifier = Modifier
 ) {
     CompositionLocalProvider(
         LocalTextSelectionColors provides TextSelectionColors(
@@ -87,9 +88,8 @@ fun MajkTextField(
                 errorContainerColor = LightGray,
                 cursorColor = DarkTeal
             ),
-            modifier = Modifier
+            modifier = modifier
                 .focusRequester(focusRequester)
-                .padding(vertical = 5.dp)
                 .size(width = 310.dp, height = 50.dp)
         )
     }

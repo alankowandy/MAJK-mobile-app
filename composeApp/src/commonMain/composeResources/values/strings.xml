@@ -40,7 +40,15 @@
     <string name="container_state">Stan pojemnika</string>
     <string name="container_empty">pusty</string>
     <string name="container_few">mało</string>
-    <string name="container_full">pełny</string>
+    <string name="container_full">dużo</string>
+    <string name="container_confirm_title">Uwaga!</string>
+    <string name="container_confirm_text">Czy na pewno chcesz opróżnić pojemnik?</string>
+
+    <!--Manage Family Screen-->
+    <string name="delete">Usuń</string>
+    <string name="delete_confirm_title">Uwaga!</string>
+    <string name="delete_confirm_text1">Czy na pewno chcesz usunąć użytkownika </string>
+    <string name="delete_confirm_text2"> z rodziny?</string>
 
     <!--Error strings-->
     <string name="error_disk_full">Oops, it seems like your disk is full.</string>

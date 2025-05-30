@@ -35,7 +35,6 @@ fun MajkSettingsDropdown(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 60.dp, vertical = 16.dp)
     ) {
         androidx.compose.material3.ExposedDropdownMenuBox(
             expanded = isExpanded,

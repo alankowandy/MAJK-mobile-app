@@ -31,7 +31,7 @@ interface AppRepository {
     suspend fun fetchMyMedicament(familyId: Long): List<ContainerSettingsSearchQueryDto>
     suspend fun searchMedicament(familyId: Long, partialName: String): List<ContainerSettingsSearchQueryDto>
     suspend fun updateContainerMedicament(containerId: Long, medicamentId: Long)
-    suspend fun updateNumberOfPills(containerId: Long, numberOfPills: Long)
+    suspend fun updateNumberOfPills(containerId: Long, numberOfPills: Long, state: String)
     suspend fun searchMedicamentSet(partialName: String): List<MedicamentSearchDto>
     suspend fun fetchInitialMedicamentSet(): List<MedicamentSearchDto>
     suspend fun insertMedicament(medicamentId: Long, familyId: Long)
@@ -44,4 +44,5 @@ interface AppRepository {
     suspend fun updateSchedule(releaseId: Long, medicamentId: Long, startDate: String, endDate: String,
                                dayInterval: Long, pillAmount: Long, consumption: String, note: String)
     suspend fun fetchReleaseHistory(accountId: Long): List<ReleaseHistoryDto>
+    suspend fun emptyContainer(containerId: Long)
 }

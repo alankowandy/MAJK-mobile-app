@@ -1,5 +1,7 @@
 package org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,34 +29,25 @@ class SettingsViewModel(
     private val user = savedStateHandle.toRoute<Route.MajkManageFamilySettings>().userId
 
     private val _state = MutableStateFlow(SettingsState())
-    val state = _state
-        .onStart {
-            fetchUserSettings(user)
-        }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000L),
-            _state.value
-        )
+    val state = _state.asStateFlow()
 
     private val _userSettings = MutableStateFlow(UserSettings())
     val userSettings = _userSettings.asStateFlow()
 
+    init {
+        fetchUserSettings(user)
+    }
+
     fun onAction(action: SettingsAction) {
         when (action) {
             is SettingsAction.OnUsernameChange -> {
-                _state.update {
-                    it.copy(
-                        usernameEntry = action.username
-                    )
-                }
+                _state.update { it.copy(usernameEntry = action.username) }
             }
             is SettingsAction.OnPermissionChange -> {
-                _state.update {
-                    it.copy(
-                        permissionEntry = action.permission
-                    )
-                }
+                _state.update { it.copy(permissionEntry = action.permission) }
+            }
+            is SettingsAction.OnColorChange -> {
+                _state.update { it.copy(userAvatarColor = action.color) }
             }
             is SettingsAction.OnConfirmClick -> {
                 if (_state.value.usernameEntry.isBlank()) {
@@ -66,6 +59,7 @@ class SettingsViewModel(
                     }
                 } else {
                     val username = _state.value.usernameEntry
+                    val initialPermission = _state.value.initialPermissionEntry
                     val permission = when (_state.value.permissionEntry) {
                         "Administrator" -> "admin"
                         "Użytkownik" -> "user"
@@ -73,41 +67,47 @@ class SettingsViewModel(
                         else -> "limited"
                     }
 
-                    updateUserSettings(
-                        userId = user,
-                        username = username,
-                        permission = permission
-                    )
+                    if (initialPermission != permission) {
+                        when (initialPermission) {
+                            "admin" -> {
+                                _state.update { it.copy(errorMessage = "Nie można zmienić dostępów pierwotnego administratora.") }
+                            }
+                            "user" -> {
+                                updateUserSettings(
+                                    userId = user,
+                                    username = username,
+                                    permission = permission
+                                )
+                            }
+                            "limited" -> {
+                                _state.update { it.copy(errorMessage = "Obecnie nie można zmienić dostępów ograniczonego profilu.") }
+                            }
+                        }
+                    }
                 }
 
             }
             is SettingsAction.OnDeleteClick -> {
-                if (userSettings.value.currentPermission == "admin") {
-                    _state.update {
-                        it.copy(
-                            errorMessage = "Nie można usunąć konta administratora."
-                        )
-                    }
+                _state.update { it.copy(isDeleteConfirmVisible = true) }
+            }
+            is SettingsAction.OnDeleteConfirm -> {
+                if (_state.value.initialPermissionEntry == "admin") {
+                    _state.update { it.copy(errorMessage = "Nie można usunąć konta administratora.") }
                 } else {
                     deleteProfile(userId = user, username = _userSettings.value.currentUsername ?: "")
                 }
             }
-            is SettingsAction.OnBackClick -> {
-
-            }
+            is SettingsAction.OnBackClick -> {}
             is SettingsAction.OnDismissClick -> {
-                _state.update {
-                    it.copy(
-                        errorMessage = null
-                    )
-                }
+                _state.update { it.copy(
+                    errorMessage = null,
+                    isDeleteConfirmVisible = false
+                ) }
             }
         }
     }
 
-    private fun fetchUserSettings(
-        userId: Long
-    ) {
+    private fun fetchUserSettings(userId: Long) {
         viewModelScope.launch {
             kotlin.runCatching {
                 val result = appRepository.fetchUserSettings(userId)
@@ -115,10 +115,13 @@ class SettingsViewModel(
             }.onSuccess {
                 _state.update {
                     it.copy(
+                        initialUsernameEntry = _userSettings.value.currentUsername ?: "",
                         usernameEntry = _userSettings.value.currentUsername ?: "",
+                        initialPermissionEntry = _userSettings.value.currentPermission ?: "limited",
                         isLoading = false
                     )
                 }
+                println(Color.Red.toArgb())
             }.onFailure { error ->
                 _state.update {
                     it.copy(
@@ -138,23 +141,20 @@ class SettingsViewModel(
         viewModelScope.launch {
             runCatching {
                 appRepository.updateUserSettings(userId, username, permission)
-                sharedViewModel.onAction(SharedAction.OnRefreshActionData)
             }.onSuccess {
-
-            }.onFailure {
+                sharedViewModel.onAction(SharedAction.OnRefreshActionData)
+            }.onFailure { error ->
                 _state.update {
                     it.copy(
                         errorMessage = "Błąd przy zmianie danych. Spróbuj ponownie."
                     )
                 }
+                println(error)
             }
         }
     }
 
-    private fun deleteProfile(
-        userId: Long,
-        username: String
-    ) {
+    private fun deleteProfile(userId: Long, username: String) {
         viewModelScope.launch {
             runCatching {
                 appRepository.deleteUserProfile(userId, username)

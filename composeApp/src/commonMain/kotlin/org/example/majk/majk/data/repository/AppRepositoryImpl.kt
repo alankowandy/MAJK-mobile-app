@@ -205,13 +205,14 @@ class AppRepositoryImpl(
         }
     }
 
-    override suspend fun updateNumberOfPills(containerId: Long, numberOfPills: Long) {
+    override suspend fun updateNumberOfPills(containerId: Long, numberOfPills: Long, state: String) {
         return withContext(Dispatchers.IO) {
             postgrest.rpc(
                 function = "update_number_of_pills",
                 parameters = buildJsonObject {
-                    put("container_id_input", containerId)
-                    put("new_pill_count", numberOfPills)
+                    put("container_id", containerId)
+                    put("new_number_of_pills", numberOfPills)
+                    put("new_state", state)
                 }
             )
         }
@@ -361,5 +362,9 @@ class AppRepositoryImpl(
             ).decodeList<ReleaseHistoryDto>()
             data
         }
+    }
+
+    override suspend fun emptyContainer(containerId: Long) {
+        TODO("Not yet implemented")
     }
 }

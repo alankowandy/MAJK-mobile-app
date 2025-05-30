@@ -97,12 +97,15 @@ fun ContainerSettingsScreenLayout(
 
         Text(
             text = "Dokonujesz zmiany dla \nPojemnika ${state.containerSettings.containerNumber}",
-            color = DarkTeal,
+            color = OffWhite,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .padding(vertical = 12.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .background(DarkTeal, RoundedCornerShape(16.dp))
+                .padding(vertical = 8.dp)
         )
 
         Card(
@@ -230,11 +233,11 @@ fun ContainerSettingsScreenLayout(
                             modifier = Modifier
                                 .background(
                                     color = when (state.containerSettings.containerState) {
-                                        "pełny" -> GoGreen
+                                        "dużo" -> GoGreen
                                         "mało" -> WatchYellow
                                         else -> WarningRed
                                     },
-                                    shape = RoundedCornerShape(16.dp)
+                                    shape = RoundedCornerShape(9.dp)
                                 )
                                 .padding(horizontal = 30.dp, vertical = 2.dp)
                         )
@@ -319,6 +322,17 @@ fun ContainerSettingsScreenLayout(
                 onAction(ContainerSettingsAction.OnBackClick)
             },
             boldText = true,
+            modifier = Modifier
+                .padding(start = 70.dp, end = 70.dp, bottom = 8.dp)
+                .fillMaxWidth()
+                .height(45.dp)
+        )
+
+        MajkButton(
+            text = "Opróżnij pojemnik",
+            onAction = { onAction(ContainerSettingsAction.OnEmptyContainerClick) },
+            boldText = true,
+            containerColor = WarningRed,
             modifier = Modifier
                 .padding(start = 70.dp, end = 70.dp, bottom = 8.dp)
                 .fillMaxWidth()

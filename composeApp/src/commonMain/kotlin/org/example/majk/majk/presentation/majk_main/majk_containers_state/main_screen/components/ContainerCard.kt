@@ -123,7 +123,7 @@ fun ContainerCard(
                 )
 
                 Text(
-                    text = medicamentName,
+                    text = medicamentName.ifBlank { "Brak leku" },
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     color = OffWhite,
@@ -171,11 +171,11 @@ fun ContainerCard(
                         .padding(6.dp)
                         .background(
                             color = when (containerState) {
-                                "pełny" -> GoGreen
+                                "dużo" -> GoGreen
                                 "mało" -> WatchYellow
                                 else -> WarningRed
                             },
-                            shape = RoundedCornerShape(16.dp)
+                            shape = RoundedCornerShape(9.dp)
                         )
                         .padding(horizontal = 30.dp, vertical = 2.dp)
                 )
