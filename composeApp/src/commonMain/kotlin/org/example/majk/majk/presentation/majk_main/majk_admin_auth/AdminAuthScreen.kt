@@ -61,6 +61,7 @@ fun AdminAuthScreen(
             EmptyListText()
         } else {
             AdminAuthUserList(
+                state = state,
                 users = state.users,
                 onAction = onAction
             )

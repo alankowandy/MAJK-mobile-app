@@ -45,4 +45,5 @@ interface AppRepository {
                                dayInterval: Long, pillAmount: Long, consumption: String, note: String)
     suspend fun fetchReleaseHistory(accountId: Long): List<ReleaseHistoryDto>
     suspend fun emptyContainer(containerId: Long)
+    suspend fun changeProfileColor(accountId: Long, color: Int)
 }

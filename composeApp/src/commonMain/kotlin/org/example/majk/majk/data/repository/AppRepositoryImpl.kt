@@ -39,7 +39,7 @@ class AppRepositoryImpl(
             val data = postgrest.rpc(
                 function = "collect_profiles",
                 parameters = buildJsonObject {
-                    put("family_id", familyId)
+                    put("family_id_input", familyId)
                 }
             ).decodeList<ManageFamilyDto>()
             data
@@ -51,7 +51,7 @@ class AppRepositoryImpl(
             val data = postgrest.rpc(
                 function = "collect_profiles",
                 parameters = buildJsonObject {
-                    put("family_id", familyId)
+                    put("family_id_input", familyId)
                 }
             ).decodeList<AdminAuthDto>()
             data
@@ -63,7 +63,7 @@ class AppRepositoryImpl(
             val data = postgrest.rpc(
                 function = "get_user_settings",
                 parameters = buildJsonObject {
-                    put("user_id", userId)
+                    put("profile_id_input", userId)
                 }
             ).decodeList<UserSettingsDto>()
             data[0]
@@ -365,6 +365,25 @@ class AppRepositoryImpl(
     }
 
     override suspend fun emptyContainer(containerId: Long) {
-        TODO("Not yet implemented")
+        return withContext(Dispatchers.IO) {
+            postgrest.rpc(
+                function = "empty_the_container",
+                parameters = buildJsonObject {
+                    put("container_id", containerId)
+                }
+            )
+        }
+    }
+
+    override suspend fun changeProfileColor(accountId: Long, color: Int) {
+        return withContext(Dispatchers.IO) {
+            postgrest.rpc(
+                function = "update_avatar_color",
+                parameters = buildJsonObject {
+                    put("updated_color", color)
+                    put("acc_id", accountId)
+                }
+            )
+        }
     }
 }

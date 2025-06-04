@@ -36,7 +36,7 @@ import org.example.majk.majk.presentation.components.MajkButton
 @Composable
 fun UserTile(
     username: String,
-    userColor: Color,
+    userColor: Int,
     onScheduleClick: () -> Unit,
     onSettingsClick: () -> Unit
 ) {
@@ -71,7 +71,7 @@ fun UserTile(
                     contentDescription = "user",
                     modifier = Modifier
                         .size(40.dp),
-                    tint = userColor
+                    tint = Color(userColor)
                 )
             }
 

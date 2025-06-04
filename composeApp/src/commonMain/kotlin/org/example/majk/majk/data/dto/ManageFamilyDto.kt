@@ -9,5 +9,8 @@ data class ManageFamilyDto(
     val userId: Long,
 
     @SerialName("name")
-    val username: String
+    val username: String,
+
+    @SerialName("avatar_color")
+    val avatarColor: Int
 )

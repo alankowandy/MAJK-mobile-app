@@ -46,6 +46,17 @@ class AdminAuthViewModel(
     fun onAction(action: AdminAuthAction) {
         when (action) {
             is AdminAuthAction.OnNfcClick -> {
+                _users.update { user ->
+                    user.map { entry ->
+                        if (action.accountId == entry.id) {
+                            entry.copy(isNfcChecked = !entry.isNfcChecked)
+                        } else {
+                            entry.copy(isNfcChecked = false)
+                        }
+                    }
+                }
+                _state.update { it.copy(users = _users.value) }
+
                 if (_state.value.isHostCardEmulationAvailable) {
                     println(_state.value.isHostCardEmulationAvailable.toString())
                 } else {
@@ -54,6 +65,18 @@ class AdminAuthViewModel(
                                 "Twoje urządzenie nie obsługuje emulacji karty NFC."
                     ) }
                 }
+            }
+            is AdminAuthAction.OnRfidClick -> {
+                _users.update { user ->
+                    user.map { entry ->
+                        if (action.accountId == entry.id) {
+                            entry.copy(isRfidChecked = !entry.isRfidChecked)
+                        } else {
+                            entry
+                        }
+                    }
+                }
+                _state.update { it.copy(users = _users.value) }
             }
             is AdminAuthAction.OnDismissError -> {
                 _state.update { it.copy(errorMessage = null) }
@@ -91,7 +114,8 @@ class AdminAuthViewModel(
     private fun AdminAuthDto.asDomainModel(): AdminAuthUsers {
         return AdminAuthUsers(
             id = this.userId,
-            username = this.username
+            username = this.username,
+            avatarColor = this.avatarColor
         )
     }
 }

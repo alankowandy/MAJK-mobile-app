@@ -14,9 +14,11 @@ import androidx.compose.ui.unit.dp
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.domain.AdminAuthUsers
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthAction
+import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthState
 
 @Composable
 fun AdminAuthUserList(
+    state: AdminAuthState,
     users: List<AdminAuthUsers>,
     onAction: (AdminAuthAction) -> Unit,
     scrollState: LazyListState = rememberLazyListState()
@@ -34,8 +36,9 @@ fun AdminAuthUserList(
             key = { it.id }
         ) { user ->
             AdminAuthUserTile(
+                state = state,
                 user = user,
-                userColor = OffWhite,
+                userColor = user.avatarColor,
                 onAction = onAction
             )
         }

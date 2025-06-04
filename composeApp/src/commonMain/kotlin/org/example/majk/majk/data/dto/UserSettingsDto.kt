@@ -6,8 +6,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserSettingsDto(
     @SerialName("permission")
-    val currentPermission: String? = "",
+    val currentPermission: String,
 
     @SerialName("name")
-    val currentUsername: String? = ""
+    val currentUsername: String,
+
+    @SerialName("avatar_color")
+    val avatarColor: Int
 )

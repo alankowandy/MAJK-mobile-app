@@ -35,7 +35,7 @@ fun UserList(
         ) { user ->
             UserTile(
                 username = user.username,
-                userColor = OffWhite,
+                userColor = user.avatarColor,
                 onScheduleClick = { onScheduleClick(user.id) },
                 onSettingsClick = { onSettingsClick(user.id) }
             )

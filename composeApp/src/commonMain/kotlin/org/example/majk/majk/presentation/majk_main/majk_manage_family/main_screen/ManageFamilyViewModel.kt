@@ -86,7 +86,8 @@ class ManageFamilyViewModel(
     private fun ManageFamilyDto.asDomainModel(): ManageFamily {
         return ManageFamily(
             id = this.userId,
-            username = this.username
+            username = this.username,
+            avatarColor = this.avatarColor
         )
     }
 }

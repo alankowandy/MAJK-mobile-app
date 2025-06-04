@@ -7,6 +7,7 @@ data class SettingsState(
     val usernameEntry: String = "",
     val initialPermissionEntry: String = "",
     val permissionEntry: String = "",
+    val initialUserAvatarColor: Int = 0,
     val userAvatarColor: Int = 0,
     val userSettings: UserSettings? = null,
     val isLoading: Boolean = true,

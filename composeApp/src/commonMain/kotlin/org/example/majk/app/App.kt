@@ -368,9 +368,10 @@ fun App() {
                     startDestination = Route.MajkHome
                 ) {
                     composable<Route.MajkHome>(
-                        exitTransition = { slideOutHorizontally() },
-                        popEnterTransition = { slideInHorizontally() },
                         enterTransition = { slideInHorizontally { initialOffset ->
+                            initialOffset
+                        } },
+                        exitTransition = { slideOutHorizontally { initialOffset ->
                             initialOffset
                         } }
                     ) {

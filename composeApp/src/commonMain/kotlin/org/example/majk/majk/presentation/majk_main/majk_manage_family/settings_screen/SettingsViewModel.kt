@@ -48,6 +48,7 @@ class SettingsViewModel(
             }
             is SettingsAction.OnColorChange -> {
                 _state.update { it.copy(userAvatarColor = action.color) }
+                println(action.color)
             }
             is SettingsAction.OnConfirmClick -> {
                 if (_state.value.usernameEntry.isBlank()) {
@@ -86,6 +87,10 @@ class SettingsViewModel(
                     }
                 }
 
+                if (_state.value.userAvatarColor != _state.value.initialUserAvatarColor) {
+                    changeAvatarColor(user, _state.value.userAvatarColor)
+                }
+
             }
             is SettingsAction.OnDeleteClick -> {
                 _state.update { it.copy(isDeleteConfirmVisible = true) }
@@ -115,13 +120,14 @@ class SettingsViewModel(
             }.onSuccess {
                 _state.update {
                     it.copy(
-                        initialUsernameEntry = _userSettings.value.currentUsername ?: "",
-                        usernameEntry = _userSettings.value.currentUsername ?: "",
-                        initialPermissionEntry = _userSettings.value.currentPermission ?: "limited",
+                        initialUsernameEntry = _userSettings.value.currentUsername,
+                        usernameEntry = _userSettings.value.currentUsername,
+                        initialPermissionEntry = _userSettings.value.currentPermission,
+                        initialUserAvatarColor = _userSettings.value.avatarColor,
+                        userAvatarColor = _userSettings.value.avatarColor,
                         isLoading = false
                     )
                 }
-                println(Color.Red.toArgb())
             }.onFailure { error ->
                 _state.update {
                     it.copy(
@@ -170,6 +176,22 @@ class SettingsViewModel(
         }
     }
 
+    private fun changeAvatarColor(accountId: Long, color: Int) {
+        viewModelScope.launch {
+            runCatching {
+                appRepository.changeProfileColor(accountId, color)
+            }.onSuccess {
+                sharedViewModel.onAction(SharedAction.OnRefreshActionData)
+            }.onFailure {
+                _state.update {
+                    it.copy(
+                        errorMessage = "Nie można zaktualizować profilu. Spróbuj ponownie."
+                    )
+                }
+            }
+        }
+    }
+
     private fun UserSettingsDto.asDomainModel(): UserSettings {
         _state.update {
             it.copy(
@@ -183,7 +205,8 @@ class SettingsViewModel(
         }
         return UserSettings(
             currentPermission = this.currentPermission,
-            currentUsername = this.currentUsername
+            currentUsername = this.currentUsername,
+            avatarColor = this.avatarColor
         )
     }
 }
