@@ -1,23 +1,19 @@
-package org.example.majk.majk.presentation.majk_main.majk_admin_auth
+package org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
-import org.example.majk.majk.domain.AdminAuthUsers
 import org.example.majk.majk.presentation.components.MajkAlertDialog
 import org.example.majk.majk.presentation.majk_main.components.EmptyListText
-import org.example.majk.majk.presentation.majk_main.majk_admin_auth.components.AdminAuthUserList
+import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.components.AdminAuthUserList
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

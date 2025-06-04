@@ -44,5 +44,11 @@ fun HomeScreenLayout(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
         )
+
+        ContainerStateBox(
+            containerList = state.containerList,
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+        )
     }
 }

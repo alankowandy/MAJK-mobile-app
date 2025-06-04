@@ -36,8 +36,7 @@ import org.example.majk.majk.presentation.majk_main.majk_home.HomeState
 fun SkippedDoseBox(
     state: HomeState,
     releaseSchedule: List<ReleaseSchedule>,
-    modifier: Modifier = Modifier,
-    scrollState: LazyListState = rememberLazyListState()
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
@@ -69,9 +68,9 @@ fun SkippedDoseBox(
                         .fillMaxWidth()
                         .padding(16.dp)
                         .clip(RoundedCornerShape(12.dp))
-                        .background(LightGray)       // or whatever background you want
+                        .background(LightGray.copy(alpha = 0.5f))       // or whatever background you want
                         .border(1.dp, DarkTeal, RoundedCornerShape(12.dp))
-                        .padding(24.dp),
+                        .padding(16.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(

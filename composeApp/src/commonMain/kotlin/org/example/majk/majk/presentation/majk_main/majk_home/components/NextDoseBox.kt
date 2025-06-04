@@ -40,8 +40,7 @@ import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_de
 fun NextDoseBox(
     state: HomeState,
     releaseSchedule: List<ReleaseSchedule>,
-    modifier: Modifier = Modifier,
-    scrollState: LazyListState = rememberLazyListState()
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier

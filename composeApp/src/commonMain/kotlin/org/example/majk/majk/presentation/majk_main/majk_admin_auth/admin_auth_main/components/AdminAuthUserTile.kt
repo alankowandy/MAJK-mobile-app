@@ -1,4 +1,4 @@
-package org.example.majk.majk.presentation.majk_main.majk_admin_auth.components
+package org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -31,9 +30,8 @@ import androidx.compose.ui.unit.sp
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.LightGray
 import org.example.majk.majk.domain.AdminAuthUsers
-import org.example.majk.majk.presentation.components.MajkButton
-import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthAction
-import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthState
+import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.AdminAuthAction
+import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.AdminAuthState
 
 @Composable
 fun AdminAuthUserTile(

@@ -1,4 +1,4 @@
-package org.example.majk.majk.presentation.majk_main.majk_admin_auth
+package org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,6 +15,7 @@ import org.example.majk.core.presentation.SharedViewModel
 import org.example.majk.majk.data.dto.AdminAuthDto
 import org.example.majk.majk.domain.AdminAuthUsers
 import org.example.majk.majk.domain.repository.AppRepository
+import org.example.majk.platform.NfcCapability
 
 
 class AdminAuthViewModel(
@@ -22,10 +23,12 @@ class AdminAuthViewModel(
     private val sharedViewModel: SharedViewModel
 ): ViewModel() {
 
-    private val _state = MutableStateFlow(AdminAuthState(
-        isHostCardEmulationAvailable = org.example.majk.platform.NfcCapability
+    private val _state = MutableStateFlow(
+        AdminAuthState(
+        isHostCardEmulationAvailable = NfcCapability
             .isHostCardEmulationAvailable
-    ))
+    )
+    )
     val state = _state.asStateFlow()
 
     private val _users = MutableStateFlow<List<AdminAuthUsers>>(emptyList())

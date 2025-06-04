@@ -1,4 +1,4 @@
-package org.example.majk.majk.presentation.majk_main.majk_admin_auth.components
+package org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer

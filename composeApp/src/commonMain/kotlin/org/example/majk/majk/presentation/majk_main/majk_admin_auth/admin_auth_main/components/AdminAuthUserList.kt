@@ -1,4 +1,4 @@
-package org.example.majk.majk.presentation.majk_main.majk_admin_auth.components
+package org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.domain.AdminAuthUsers
-import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthAction
-import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthState
+import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.AdminAuthAction
+import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.AdminAuthState
 
 @Composable
 fun AdminAuthUserList(

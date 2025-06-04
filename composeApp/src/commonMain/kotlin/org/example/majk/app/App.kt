@@ -43,13 +43,13 @@ import org.example.majk.majk.presentation.majk_login.majk_signup.MajkSignUpScree
 import org.example.majk.majk.presentation.majk_login.majk_signup.MajkSignUpViewModel
 import org.example.majk.majk.presentation.majk_login.majk_start.MajkStartScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_add_profile.AddProfileScreenRoot
-import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.AdminAuthScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_screen.ContainerStateScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_history.HistoryScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_home.HomeScreenRoot
 import org.example.majk.core.presentation.components.Drawer
 import org.example.majk.majk.presentation.majk_main.majk_add_profile.AddProfileViewModel
-import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthViewModel
+import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.AdminAuthViewModel
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_screen.ContainerStateViewModel
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen.ContainerSettingsScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen.ContainerSettingsViewModel
@@ -59,7 +59,6 @@ import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_scre
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyViewModel
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsViewModel
-import org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.MyMedkitEditAction
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.MyMedkitEditScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.MyMedkitEditViewModel
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.MyMedicamentScreenRoot

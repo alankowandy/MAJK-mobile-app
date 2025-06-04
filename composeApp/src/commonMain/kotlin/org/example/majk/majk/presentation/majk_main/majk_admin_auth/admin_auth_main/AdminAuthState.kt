@@ -1,4 +1,4 @@
-package org.example.majk.majk.presentation.majk_main.majk_admin_auth
+package org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main
 
 import org.example.majk.majk.domain.AdminAuthUsers
 

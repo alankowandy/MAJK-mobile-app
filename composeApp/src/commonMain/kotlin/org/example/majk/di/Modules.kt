@@ -9,7 +9,7 @@ import org.example.majk.majk.presentation.majk_login.majk_register_device.MajkRe
 import org.example.majk.majk.presentation.majk_login.majk_signin.MajkSignInViewModel
 import org.example.majk.majk.presentation.majk_login.majk_signup.MajkSignUpViewModel
 import org.example.majk.majk.presentation.majk_main.majk_add_profile.AddProfileViewModel
-import org.example.majk.majk.presentation.majk_main.majk_admin_auth.AdminAuthViewModel
+import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.AdminAuthViewModel
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_screen.ContainerStateViewModel
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen.ContainerSettingsViewModel
 import org.example.majk.majk.presentation.majk_main.majk_history.HistoryViewModel
