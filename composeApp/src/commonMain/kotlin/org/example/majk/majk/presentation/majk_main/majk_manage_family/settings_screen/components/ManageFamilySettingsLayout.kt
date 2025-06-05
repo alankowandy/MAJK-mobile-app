@@ -42,8 +42,8 @@ import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.core.presentation.WarningRed
 import org.example.majk.majk.domain.UserSettings
-import org.example.majk.majk.presentation.components.MajkButton
-import org.example.majk.majk.presentation.components.MajkTextField
+import org.example.majk.core.presentation.components.MajkButton
+import org.example.majk.core.presentation.components.MajkTextField
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsAction
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsState
 import org.jetbrains.compose.resources.stringResource

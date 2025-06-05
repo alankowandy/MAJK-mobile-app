@@ -18,16 +18,13 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -39,7 +36,7 @@ import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.LightGray
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.domain.MedicamentSearch
-import org.example.majk.majk.presentation.components.MajkButton
+import org.example.majk.core.presentation.components.MajkButton
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.MyMedkitEditAction
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.MyMedkitEditState
 import org.jetbrains.compose.resources.stringResource

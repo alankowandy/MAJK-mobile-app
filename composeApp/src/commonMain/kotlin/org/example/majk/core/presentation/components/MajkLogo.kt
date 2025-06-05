@@ -1,4 +1,4 @@
-package org.example.majk.majk.presentation.components
+package org.example.majk.core.presentation.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize

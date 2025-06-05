@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
-import org.example.majk.majk.presentation.components.MajkAlertDialog
+import org.example.majk.core.presentation.components.MajkAlertDialog
 import org.example.majk.majk.presentation.majk_main.components.EmptyListText
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.components.AdminAuthUserList
 import org.koin.compose.viewmodel.koinViewModel

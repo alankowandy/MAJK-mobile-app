@@ -27,7 +27,6 @@ import majk.composeapp.generated.resources.Res
 import majk.composeapp.generated.resources.after_meal
 import majk.composeapp.generated.resources.before_meal
 import majk.composeapp.generated.resources.during_meal
-import org.example.majk.core.domain.DataError
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.GoGreen
 import org.example.majk.core.presentation.LightGray

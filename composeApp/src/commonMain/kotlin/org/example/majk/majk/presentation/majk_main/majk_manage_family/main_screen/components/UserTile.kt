@@ -2,9 +2,7 @@ package org.example.majk.majk.presentation.majk_main.majk_manage_family.main_scr
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,8 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.LightGray
-import org.example.majk.core.presentation.OffWhite
-import org.example.majk.majk.presentation.components.MajkButton
 
 @Composable
 fun UserTile(

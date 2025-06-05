@@ -1,4 +1,4 @@
-package org.example.majk.majk.presentation.components
+package org.example.majk.core.presentation.components
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button

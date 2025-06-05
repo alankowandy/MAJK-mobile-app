@@ -16,7 +16,7 @@ import majk.composeapp.generated.resources.delete_confirm_title
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.domain.UserSettings
-import org.example.majk.majk.presentation.components.MajkAlertDialog
+import org.example.majk.core.presentation.components.MajkAlertDialog
 import org.example.majk.majk.presentation.majk_main.components.ConfirmDialog
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.components.ManageFamilySettingsLayout
 import org.jetbrains.compose.resources.stringResource

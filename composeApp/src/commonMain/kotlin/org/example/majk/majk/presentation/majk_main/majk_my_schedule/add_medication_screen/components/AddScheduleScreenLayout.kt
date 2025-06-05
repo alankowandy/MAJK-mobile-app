@@ -4,15 +4,8 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -34,7 +27,7 @@ import majk.composeapp.generated.resources.save
 import majk.composeapp.generated.resources.start_date
 import majk.composeapp.generated.resources.take_time
 import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.majk.presentation.components.MajkButton
+import org.example.majk.core.presentation.components.MajkButton
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.add_medication_screen.AddScheduleAction
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.add_medication_screen.AddScheduleState
 import org.jetbrains.compose.resources.stringResource

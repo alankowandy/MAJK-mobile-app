@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
@@ -30,22 +29,16 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -59,13 +52,10 @@ import org.example.majk.core.presentation.LightGray
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.core.presentation.WarningRed
 import org.example.majk.core.presentation.WatchYellow
-import org.example.majk.majk.domain.ContainerSettings
 import org.example.majk.majk.domain.ContainerSettingsSearchQuery
-import org.example.majk.majk.presentation.components.MajkButton
-import org.example.majk.majk.presentation.components.MajkTextField
+import org.example.majk.core.presentation.components.MajkButton
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen.ContainerSettingsAction
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen.ContainerSettingsState
-import org.example.majk.majk.presentation.majk_main.majk_manage_family.settings_screen.SettingsAction
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)

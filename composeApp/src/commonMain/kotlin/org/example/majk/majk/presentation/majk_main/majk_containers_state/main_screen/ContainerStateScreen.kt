@@ -2,9 +2,7 @@ package org.example.majk.majk.presentation.majk_main.majk_containers_state.main_
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,7 +10,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -20,13 +17,9 @@ import majk.composeapp.generated.resources.Res
 import majk.composeapp.generated.resources.error_unknown
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
-import org.example.majk.majk.domain.ContainerState
-import org.example.majk.majk.presentation.components.MajkAlertDialog
+import org.example.majk.core.presentation.components.MajkAlertDialog
 import org.example.majk.majk.presentation.majk_main.components.EmptyListText
-import org.example.majk.majk.presentation.majk_main.majk_add_profile.AddProfileAction
-import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_screen.components.ContainerCard
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_screen.components.ContainerList
-import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.ManageFamilyAction
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

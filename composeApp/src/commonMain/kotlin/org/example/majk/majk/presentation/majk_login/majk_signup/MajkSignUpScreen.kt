@@ -35,10 +35,10 @@ import majk.composeapp.generated.resources.sign_up
 import majk.composeapp.generated.resources.user
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
-import org.example.majk.majk.presentation.components.MajkAlertDialog
-import org.example.majk.majk.presentation.components.MajkButton
-import org.example.majk.majk.presentation.components.MajkLogo
-import org.example.majk.majk.presentation.components.MajkTextField
+import org.example.majk.core.presentation.components.MajkAlertDialog
+import org.example.majk.core.presentation.components.MajkButton
+import org.example.majk.core.presentation.components.MajkLogo
+import org.example.majk.core.presentation.components.MajkTextField
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
