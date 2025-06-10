@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.components.MajkButton
 import org.example.majk.majk.domain.MyMedicamentList
 import org.example.majk.majk.presentation.majk_main.components.ActionIcon
 import org.example.majk.majk.presentation.majk_main.components.SwipeableIconWithActions
@@ -131,6 +132,17 @@ fun MedicamentList(
                     }
                 }
             }
+        }
+
+        item {
+            MajkButton(
+                text = "Dodaj lek",
+                onAction = { onAction(MyMedicamentAction.OnAddMedicamentClick) },
+                boldText = true,
+                modifier = Modifier
+                    .padding(horizontal = 70.dp, vertical = 20.dp)
+                    .fillMaxWidth()
+            )
         }
     }
 }

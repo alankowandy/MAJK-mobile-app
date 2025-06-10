@@ -7,6 +7,7 @@ data class ContainerSettingsState(
     val errorMessage: String? = null,
     val successMessage: String? = null,
     val initialSearchEntry: String = "",
+    val initialSelectedMedicineId: Long? = null,
     val selectedMedicamentId: Long = 0,
     val searchError: String? = null,
     val isSearchExpanded: Boolean = false,

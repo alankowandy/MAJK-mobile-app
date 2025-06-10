@@ -81,7 +81,13 @@ sealed interface Route {
     data object MajkAddProfile: Route
 
     @Serializable
+    data object MajkAdminAuthGraph: Route
+
+    @Serializable
     data object MajkAdminAuth: Route
+
+    @Serializable
+    data class MajkAdminAuthSettings(val accountId: Long): Route
 }
 
 fun graphFromString(route: String): Route {
@@ -92,6 +98,7 @@ fun graphFromString(route: String): Route {
         Route.MajkScheduleGraph::class.qualifiedName -> Route.MajkScheduleGraph
         Route.MyMedkitGraph::class.qualifiedName -> Route.MyMedkitGraph
         Route.MajkContainerGraph::class.qualifiedName -> Route.MajkContainerGraph
+        Route.MajkAdminAuthGraph::class.qualifiedName -> Route.MajkAdminAuthGraph
         else -> Route.LogInGraph
     }
 }
@@ -117,6 +124,7 @@ fun routeFromString(route: String): RouteTitle {
         Route.MajkManageFamilySettings::class.qualifiedName.plus("/{userId}") -> RouteTitle.MajkManageFamilySettings
         Route.MajkAddProfile::class.qualifiedName -> RouteTitle.MajkAddProfile
         Route.MajkAdminAuth::class.qualifiedName -> RouteTitle.MajkAdminAuth
+        Route.MajkAdminAuthSettings::class.qualifiedName.plus("{accountId}")  -> RouteTitle.MajkAdminAuthSettings
         else -> RouteTitle.MajkStart
     }
 }

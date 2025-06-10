@@ -2,6 +2,7 @@ package org.example.majk.majk.presentation.majk_main.majk_home.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,12 +28,13 @@ import org.example.majk.majk.domain.ContainerState
 
 @Composable
 fun ContainerItem(
-    container: ContainerState
+    container: ContainerState,
+    onClick: (Long) -> Unit
 ) {
     val (statusColor, labelText) = when (container.containerState) {
         "pusty" -> WarningRed to "pusty"
         "mało" -> WatchYellow to "mało"
-        else -> GoGreen to "pełny"
+        else -> GoGreen to "dużo"
     }
 
     Column(
@@ -40,6 +42,7 @@ fun ContainerItem(
             .border(1.dp, DarkTeal, RoundedCornerShape(12.dp))
             .background(OffWhite, RoundedCornerShape(12.dp))
             .padding(8.dp)
+            .clickable { onClick(container.containerId) }
     ) {
         Text(
             modifier = Modifier,

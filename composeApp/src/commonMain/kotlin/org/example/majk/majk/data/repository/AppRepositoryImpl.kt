@@ -10,6 +10,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import org.example.majk.majk.data.dto.AdminAuthDto
+import org.example.majk.majk.data.dto.AdminAuthSettingsDto
 import org.example.majk.majk.data.dto.ContainerSettingsDto
 import org.example.majk.majk.data.dto.ContainerSettingsSearchQueryDto
 import org.example.majk.majk.data.dto.ContainerStateDto
@@ -384,6 +385,18 @@ class AppRepositoryImpl(
                     put("acc_id", accountId)
                 }
             )
+        }
+    }
+
+    override suspend fun fetchAuthUserSettings(accountId: Long): List<AdminAuthSettingsDto> {
+        return withContext(Dispatchers.IO) {
+            val data = postgrest.rpc(
+                function = "get_authentication_by_profile_id",
+                parameters = buildJsonObject {
+                    put("profile_id_input", accountId)
+                }
+            ).decodeList<AdminAuthSettingsDto>()
+            data
         }
     }
 }

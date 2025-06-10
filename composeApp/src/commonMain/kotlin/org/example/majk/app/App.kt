@@ -50,6 +50,8 @@ import org.example.majk.majk.presentation.majk_main.majk_home.HomeScreenRoot
 import org.example.majk.core.presentation.components.Drawer
 import org.example.majk.majk.presentation.majk_main.majk_add_profile.AddProfileViewModel
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.AdminAuthViewModel
+import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_settings.AdminAuthSettingsScreenRoot
+import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_settings.AdminAuthSettingsViewModel
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_screen.ContainerStateViewModel
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen.ContainerSettingsScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen.ContainerSettingsViewModel
@@ -176,6 +178,13 @@ fun App() {
                                                 navController.navigateUp()
                                             }
                                         }
+                                        is Route.MajkAdminAuthGraph -> {
+                                            if (currentRoute == "org.example.majk.app.Route.MajkAdminAuth") {
+                                                scope.launch { scaffoldState.drawerState.open() }
+                                            } else {
+                                                navController.navigateUp()
+                                            }
+                                        }
                                         else -> {
                                             navController.navigateUp()
                                         }
@@ -208,6 +217,13 @@ fun App() {
                                         }
                                         is Route.MajkContainerGraph -> {
                                             if (currentRoute == "org.example.majk.app.Route.MajkContainersState") {
+                                                Icons.Default.Menu
+                                            } else {
+                                                Icons.Default.ArrowBackIosNew
+                                            }
+                                        }
+                                        is Route.MajkAdminAuthGraph -> {
+                                            if (currentRoute == "org.example.majk.app.Route.MajkAdminAuth") {
                                                 Icons.Default.Menu
                                             } else {
                                                 Icons.Default.ArrowBackIosNew
@@ -377,7 +393,12 @@ fun App() {
                         val viewModel = koinViewModel<HomeViewModel>()
 
                         HomeScreenRoot(
-                            viewModel = viewModel
+                            viewModel = viewModel,
+                            onContainerClick = { containerId ->
+                                navController.navigate(
+                                    Route.MajkContainerSettings(containerId)
+                                )
+                            }
                         )
                     }
 
@@ -673,20 +694,44 @@ fun App() {
                         )
                     }
 
-                    composable<Route.MajkAdminAuth>(
-                        enterTransition = { slideInHorizontally { initialOffset ->
-                            initialOffset
-                        } },
-                        exitTransition = { slideOutHorizontally { initialOffset ->
-                            initialOffset
-                        } }
+                    navigation<Route.MajkAdminAuthGraph>(
+                        startDestination = Route.MajkAdminAuth
                     ) {
-                        val viewModel = koinViewModel<AdminAuthViewModel>()
+                        composable<Route.MajkAdminAuth>(
+                            exitTransition = { slideOutHorizontally() },
+                            popEnterTransition = { slideInHorizontally() },
+                            enterTransition = { slideInHorizontally { initialOffset ->
+                                initialOffset
+                            } }
+                        ) {
+                            val viewModel = koinViewModel<AdminAuthViewModel>()
 
-                        AdminAuthScreenRoot(
-                            viewModel = viewModel
-                        )
+                            AdminAuthScreenRoot(
+                                viewModel = viewModel,
+                                onEditClick = { accountId ->
+                                    navController.navigate(
+                                        Route.MajkAdminAuthSettings(accountId)
+                                    )
+                                }
+                            )
+                        }
+
+                        composable<Route.MajkAdminAuthSettings>(
+                            enterTransition = { slideInHorizontally { initialOffset ->
+                                initialOffset
+                            } },
+                            exitTransition = { slideOutHorizontally { initialOffset ->
+                                initialOffset
+                            } }
+                        ) {
+                            val viewModel = koinViewModel<AdminAuthSettingsViewModel>()
+
+                            AdminAuthSettingsScreenRoot(
+                                viewModel = viewModel
+                            )
+                        }
                     }
+
                 }
             }
 

@@ -19,10 +19,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.majk.domain.ContainerState
+import org.example.majk.majk.presentation.majk_main.majk_home.HomeAction
 
 @Composable
 fun ContainerStateBox(
     containerList: List<ContainerState>,
+    onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -51,13 +53,17 @@ fun ContainerStateBox(
 
             chunkedRows.forEach { row ->
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp)
+                        .padding(vertical = 4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     row.forEach { container ->
-                        ContainerItem(container = container)
+                        ContainerItem(
+                            container = container,
+                            onClick = { onAction(HomeAction.OnContainerClick(it)) }
+                        )
                     }
                     repeat(4 - row.size) {
                         Box(modifier = Modifier.weight(1f))

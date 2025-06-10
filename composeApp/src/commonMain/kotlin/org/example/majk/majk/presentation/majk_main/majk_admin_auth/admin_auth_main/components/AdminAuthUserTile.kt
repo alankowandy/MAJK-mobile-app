@@ -15,10 +15,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.LightGray
+import org.example.majk.core.presentation.OffWhite
 import org.example.majk.majk.domain.AdminAuthUsers
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.AdminAuthAction
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.AdminAuthState
@@ -55,29 +58,14 @@ fun AdminAuthUserTile(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp),
+                .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = user.username,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                textAlign = TextAlign.Center,
-                color = DarkTeal
-            )
-        }
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
         ) {
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(70.dp)
+                    .size(60.dp)
                     .background(
                         color = DarkTeal,
                         shape = RoundedCornerShape(100)
@@ -87,41 +75,112 @@ fun AdminAuthUserTile(
                     imageVector = Icons.Outlined.Person,
                     contentDescription = "user",
                     modifier = Modifier
-                        .size(60.dp),
+                        .size(50.dp),
                     tint = Color(userColor)
                 )
             }
 
-            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = user.username,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center,
+                color = DarkTeal,
+                modifier = Modifier
+                    .weight(1f)
+            )
 
-            Column(
+            TextButton(
+                onClick = { onAction(AdminAuthAction.OnEditClick(user.id)) },
                 modifier = Modifier,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                AuthCheckbox(
-                    isChecked = user.isNfcChecked,
-                    label = "NFC",
-                    modifier = Modifier
-                        .padding(vertical = 5.dp)
-                        .clickable {
-                            onAction(AdminAuthAction.OnNfcClick(
-                                accountId = user.id,
-                                username = user.username
-                            ))
-                        }
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.textButtonColors(
+                    containerColor = DarkTeal
                 )
-
-                AuthCheckbox(
-                    isChecked = user.isRfidChecked,
-                    label = "RFID",
+            ) {
+                Text(
+                    text = "Edytuj",
+                    color = OffWhite,
+                    fontWeight = FontWeight.Bold,
                     modifier = Modifier
-                        .padding(vertical = 5.dp)
-                        .clickable {
-                            onAction(AdminAuthAction.OnRfidClick(user.id))
-                        }
+                        .padding(horizontal = 16.dp)
                 )
             }
-
         }
+
+//        Row(
+//            verticalAlignment = Alignment.CenterVertically,
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(16.dp)
+//        ) {
+//            Box(
+//                contentAlignment = Alignment.Center,
+//                modifier = Modifier
+//                    .size(70.dp)
+//                    .background(
+//                        color = DarkTeal,
+//                        shape = RoundedCornerShape(100)
+//                    )
+//            ) {
+//                Icon(
+//                    imageVector = Icons.Outlined.Person,
+//                    contentDescription = "user",
+//                    modifier = Modifier
+//                        .size(60.dp),
+//                    tint = Color(userColor)
+//                )
+//            }
+//
+//            Spacer(modifier = Modifier.width(16.dp))
+//
+//            Column(
+//                modifier = Modifier,
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+//                AuthCheckbox(
+//                    isChecked = user.isNfcChecked,
+//                    label = "NFC",
+//                    modifier = Modifier
+//                        .padding(vertical = 5.dp)
+//                        .clickable {
+//                            onAction(AdminAuthAction.OnNfcClick(
+//                                accountId = user.id,
+//                                username = user.username
+//                            ))
+//                        }
+//                )
+//
+//                AuthCheckbox(
+//                    isChecked = user.isRfidChecked,
+//                    label = "RFID",
+//                    modifier = Modifier
+//                        .padding(vertical = 5.dp)
+//                        .clickable {
+//                            onAction(AdminAuthAction.OnRfidClick(user.id))
+//                        }
+//                )
+//            }
+//
+//            Spacer(modifier = Modifier.weight(1f))
+//
+//            TextButton(
+//                onClick = { onAction(AdminAuthAction.OnEditClick(user.id)) },
+//                modifier = Modifier
+//                    .padding(horizontal = 16.dp),
+//                shape = RoundedCornerShape(16.dp),
+//                colors = ButtonDefaults.textButtonColors(
+//                    containerColor = DarkTeal
+//                )
+//            ) {
+//                Text(
+//                    text = "Edytuj",
+//                    color = OffWhite,
+//                    fontWeight = FontWeight.Bold,
+//                    modifier = Modifier
+//                        .padding(horizontal = 24.dp)
+//                )
+//            }
+//        }
     }
 }

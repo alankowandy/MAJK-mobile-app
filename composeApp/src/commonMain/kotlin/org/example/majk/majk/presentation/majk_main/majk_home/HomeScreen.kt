@@ -17,14 +17,22 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun HomeScreenRoot(
-    viewModel: HomeViewModel = koinViewModel()
+    viewModel: HomeViewModel = koinViewModel(),
+    onContainerClick: (Long) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     HomeScreen(
         state = state,
         onAction = { action ->
-            viewModel.onAction(action)
+            when (action) {
+                is HomeAction.OnContainerClick -> {
+                    onContainerClick(action.containerId)
+                }
+                else -> {
+                    viewModel.onAction(action)
+                }
+            }
         }
     )
 }

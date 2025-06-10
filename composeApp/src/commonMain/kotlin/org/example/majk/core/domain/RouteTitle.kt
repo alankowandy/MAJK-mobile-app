@@ -75,4 +75,8 @@ sealed class RouteTitle(
     data object MajkAdminAuth: RouteTitle(
         title = "Autoryzacja"
     )
+
+    data object MajkAdminAuthSettings: RouteTitle(
+        title = "Ustawienia autoryzacji"
+    )
 }

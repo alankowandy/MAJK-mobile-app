@@ -42,9 +42,13 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
@@ -89,8 +93,7 @@ fun MedicineList(
             }
     ) {
         itemsIndexed(
-            items = medicineList,
-            key = { _, medicament -> medicament.medicamentId }
+            items = medicineList
         ) { _, medicament ->
             Column {
                 SwipeableIconWithActions(

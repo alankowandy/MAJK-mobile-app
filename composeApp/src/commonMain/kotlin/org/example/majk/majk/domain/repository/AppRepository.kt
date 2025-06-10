@@ -2,6 +2,7 @@ package org.example.majk.majk.domain.repository
 
 import kotlinx.datetime.LocalDate
 import org.example.majk.majk.data.dto.AdminAuthDto
+import org.example.majk.majk.data.dto.AdminAuthSettingsDto
 import org.example.majk.majk.data.dto.ContainerSettingsDto
 import org.example.majk.majk.data.dto.ContainerSettingsSearchQueryDto
 import org.example.majk.majk.data.dto.ContainerStateDto
@@ -46,4 +47,5 @@ interface AppRepository {
     suspend fun fetchReleaseHistory(accountId: Long): List<ReleaseHistoryDto>
     suspend fun emptyContainer(containerId: Long)
     suspend fun changeProfileColor(accountId: Long, color: Int)
+    suspend fun fetchAuthUserSettings(accountId: Long): List<AdminAuthSettingsDto>
 }

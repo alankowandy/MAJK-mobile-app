@@ -14,18 +14,27 @@ import org.example.majk.core.presentation.OffWhite
 import org.example.majk.core.presentation.components.MajkAlertDialog
 import org.example.majk.majk.presentation.majk_main.components.EmptyListText
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.components.AdminAuthUserList
+import org.example.majk.majk.presentation.majk_main.majk_home.HomeAction
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AdminAuthScreenRoot(
-    viewModel: AdminAuthViewModel = koinViewModel()
+    viewModel: AdminAuthViewModel = koinViewModel(),
+    onEditClick: (Long) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     AdminAuthScreen(
         state = state,
         onAction = { action ->
-            viewModel.onAction(action)
+            when (action) {
+                is AdminAuthAction.OnEditClick -> {
+                    onEditClick(action.accountId)
+                }
+                else -> {
+                    viewModel.onAction(action)
+                }
+            }
         }
     )
 }

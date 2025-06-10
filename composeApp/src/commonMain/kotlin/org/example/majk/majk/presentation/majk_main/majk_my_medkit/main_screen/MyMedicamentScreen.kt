@@ -112,17 +112,6 @@ fun MyMedicamentScreen(
                     medicamentList = state.myMedicamentList,
                     onAction = onAction
                 )
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                MajkButton(
-                    text = "Dodaj lek",
-                    onAction = { onAction(MyMedicamentAction.OnAddMedicamentClick) },
-                    boldText = true,
-                    modifier = Modifier
-                        .padding(horizontal = 70.dp, vertical = 20.dp)
-                        .fillMaxWidth()
-                )
             }
         }
     }

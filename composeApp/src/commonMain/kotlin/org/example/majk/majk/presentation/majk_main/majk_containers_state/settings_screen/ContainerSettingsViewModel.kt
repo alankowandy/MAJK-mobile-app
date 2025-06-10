@@ -53,6 +53,9 @@ class ContainerSettingsViewModel(
     fun onAction(action: ContainerSettingsAction) {
         when (action) {
             is ContainerSettingsAction.OnSearchQueryChange -> {
+                if (action.medicamentId == -1L) {
+                    emptyContainer(container)
+                }
                 _searchQuery.value = action.medicamentSearch
                 _state.update {
                     it.copy(selectedMedicamentId = action.medicamentId)
@@ -185,6 +188,7 @@ class ContainerSettingsViewModel(
                 _state.update { it.copy(
                     containerSettings = _containerSettings.value,
                     isLoading = false,
+                    initialSelectedMedicineId = _containerSettings.value.containerId,
                     initialSearchEntry = _containerSettings.value.medicamentName,
                     initialPillQuantity = _containerSettings.value.pillQuantity,
                     pillQuantity = _containerSettings.value.pillQuantity.toString()
