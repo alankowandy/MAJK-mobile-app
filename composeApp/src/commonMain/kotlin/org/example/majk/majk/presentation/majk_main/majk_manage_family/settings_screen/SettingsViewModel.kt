@@ -61,11 +61,19 @@ class SettingsViewModel(
                 } else {
                     val username = _state.value.usernameEntry
                     val initialPermission = _state.value.initialPermissionEntry
+                    val initialUsername = _state.value.initialUsernameEntry
                     val permission = when (_state.value.permissionEntry) {
                         "Administrator" -> "admin"
                         "Użytkownik" -> "user"
                         "Ograniczony" -> "limited"
                         else -> "limited"
+                    }
+
+                    if (initialUsername != username) {
+                        updateUsername(
+                            userId = user,
+                            username = username
+                        )
                     }
 
                     if (initialPermission != permission) {
@@ -74,9 +82,8 @@ class SettingsViewModel(
                                 _state.update { it.copy(errorMessage = "Nie można zmienić dostępów pierwotnego administratora.") }
                             }
                             "user" -> {
-                                updateUserSettings(
+                                updatePermission(
                                     userId = user,
-                                    username = username,
                                     permission = permission
                                 )
                             }
@@ -139,20 +146,35 @@ class SettingsViewModel(
         }
     }
 
-    private fun updateUserSettings(
+    private fun updatePermission(
         userId: Long,
-        username: String,
         permission: String
     ) {
         viewModelScope.launch {
             runCatching {
-                appRepository.updateUserSettings(userId, username, permission)
+                appRepository.updatePermission(userId, permission)
             }.onSuccess {
                 sharedViewModel.onAction(SharedAction.OnRefreshActionData)
             }.onFailure { error ->
                 _state.update {
                     it.copy(
                         errorMessage = "Błąd przy zmianie danych. Spróbuj ponownie."
+                    )
+                }
+                println(error)
+            }
+        }
+    }
+
+    private fun updateUsername(userId: Long, username: String) {
+        viewModelScope.launch {
+            runCatching {
+                appRepository.updateUsername(userId, username)
+            }.onSuccess {
+                sharedViewModel.onAction(SharedAction.OnRefreshActionData)
+            }.onFailure { error ->
+                _state.update { it.copy(
+                        errorMessage = "Błąd. Spróbuj ponownie."
                     )
                 }
                 println(error)

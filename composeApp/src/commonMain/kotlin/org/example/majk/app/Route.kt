@@ -11,9 +11,6 @@ sealed interface Route {
     data object LogInGraph: Route
 
     @Serializable
-    data object MajkGraph: Route
-
-    @Serializable
     data object MajkStart: Route
 
     @Serializable
@@ -26,6 +23,9 @@ sealed interface Route {
     data object MajkRegisterDevice: Route
 
     /** Main app **/
+    @Serializable
+    data object MajkGraph: Route
+
     @Serializable
     data object MajkHome: Route
 

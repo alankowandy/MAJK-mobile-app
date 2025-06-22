@@ -30,18 +30,10 @@ fun ScheduleScreenRoot(
         state = state,
         onAction = { action ->
             when (action) {
-                is ScheduleAction.OnSelectDate -> {
-                    onDateClick(action.date.toString())
-                }
-                is ScheduleAction.OnMedicineListClick -> {
-                    onMedicineListClick(action.accountId)
-                }
-                is ScheduleAction.OnAddScheduleClick -> {
-                    onAddScheduleClick(action.accountId)
-                }
-                else -> {
-                    viewModel.onAction(action)
-                }
+                is ScheduleAction.OnSelectDate -> { onDateClick(action.date.toString()) }
+                is ScheduleAction.OnMedicineListClick -> { onMedicineListClick(action.accountId) }
+                is ScheduleAction.OnAddScheduleClick -> { onAddScheduleClick(action.accountId) }
+                else -> { viewModel.onAction(action) }
             }
         }
     )

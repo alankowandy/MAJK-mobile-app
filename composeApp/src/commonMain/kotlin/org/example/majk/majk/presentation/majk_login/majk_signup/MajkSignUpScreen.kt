@@ -140,7 +140,8 @@ private fun MajkSignUpScreen(
             keyboardType = KeyboardType.Text,
             focusRequester = usernameFocusRequester,
             onNextFocus = { emailFocusRequester.requestFocus() },
-            isError = state.usernameError
+            isError = state.usernameError,
+            modifier = Modifier.padding(vertical = 8.dp)
         )
 
         MajkTextField(
@@ -151,7 +152,8 @@ private fun MajkSignUpScreen(
             keyboardType = KeyboardType.Email,
             focusRequester = emailFocusRequester,
             onNextFocus = { passwordFocusRequester.requestFocus() },
-            isError = state.emailError
+            isError = state.emailError,
+            modifier = Modifier.padding(bottom = 8.dp)
         )
 
         MajkTextField(
@@ -162,7 +164,8 @@ private fun MajkSignUpScreen(
             keyboardType = KeyboardType.Password,
             focusRequester = passwordFocusRequester,
             onNextFocus = { familyCodeFocusRequester.requestFocus() },
-            isError = state.passwordError
+            isError = state.passwordError,
+            modifier = Modifier.padding(bottom = 8.dp)
         )
 
         MajkTextField(
@@ -177,7 +180,8 @@ private fun MajkSignUpScreen(
                 focusManager.clearFocus()
                 keyboardController?.hide()
             },
-            isError = state.familyCodeError
+            isError = state.familyCodeError,
+            modifier = Modifier.padding(bottom = 8.dp)
         )
 
         Spacer(modifier = Modifier.weight(1f))

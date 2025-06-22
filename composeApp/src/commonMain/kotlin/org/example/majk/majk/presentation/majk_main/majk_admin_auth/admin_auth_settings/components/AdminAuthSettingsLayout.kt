@@ -3,12 +3,17 @@ package org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -24,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.components.MajkButton
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_settings.AdminAuthSettingsAction
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_settings.AdminAuthSettingsState
 
@@ -50,7 +56,7 @@ fun AdminAuthSettingsLayout(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Ustawienia użytkownika\n${headerText}",
+            text = "Ustawienia użytkownika\nUżytkownik 1",
             color = OffWhite,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
@@ -72,7 +78,74 @@ fun AdminAuthSettingsLayout(
                 containerColor = OffWhite
             )
         ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                // NFC Checkbox
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(
+                        checked = false,
+                        onCheckedChange = {  },
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = DarkTeal,
+                            uncheckedColor = DarkTeal,
+                            checkmarkColor = OffWhite
+                        )
+                    )
+                    Text(
+                        text = "NFC aktywne",
+                        fontSize = 16.sp,
+                        color = DarkTeal
+                    )
+                }
 
+                // RFID Checkbox
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(
+                        checked = true,
+                        onCheckedChange = {  },
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = DarkTeal,
+                            uncheckedColor = DarkTeal,
+                            checkmarkColor = OffWhite
+                        )
+                    )
+                    Text(
+                        text = "RFID aktywne",
+                        fontSize = 16.sp,
+                        color = DarkTeal
+                    )
+                }
+
+                // RFID Code Input (only editable if checkbox is active)
+                OutlinedTextField(
+                    value = "3543015722",
+                    onValueChange = {  },
+                    label = { Text("Kod RFID") },
+                    enabled = state.isRfidChecked,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
+                )
+            }
         }
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        MajkButton(
+            text = "Zapisz",
+            onAction = {  },
+            boldText = true,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 70.dp)
+        )
+
+        MajkButton(
+            text = "Wstecz",
+            onAction = {  },
+            boldText = true,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 70.dp)
+        )
     }
 }

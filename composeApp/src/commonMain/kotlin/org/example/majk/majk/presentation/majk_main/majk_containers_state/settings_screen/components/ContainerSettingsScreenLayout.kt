@@ -148,6 +148,7 @@ fun ContainerSettingsScreenLayout(
                                     if (searchQuery.isNotBlank()) {
                                         IconButton(
                                             onClick = {
+                                                onAction(ContainerSettingsAction.OnEmptySearchQueryClick)
                                                 onAction(ContainerSettingsAction.OnSearchQueryChange(
                                                     medicamentSearch = "",
                                                     medicamentId = -1
@@ -309,7 +310,6 @@ fun ContainerSettingsScreenLayout(
             text = stringResource(Res.string.save),
             onAction = {
                 onAction(ContainerSettingsAction.OnConfirmClick)
-                onAction(ContainerSettingsAction.OnBackClick)
             },
             boldText = true,
             modifier = Modifier

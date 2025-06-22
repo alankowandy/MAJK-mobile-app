@@ -153,7 +153,8 @@ private fun MajkRegisterDeviceScreen(
             keyboardType = KeyboardType.Text,
             focusRequester = usernameFocusRequester,
             onNextFocus = { emailFocusRequester.requestFocus() },
-            isError = state.usernameError
+            isError = state.usernameError,
+            modifier = Modifier.padding(vertical = 8.dp)
         )
 
         MajkTextField(
@@ -164,7 +165,8 @@ private fun MajkRegisterDeviceScreen(
             keyboardType = KeyboardType.Email,
             focusRequester = emailFocusRequester,
             onNextFocus = { passwordFocusRequester.requestFocus() },
-            isError = state.emailError
+            isError = state.emailError,
+            modifier = Modifier.padding(bottom = 8.dp)
         )
 
         MajkTextField(
@@ -175,7 +177,8 @@ private fun MajkRegisterDeviceScreen(
             keyboardType = KeyboardType.Password,
             focusRequester = passwordFocusRequester,
             onNextFocus = { deviceCodeFocusRequester.requestFocus() },
-            isError = state.passwordError
+            isError = state.passwordError,
+            modifier = Modifier.padding(bottom = 8.dp)
         )
 
         MajkTextField(
@@ -190,7 +193,8 @@ private fun MajkRegisterDeviceScreen(
                 focusManager.clearFocus()
                 keyboardController?.hide()
             },
-            isError = state.deviceCodeError
+            isError = state.deviceCodeError,
+            modifier = Modifier.padding(bottom = 8.dp)
         )
 
         Spacer(modifier = Modifier.weight(1f))

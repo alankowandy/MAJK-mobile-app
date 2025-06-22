@@ -21,7 +21,8 @@ interface AppRepository {
     suspend fun collectUsers(familyId: Long): List<ManageFamilyDto>
     suspend fun collectUsersAdminAuth(familyId: Long): List<AdminAuthDto>
     suspend fun fetchUserSettings(userId: Long): UserSettingsDto
-    suspend fun updateUserSettings(id: Long, username: String, permission: String)
+    suspend fun updatePermission(id: Long, permission: String)
+    suspend fun updateUsername(userId: Long, username: String)
     suspend fun deleteUserProfile(userId: Long, username: String)
     suspend fun insertLimitedProfile(username: String, uuid: String, familyId: Long, email: String)
     suspend fun fetchMedicamentList(familyId: Long): List<MyMedicamentListDto>

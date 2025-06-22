@@ -12,7 +12,7 @@ data class ContainerSettingsDto(
     val containerState: String,
 
     @SerialName("medicament_name")
-    val medicamentName: String,
+    val medicamentName: String?,
 
     @SerialName("number")
     val containerNumber: Long,

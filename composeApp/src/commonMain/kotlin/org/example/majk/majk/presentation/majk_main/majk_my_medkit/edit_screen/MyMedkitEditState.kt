@@ -4,7 +4,7 @@ import kotlinx.datetime.LocalDate
 
 data class MyMedkitEditState(
     val currentAccountId: Long = 0,
-    val isSearching: Boolean = false,
+    val isSearching: Boolean = true,
     val isSearchExpanded: Boolean = false,
     val initialSearchEntry: String = "",
     val selectedMedicamentId: Long = 0,
@@ -17,6 +17,5 @@ data class MyMedkitEditState(
     val duringMeal: Boolean = false,
     val afterMeal: Boolean = false,
     val note: String = "",
-    val leafletLink: String? = null,
     val errorMessage: String? = null
 )

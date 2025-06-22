@@ -42,12 +42,6 @@ class MyMedkitEditViewModel(
         when (action) {
             is MyMedkitEditAction.OnSearchQueryChange -> {
                 _searchQuery.value = action.medicamentSearch
-                _state.update {
-                    it.copy(
-                        selectedMedicamentId = action.medicamentId,
-                        leafletLink = action.medicamentLeaflet
-                    )
-                }
             }
             is MyMedkitEditAction.OnSearchExpandedChange -> {
                 _state.update {
@@ -94,14 +88,17 @@ class MyMedkitEditViewModel(
                 }
             }
             is MyMedkitEditAction.OnSaveClick -> {
+                _state.update {
+                    it.copy(
+                        selectedMedicamentId = action.medicamentId
+                    )
+                }
                 insertMedicament(
                     medicamentId = _state.value.selectedMedicamentId,
                     familyId = _state.value.currentAccountId
                 )
             }
-            is MyMedkitEditAction.OnBackClick -> {
-
-            }
+            is MyMedkitEditAction.OnBackClick -> { }
         }
     }
 
@@ -141,18 +138,12 @@ class MyMedkitEditViewModel(
     private fun fetchInitialMedicamentSet() {
         viewModelScope.launch {
             runCatching {
-                _state.update {
-                    it.copy(isSearching = true)
-                }
                 val result = appRepository.fetchInitialMedicamentSet()
                 _searchResult.emit(result.map { it.asDomainModel() })
             }.onSuccess {
-                _state.update {
-                    it.copy(isSearching = false)
-                }
+                _state.update { it.copy(isSearching = false) }
             }.onFailure { error ->
-                _state.update {
-                    it.copy(
+                _state.update { it.copy(
                         isSearching = false,
                         errorMessage = "Błąd"
                     )
@@ -168,12 +159,9 @@ class MyMedkitEditViewModel(
                 val result = appRepository.searchMedicamentSet(name)
                 _searchResult.emit(result.map { it.asDomainModel() })
             }.onSuccess {
-                _state.update {
-                    it.copy(isSearching = false)
-                }
+                _state.update { it.copy(isSearching = false) }
             }.onFailure { error ->
-                _state.update {
-                    it.copy(
+                _state.update { it.copy(
                         isSearching = false,
                         errorMessage = "Błąd"
                     )

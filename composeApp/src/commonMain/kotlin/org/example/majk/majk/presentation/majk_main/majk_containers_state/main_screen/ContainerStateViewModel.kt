@@ -64,16 +64,14 @@ class ContainerStateViewModel(
                     .sortedBy { it.containerNumber }
                 _containersList.emit(result)
             }.onSuccess {
-                _state.update {
-                    it.copy(
+                _state.update { it.copy(
                         isLoading = false,
                         initialLoadDone = true,
                         containersList = _containersList.value
                     )
                 }
             }.onFailure { error ->
-                _state.update {
-                    it.copy(
+                _state.update { it.copy(
                         isLoading = false,
                         errorMessage = "Błąd w komunikacji z serwerem. Spróbuj ponownie"
                     )

@@ -53,13 +53,13 @@ class ContainerSettingsViewModel(
     fun onAction(action: ContainerSettingsAction) {
         when (action) {
             is ContainerSettingsAction.OnSearchQueryChange -> {
-                if (action.medicamentId == -1L) {
-                    emptyContainer(container)
-                }
                 _searchQuery.value = action.medicamentSearch
                 _state.update {
                     it.copy(selectedMedicamentId = action.medicamentId)
                 }
+            }
+            is ContainerSettingsAction.OnEmptySearchQueryClick -> {
+                emptyContainer(container)
             }
             is ContainerSettingsAction.OnPillQuantityChange -> {
                 _state.update { it.copy(pillQuantityEntry = action.pillQuantity) }
@@ -105,7 +105,7 @@ class ContainerSettingsViewModel(
 
                     } else if (diff > 60) {
                         val subDiff = 60 - _state.value.initialPillQuantity
-                        _state.update { it.copy(pillQuantityEntry = "$diff") }
+                        _state.update { it.copy(pillQuantityEntry = "$subDiff") }
 
                         updateNumberOfPills(
                             containerId = container,
@@ -131,10 +131,7 @@ class ContainerSettingsViewModel(
             }
             is ContainerSettingsAction.OnConfirmEmptyClick -> {
                 emptyContainer(container)
-                _state.update { it.copy(
-                    pillQuantityEntry = "0",
-                    isEmptyContainerDialogVisible = false
-                ) }
+                _state.update { it.copy(isEmptyContainerDialogVisible = false) }
             }
             is ContainerSettingsAction.OnEmptyContainerClick -> {
                 _state.update { it.copy(isEmptyContainerDialogVisible = true) }
@@ -189,11 +186,13 @@ class ContainerSettingsViewModel(
                     containerSettings = _containerSettings.value,
                     isLoading = false,
                     initialSelectedMedicineId = _containerSettings.value.containerId,
-                    initialSearchEntry = _containerSettings.value.medicamentName,
+                    initialSearchEntry = _containerSettings.value.medicamentName ?: "",
                     initialPillQuantity = _containerSettings.value.pillQuantity,
                     pillQuantity = _containerSettings.value.pillQuantity.toString()
                 ) }
-                _searchQuery.value = _containerSettings.value.medicamentName
+                if (_searchQuery.value.isBlank()) {
+                    _searchQuery.value = _containerSettings.value.medicamentName ?: ""
+                }
             }.onFailure { error ->
                 _state.update {
                     it.copy(

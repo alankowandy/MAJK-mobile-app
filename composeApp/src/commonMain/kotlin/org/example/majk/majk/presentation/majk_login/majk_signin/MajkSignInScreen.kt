@@ -121,7 +121,8 @@ private fun MajkSignInScreen(
             keyboardType = KeyboardType.Email,
             focusRequester = emailFocusRequester,
             onNextFocus = { passwordFocusRequester.requestFocus() },
-            isError = state.emailError
+            isError = state.emailError,
+            modifier = Modifier.padding(bottom = 8.dp)
         )
 
         MajkTextField(
@@ -136,7 +137,8 @@ private fun MajkSignInScreen(
                 focusManager.clearFocus()
                 keyboardController?.hide()
             },
-            isError = state.passwordError
+            isError = state.passwordError,
+            modifier = Modifier.padding(bottom = 8.dp)
         )
 
         Spacer(modifier = Modifier.weight(1f))

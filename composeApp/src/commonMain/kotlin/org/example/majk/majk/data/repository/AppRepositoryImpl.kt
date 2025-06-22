@@ -71,14 +71,25 @@ class AppRepositoryImpl(
         }
     }
 
-    override suspend fun updateUserSettings(id: Long, username: String, permission: String) {
+    override suspend fun updatePermission(id: Long, permission: String) {
         return withContext(Dispatchers.IO) {
             postgrest.rpc(
-                function = "update_profile",
+                function = "update_permission",
                 parameters = buildJsonObject {
-                    put("profile_id_input", id)
-                    put("new_name", username)
+                    put("user_id", id)
                     put("new_permission", permission)
+                }
+            )
+        }
+    }
+
+    override suspend fun updateUsername(userId: Long, username: String) {
+        return withContext(Dispatchers.IO) {
+            postgrest.rpc(
+                function = "update_username",
+                parameters = buildJsonObject {
+                    put("userid", userId)
+                    put("new_username", username)
                 }
             )
         }

@@ -22,11 +22,7 @@ class ScheduleViewModel(
     fun onAction(action: ScheduleAction) {
         when (action) {
             is ScheduleAction.OnMonthOffsetChange -> {
-                _state.update {
-                    it.copy(
-                        monthOffset = action.offset
-                    )
-                }
+                _state.update { it.copy(monthOffset = action.offset) }
             }
             is ScheduleAction.OnRefreshCurrentTime -> {}
             is ScheduleAction.OnSelectDate -> {}
@@ -38,7 +34,6 @@ class ScheduleViewModel(
         sharedViewModel.userInfo
             .filterNotNull()
             .map { it.accountId }
-            .filter { it != 0L }
             .distinctUntilChanged()
             .onEach { accountId ->
                 if (accountId != null) {

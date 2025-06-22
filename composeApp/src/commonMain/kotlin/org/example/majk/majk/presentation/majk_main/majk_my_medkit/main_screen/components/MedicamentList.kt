@@ -1,5 +1,6 @@
 package org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,16 +21,20 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import majk.composeapp.generated.resources.Res
+import majk.composeapp.generated.resources.prescriptions
 import org.example.majk.core.presentation.DarkTeal
 import org.example.majk.core.presentation.OffWhite
 import org.example.majk.core.presentation.components.MajkButton
@@ -37,6 +42,7 @@ import org.example.majk.majk.domain.MyMedicamentList
 import org.example.majk.majk.presentation.majk_main.components.ActionIcon
 import org.example.majk.majk.presentation.majk_main.components.SwipeableIconWithActions
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.main_screen.MyMedicamentAction
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun MedicamentList(
@@ -120,13 +126,19 @@ fun MedicamentList(
                                     uriHandler.openUri(url)
                                 }
                             },
-                            colors = IconButtonDefaults.iconButtonColors(
-                                contentColor = DarkTeal
+                            colors = IconButtonColors(
+                                contentColor = OffWhite,
+                                containerColor = DarkTeal,
+                                disabledContentColor = Color.Gray,
+                                disabledContainerColor = OffWhite
                             )
                         ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Description,
-                                contentDescription = "leaflet"
+                            Image(
+                                painter = painterResource(Res.drawable.prescriptions),
+                                contentDescription = "Medicament leaflet",
+                                colorFilter = ColorFilter.tint(
+                                    color = OffWhite
+                                )
                             )
                         }
                     }

@@ -84,9 +84,12 @@ class MajkSignInViewModel(
                     it.copy(isProcessing = false, isLogged = true)
                 }
             }.onFailure { error ->
-                _state.update {
-                    it.copy(errorMessage = error.message)
+                if (error.message?.contains("invalid_credentials") == true) {
+                    _state.update {
+                        it.copy(errorMessage = "Niepoprawne dane logowania.")
+                    }
                 }
+                println(error)
             }
         }
     }
