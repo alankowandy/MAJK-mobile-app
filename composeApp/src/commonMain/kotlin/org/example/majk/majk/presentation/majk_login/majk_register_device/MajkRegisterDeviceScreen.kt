@@ -35,9 +35,9 @@ import majk.composeapp.generated.resources.email
 import majk.composeapp.generated.resources.password
 import majk.composeapp.generated.resources.register_device
 import majk.composeapp.generated.resources.user
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.OffWhite
-import org.example.majk.core.presentation.WarningRed
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.OffWhite
+import org.example.majk.core.presentation.theme.WarningRed
 import org.example.majk.core.presentation.components.MajkButton
 import org.example.majk.core.presentation.components.MajkLogo
 import org.example.majk.core.presentation.components.MajkTextField

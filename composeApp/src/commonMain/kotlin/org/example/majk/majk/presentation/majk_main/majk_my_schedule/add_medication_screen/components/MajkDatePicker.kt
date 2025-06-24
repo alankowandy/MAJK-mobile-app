@@ -12,8 +12,8 @@ import androidx.compose.ui.unit.dp
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.OffWhite
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -30,8 +30,8 @@ import androidx.navigation.compose.rememberNavController
 import io.github.jan.supabase.auth.status.SessionStatus
 import kotlinx.coroutines.launch
 import org.example.majk.core.domain.RouteTitle
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.OffWhite
 import org.example.majk.core.presentation.SharedAction
 import org.example.majk.core.presentation.SharedViewModel
 import org.example.majk.core.presentation.components.ActionDropdown
@@ -48,6 +48,7 @@ import org.example.majk.majk.presentation.majk_main.majk_containers_state.main_s
 import org.example.majk.majk.presentation.majk_main.majk_history.HistoryScreenRoot
 import org.example.majk.majk.presentation.majk_main.majk_home.HomeScreenRoot
 import org.example.majk.core.presentation.components.Drawer
+import org.example.majk.core.presentation.theme.MajkTheme
 import org.example.majk.majk.presentation.majk_main.majk_add_profile.AddProfileViewModel
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.AdminAuthViewModel
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_settings.AdminAuthSettingsScreenRoot
@@ -81,7 +82,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App() {
-    MaterialTheme {
+    MajkTheme {
         val navController = rememberNavController()
         val scope = rememberCoroutineScope()
         val scaffoldState = rememberScaffoldState()
@@ -128,7 +129,8 @@ fun App() {
                         if (currentRoute != "org.example.majk.app.Route.MajkStart") {
                             Text(
                                 text = currentRouteTitle.title,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
+                                style = MaterialTheme.typography.titleLarge
                             )
                         } else {
                             Text(

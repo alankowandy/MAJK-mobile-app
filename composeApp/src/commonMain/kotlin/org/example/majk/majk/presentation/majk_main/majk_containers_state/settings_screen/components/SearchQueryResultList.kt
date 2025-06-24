@@ -7,7 +7,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import org.example.majk.core.presentation.DarkTeal
+import org.example.majk.core.presentation.theme.DarkTeal
 import org.example.majk.majk.domain.ContainerSettingsSearchQuery
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen.ContainerSettingsAction
 

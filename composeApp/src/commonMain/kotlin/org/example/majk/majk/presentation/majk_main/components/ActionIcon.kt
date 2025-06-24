@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.theme.OffWhite
 
 @Composable
 fun ActionIcon(

@@ -22,8 +22,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.LightGray
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.LightGray
 
 @Composable
 fun MajkSearchField(

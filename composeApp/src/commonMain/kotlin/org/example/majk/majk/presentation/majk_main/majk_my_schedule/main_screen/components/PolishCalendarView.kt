@@ -8,16 +8,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
-import androidx.compose.material.icons.filled.ArrowBackIosNew
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,13 +24,12 @@ import androidx.compose.ui.unit.sp
 import io.wojciechosak.calendar.config.rememberCalendarState
 import io.wojciechosak.calendar.view.CalendarView
 import io.wojciechosak.calendar.view.HorizontalCalendarView
-import io.wojciechosak.calendar.view.MonthHeader
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
 import kotlinx.datetime.DayOfWeek
-import org.example.majk.core.presentation.Cyan
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.LightGray
+import org.example.majk.core.presentation.theme.Cyan
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.LightGray
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.main_screen.ScheduleState
 
 @Composable

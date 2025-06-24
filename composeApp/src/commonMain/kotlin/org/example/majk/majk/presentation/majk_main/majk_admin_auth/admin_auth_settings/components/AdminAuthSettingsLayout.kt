@@ -27,8 +27,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.OffWhite
 import org.example.majk.core.presentation.components.MajkButton
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_settings.AdminAuthSettingsAction
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_settings.AdminAuthSettingsState

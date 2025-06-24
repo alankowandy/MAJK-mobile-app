@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.daysUntil
-import org.example.majk.core.presentation.DarkTeal
+import org.example.majk.core.presentation.theme.DarkTeal
 import org.example.majk.majk.domain.ReleaseSchedule
 import org.example.majk.majk.presentation.majk_main.majk_home.HomeState
 

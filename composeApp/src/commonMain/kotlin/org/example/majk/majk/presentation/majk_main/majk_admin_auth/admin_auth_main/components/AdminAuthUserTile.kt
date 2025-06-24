@@ -2,16 +2,12 @@ package org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Person
@@ -29,9 +25,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.LightGray
-import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.LightGray
+import org.example.majk.core.presentation.theme.OffWhite
 import org.example.majk.majk.domain.AdminAuthUsers
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.AdminAuthAction
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_main.AdminAuthState

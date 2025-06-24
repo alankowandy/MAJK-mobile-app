@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.theme.OffWhite
 import org.example.majk.majk.domain.ManageFamily
 
 @Composable

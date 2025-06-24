@@ -17,13 +17,11 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -34,18 +32,13 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
-import majk.composeapp.generated.resources.Res
-import majk.composeapp.generated.resources.back
-import majk.composeapp.generated.resources.save
-import org.example.majk.core.presentation.Cyan
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.LightGray
-import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.theme.Cyan
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.LightGray
+import org.example.majk.core.presentation.theme.OffWhite
 import org.example.majk.majk.domain.MedicamentSearch
-import org.example.majk.core.presentation.components.MajkButton
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.MyMedkitEditAction
 import org.example.majk.majk.presentation.majk_main.majk_my_medkit.edit_screen.MyMedkitEditState
-import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

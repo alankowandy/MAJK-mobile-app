@@ -2,7 +2,6 @@ package org.example.majk.majk.presentation.majk_main.majk_my_schedule.add_medica
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -13,10 +12,9 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import org.example.majk.core.presentation.Cyan
-import org.example.majk.core.presentation.DarkTeal
+import org.example.majk.core.presentation.theme.Cyan
+import org.example.majk.core.presentation.theme.DarkTeal
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.add_medication_screen.AddScheduleAction
 
 @OptIn(ExperimentalMaterial3Api::class)

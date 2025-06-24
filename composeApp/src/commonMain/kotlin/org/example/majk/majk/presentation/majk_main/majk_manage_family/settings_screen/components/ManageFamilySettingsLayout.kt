@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -38,9 +38,9 @@ import majk.composeapp.generated.resources.back
 import majk.composeapp.generated.resources.delete
 import majk.composeapp.generated.resources.save
 import majk.composeapp.generated.resources.user
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.OffWhite
-import org.example.majk.core.presentation.WarningRed
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.OffWhite
+import org.example.majk.core.presentation.theme.WarningRed
 import org.example.majk.majk.domain.UserSettings
 import org.example.majk.core.presentation.components.MajkButton
 import org.example.majk.core.presentation.components.MajkTextField
@@ -122,7 +122,7 @@ fun ManageFamilySettingsLayout(
                             )
                     ) {
                         Icon(
-                            imageVector = Icons.Outlined.Person,
+                            imageVector = Icons.Filled.Person,
                             contentDescription = "user",
                             modifier = Modifier
                                 .size(90.dp),

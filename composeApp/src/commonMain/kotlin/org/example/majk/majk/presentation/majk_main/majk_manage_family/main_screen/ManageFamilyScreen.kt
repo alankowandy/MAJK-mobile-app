@@ -15,8 +15,8 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import majk.composeapp.generated.resources.Res
 import majk.composeapp.generated.resources.error_unknown
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.OffWhite
 import org.example.majk.core.presentation.components.MajkAlertDialog
 import org.example.majk.majk.presentation.majk_main.components.EmptyListText
 import org.example.majk.majk.presentation.majk_main.majk_manage_family.main_screen.components.UserList

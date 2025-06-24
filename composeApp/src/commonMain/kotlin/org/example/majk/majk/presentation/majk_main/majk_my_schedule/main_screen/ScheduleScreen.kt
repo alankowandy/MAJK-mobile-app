@@ -11,9 +11,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.example.majk.core.presentation.Cyan
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.theme.Cyan
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.OffWhite
 import org.example.majk.core.presentation.components.MajkButton
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.main_screen.components.PolishMonthCalendar
 

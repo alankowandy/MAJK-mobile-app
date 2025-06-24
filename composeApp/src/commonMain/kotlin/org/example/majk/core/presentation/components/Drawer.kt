@@ -21,8 +21,8 @@ import majk.composeapp.generated.resources.log_out
 import org.example.majk.app.Route
 import org.example.majk.core.data.itemsInDrawer
 import org.example.majk.core.domain.RouteTitle
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.OffWhite
 import org.example.majk.core.domain.SharedState
 import org.jetbrains.compose.resources.stringResource
 

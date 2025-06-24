@@ -9,9 +9,6 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material3.Card
@@ -27,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.daysUntil
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.LightGray
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.LightGray
 import org.example.majk.majk.domain.ReleaseSchedule
 import org.example.majk.majk.presentation.majk_main.majk_home.HomeState
 

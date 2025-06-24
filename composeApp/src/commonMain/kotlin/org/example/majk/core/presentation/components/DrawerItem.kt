@@ -19,9 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.majk.core.data.DrawerData
 import org.example.majk.core.domain.SharedState
-import org.example.majk.core.presentation.Cyan
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.LightGray
+import org.example.majk.core.presentation.theme.Cyan
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.LightGray
 
 @Composable
 fun DrawerItem(

@@ -3,6 +3,7 @@ package org.example.majk.majk.presentation.majk_main.majk_containers_state.main_
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,12 +36,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import majk.composeapp.generated.resources.Res
 import majk.composeapp.generated.resources.container_state
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.GoGreen
-import org.example.majk.core.presentation.LightGray
-import org.example.majk.core.presentation.OffWhite
-import org.example.majk.core.presentation.WarningRed
-import org.example.majk.core.presentation.WatchYellow
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.GoGreen
+import org.example.majk.core.presentation.theme.LightGray
+import org.example.majk.core.presentation.theme.OffWhite
+import org.example.majk.core.presentation.theme.WarningRed
+import org.example.majk.core.presentation.theme.WatchYellow
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -62,6 +63,9 @@ fun ContainerCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
+            .clickable {
+                onSettingsClick()
+            }
     ) {
         Spacer(modifier = Modifier.height(8.dp))
 

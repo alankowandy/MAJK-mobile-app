@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.example.majk.core.presentation.DarkTeal
+import org.example.majk.core.presentation.theme.DarkTeal
 import org.example.majk.majk.presentation.majk_main.majk_admin_auth.admin_auth_settings.components.AdminAuthSettingsLayout
 import org.koin.compose.viewmodel.koinViewModel
 

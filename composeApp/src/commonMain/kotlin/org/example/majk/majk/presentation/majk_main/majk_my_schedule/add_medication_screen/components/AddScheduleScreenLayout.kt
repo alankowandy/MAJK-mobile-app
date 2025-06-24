@@ -26,7 +26,7 @@ import majk.composeapp.generated.resources.pill_amount
 import majk.composeapp.generated.resources.save
 import majk.composeapp.generated.resources.start_date
 import majk.composeapp.generated.resources.take_time
-import org.example.majk.core.presentation.DarkTeal
+import org.example.majk.core.presentation.theme.DarkTeal
 import org.example.majk.core.presentation.components.MajkButton
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.add_medication_screen.AddScheduleAction
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.add_medication_screen.AddScheduleState
@@ -63,6 +63,7 @@ fun AddScheduleScreenLayout(
             onClick = {
                 onAction(AddScheduleAction.OnStartDateClick)
             },
+            isDate = true,
             modifier = Modifier
                 .padding(horizontal = 24.dp)
         ) {
@@ -92,6 +93,7 @@ fun AddScheduleScreenLayout(
             onClick = {
                 onAction(AddScheduleAction.OnEndDateClick)
             },
+            isDate = true,
             modifier = Modifier
                 .padding(horizontal = 24.dp)
         ) {

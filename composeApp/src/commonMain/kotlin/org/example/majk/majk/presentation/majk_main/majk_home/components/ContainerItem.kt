@@ -5,25 +5,21 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.ParagraphStyle
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.GoGreen
-import org.example.majk.core.presentation.OffWhite
-import org.example.majk.core.presentation.WarningRed
-import org.example.majk.core.presentation.WatchYellow
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.GoGreen
+import org.example.majk.core.presentation.theme.OffWhite
+import org.example.majk.core.presentation.theme.WarningRed
+import org.example.majk.core.presentation.theme.WatchYellow
 import org.example.majk.majk.domain.ContainerState
 
 @Composable

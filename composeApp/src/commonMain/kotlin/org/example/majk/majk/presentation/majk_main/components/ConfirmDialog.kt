@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BasicAlertDialog
@@ -27,9 +26,9 @@ import androidx.compose.ui.unit.sp
 import majk.composeapp.generated.resources.Res
 import majk.composeapp.generated.resources.cancel
 import majk.composeapp.generated.resources.confirm
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.LightGray
-import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.LightGray
+import org.example.majk.core.presentation.theme.OffWhite
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)

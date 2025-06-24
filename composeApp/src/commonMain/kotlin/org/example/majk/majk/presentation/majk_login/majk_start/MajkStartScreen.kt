@@ -21,8 +21,8 @@ import majk.composeapp.generated.resources.Res
 import majk.composeapp.generated.resources.register_device
 import majk.composeapp.generated.resources.sign_in
 import majk.composeapp.generated.resources.sign_up
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.OffWhite
 import org.example.majk.core.presentation.components.MajkButton
 import org.example.majk.core.presentation.components.MajkLogo
 import org.jetbrains.compose.resources.stringResource

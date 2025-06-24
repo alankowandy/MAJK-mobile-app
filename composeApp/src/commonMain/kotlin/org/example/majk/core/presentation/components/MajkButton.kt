@@ -7,12 +7,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.OffWhite
 
 @Composable
 fun MajkButton(
@@ -20,11 +21,12 @@ fun MajkButton(
     onAction: () -> Unit,
     boldText: Boolean,
     containerColor: Color = DarkTeal,
+    shape: Shape = RoundedCornerShape(16.dp),
     modifier: Modifier
 ) {
     Button(
         onClick = { onAction() },
-        shape = RoundedCornerShape(16.dp),
+        shape = shape,
         colors = ButtonDefaults.buttonColors(
             contentColor = OffWhite,
             containerColor = containerColor

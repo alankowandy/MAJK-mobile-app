@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,10 +16,8 @@ import io.wojciechosak.calendar.utils.copy
 import io.wojciechosak.calendar.utils.isLeapYear
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.number
 import kotlinx.datetime.plus
-import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.theme.OffWhite
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_details_screen.DetailsState
 
 @Composable

@@ -33,8 +33,8 @@ import majk.composeapp.generated.resources.family_code
 import majk.composeapp.generated.resources.password
 import majk.composeapp.generated.resources.sign_up
 import majk.composeapp.generated.resources.user
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.OffWhite
 import org.example.majk.core.presentation.components.MajkAlertDialog
 import org.example.majk.core.presentation.components.MajkButton
 import org.example.majk.core.presentation.components.MajkLogo

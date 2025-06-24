@@ -11,7 +11,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,12 +26,12 @@ import majk.composeapp.generated.resources.Res
 import majk.composeapp.generated.resources.after_meal
 import majk.composeapp.generated.resources.before_meal
 import majk.composeapp.generated.resources.during_meal
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.GoGreen
-import org.example.majk.core.presentation.LightGray
-import org.example.majk.core.presentation.OffWhite
-import org.example.majk.core.presentation.WarningRed
-import org.example.majk.core.presentation.WatchYellow
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.GoGreen
+import org.example.majk.core.presentation.theme.LightGray
+import org.example.majk.core.presentation.theme.OffWhite
+import org.example.majk.core.presentation.theme.WarningRed
+import org.example.majk.core.presentation.theme.WatchYellow
 import org.example.majk.majk.domain.ReleaseSchedule
 import org.example.majk.majk.presentation.majk_main.majk_my_schedule.schedule_details_screen.DetailsState
 import org.jetbrains.compose.resources.stringResource

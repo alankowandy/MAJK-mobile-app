@@ -13,8 +13,8 @@ import majk.composeapp.generated.resources.Res
 import majk.composeapp.generated.resources.delete_confirm_text1
 import majk.composeapp.generated.resources.delete_confirm_text2
 import majk.composeapp.generated.resources.delete_confirm_title
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.OffWhite
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.OffWhite
 import org.example.majk.majk.domain.UserSettings
 import org.example.majk.core.presentation.components.MajkAlertDialog
 import org.example.majk.majk.presentation.majk_main.components.ConfirmDialog

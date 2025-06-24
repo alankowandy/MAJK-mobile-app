@@ -23,8 +23,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.LightGray
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.LightGray
 
 @Composable
 fun MajkTextField(
@@ -77,8 +77,8 @@ fun MajkTextField(
             ),
             isError = isError,
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = LightGray,
-                focusedContainerColor = LightGray,
+                unfocusedContainerColor = Color.White,
+                focusedContainerColor = Color.White,
                 focusedTextColor = DarkTeal,
                 unfocusedTextColor = DarkTeal,
                 focusedBorderColor = if (isError) Color.Red else DarkTeal,

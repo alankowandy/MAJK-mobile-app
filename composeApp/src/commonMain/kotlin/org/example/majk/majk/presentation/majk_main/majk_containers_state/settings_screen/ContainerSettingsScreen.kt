@@ -12,9 +12,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import majk.composeapp.generated.resources.Res
 import majk.composeapp.generated.resources.container_confirm_text
 import majk.composeapp.generated.resources.container_confirm_title
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.OffWhite
-import org.example.majk.majk.domain.ContainerSettings
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.OffWhite
 import org.example.majk.majk.domain.ContainerSettingsSearchQuery
 import org.example.majk.majk.presentation.majk_main.components.ConfirmDialog
 import org.example.majk.majk.presentation.majk_main.majk_containers_state.settings_screen.components.ContainerSettingsScreenLayout

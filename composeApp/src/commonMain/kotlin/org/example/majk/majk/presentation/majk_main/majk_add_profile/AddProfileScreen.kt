@@ -30,9 +30,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import majk.composeapp.generated.resources.Res
 import majk.composeapp.generated.resources.user
-import org.example.majk.core.presentation.DarkTeal
-import org.example.majk.core.presentation.OffWhite
-import org.example.majk.core.presentation.WarningRed
+import org.example.majk.core.presentation.theme.DarkTeal
+import org.example.majk.core.presentation.theme.OffWhite
+import org.example.majk.core.presentation.theme.WarningRed
 import org.example.majk.core.presentation.components.MajkButton
 import org.example.majk.core.presentation.components.MajkLogo
 import org.example.majk.core.presentation.components.MajkTextField
