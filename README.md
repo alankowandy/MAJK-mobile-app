@@ -90,5 +90,5 @@ MAJK is not just an academic project — it's a **prototype for a real-world hea
 
 ## 📄 License
 
-This project is licensed under the Apache License - see the [LICENSE](LICENSE) file for details.
+This project is licensed - see the [LICENSE](LICENSE) file for details.
 
