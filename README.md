@@ -22,8 +22,6 @@ This project was the culmination of an interdisciplinary effort combining embedd
   <img heigth = "200" width="100" alt="app_schedule_main_screen" src="https://github.com/user-attachments/assets/b1e0686a-6513-4bc9-83e5-bfbe112a3035" />
   <img heigth = "200" width="100" alt="app_medkit_main" src="https://github.com/user-attachments/assets/bf299981-b27c-4d1c-bc4b-158622f5e590" />
   <img heigth = "200" width="100" alt="app_edit_user" src="https://github.com/user-attachments/assets/984fa237-384e-49d6-a88d-a9b15c96734a" />
-  <img heigth = "200" width="100" alt="app_history_screen" src="https://github.com/user-attachments/assets/3a348636-cb60-498b-b75e-ac05297bdedb" />
-  <img heigth = "200" width="100" alt="app_logging_error" src="https://github.com/user-attachments/assets/eaa40ec4-4acd-4770-bd30-9adaeaccdb63" />
 </p>
 
 ---
@@ -42,7 +40,7 @@ This project was the culmination of an interdisciplinary effort combining embedd
 - Access official leaflets and assign drugs to schedules and containers
 
 ### 📦 Container Management
-- Monitor the contents of physical containers in real time
+- Monitor the contents of physical containers
 - Reassign medications to specific containers and update status when restocked
 
 ### 👪 User & Family Management
@@ -54,8 +52,7 @@ This project was the culmination of an interdisciplinary effort combining embedd
 - Track their schedules and doses through admin supervision
 
 ### 🛡️ Dose Authorization
-- Choose between NFC card emulation, mobile PIN, or automatic confirmation for each profile
-- App functions as an **NFC-enabled terminal** to authorize medication releases securely
+- Choose between NFC card emulation or RFID card authorization
 
 ---
 
