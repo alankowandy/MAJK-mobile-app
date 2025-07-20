@@ -28,30 +28,30 @@ This project was the culmination of an interdisciplinary effort combining embedd
 
 ## 🔧 Core Features
 
-### 📅 Medication Schedule
+### Medication Schedule
 - View and manage an interactive calendar of upcoming doses
 - Add or edit medication intake events for yourself or others
 
-### 📜 Dose History
+### Dose History
 - Access a detailed log of every dispensed dose, including the timestamp
 
-### 🧰 Virtual Family Medicine Cabinet
+### Virtual Family Medicine Cabinet
 - Add medications from the Polish national registry (`rejestrymedyczne.ezdrowie.gov.pl`)
 - Access official leaflets and assign drugs to schedules and containers
 
-### 📦 Container Management
+### Container Management
 - Monitor the contents of physical containers
 - Reassign medications to specific containers and update status when restocked
 
-### 👪 User & Family Management
+### User & Family Management
 - Manage a group of users (family or caregivers)
 - Assign roles, configure access levels, and coordinate caregiving responsibilities
 
-### 👤 Offline Profiles
+### Offline Profiles
 - Create profiles for users without smartphones (e.g., children or elderly)
 - Track their schedules and doses through admin supervision
 
-### 🛡️ Dose Authorization
+### Dose Authorization
 - Choose between NFC card emulation or RFID card authorization
 
 ---
@@ -90,5 +90,5 @@ MAJK is not just an academic project — it's a **prototype for a real-world hea
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the Apache License - see the [LICENSE](LICENSE) file for details.
 
